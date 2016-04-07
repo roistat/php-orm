@@ -76,8 +76,8 @@ $dataToUpdate = $engine->getUpdateData($project); // []
 $project->name = 'New name';
 $dataToInsert = $engine->getInsertData($project); // []
 $dateToReplace = $engine->getReplaceData($project); // ['id' => 1, 'name' => 'New name', 'user_id' => 1]
-
 $dataToUpdate = $engine->getUpdateData($project);
+
 // values — поля для апдейта
 // filter — стандартный фильтр про PK + предыдущему значению поля
 // filter_strict — фильтр по полному предыдущему состоянию объекта для критичных к консистетности данных ситуаций
@@ -95,5 +95,7 @@ $dateToUpdate = [
         'user_id' => 1,
     ],
 ];
+
+
 
 ```
