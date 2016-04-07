@@ -22,16 +22,16 @@ ORM
 ```php
 <?php
 
+class User extends ORM\Entity {
+    public $id;
+    public $name;
+}
+
 class Project extends ORM\Entity {
     public $id;
     public $name;
     public $user_id;
 }
-
-class User extends ORM\Entity {
-    public $id;
-    public $name;
-} 
 
 // Движок работает с ORM\Entity, содержит всю основную логику
 $engine = ORM\Engine::mysql()
@@ -41,12 +41,35 @@ $project = new Project();
 $project->name = "Test";
 $project->user_id = 1;
 
+
 // Новым считается объект без initial state
 $isNew = $engine->isNew($project); // true
+
+// У нового объекта все данные нужны для инсерта
 $dataToInsert = $engine->getInsertData($project); // ['name' => 'Test', 'user_id' => 1]
+
+// Для реплейса аналогично
+$dateToReplace = $engine->getReplaceData($project); // ['name' => 'Test', 'user_id' => 1]
+
+// Апдейта у нового объекта не может быть
 $dataToUpdate = $engine->getUpdateData($project); // []
 
-// При загрузке объекта из БД или после его сохранения, нужно установить initial state
-$engine->setInitialState($project, ['id' => $lastInsertId]);
+// После загрузки объекта из БД или после его сохранения, нужно установить initial state
+// Если это был инсерт, то при необходимости можно добавить полученный id
+$engine->setInitialState($project, ['id' => 1]);
+
+
+// Теперь объект считается существующим
+$isNew = $engine->isNew($project); // false
+
+// Существующий объект нельзя инсертить
+$dataToInsert = $engine->getInsertData($project); // []
+
+// Для реплейса он по-прежнему доступен, но уже может содержать больше данных
+$dateToReplace = $engine->getReplaceData($project); // ['id' => 1, 'name' => 'Test', 'user_id' => 1]
+
+// Для апдейта ничего нет, так как мы пока ничего не меняли
+$dataToUpdate = $engine->getUpdateData($project); // []
+
 
 ```
