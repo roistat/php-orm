@@ -30,4 +30,21 @@ class User extends ORM\Entity {
     public $id;
     public $name;
 } 
+
+// Движок работает с ORM\Entity, содержит всю основную логику
+$engine = ORM\Engine::mysql()
+
+// Объекты программист может создавать как обычно
+$project = new Project();
+$project->name = "Test";
+$project->user_id = 1;
+
+// Новым считается объект без initial state
+$isNew = $engine->isNew($project); // true
+$dataToInsert = $engine->getInsertData($project); // ['name' => 'Test', 'user_id' => 1]
+$dataToUpdate = $engine->getUpdateData($project); // []
+
+// При загрузке объекта из БД или после его сохранения, нужно установить initial state
+$engine->setInitialState($project, ['id' => $lastInsertId]);
+
 ```
