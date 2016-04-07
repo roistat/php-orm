@@ -19,8 +19,9 @@ ORM
 Примеры
 -------
 
-`
+```
 class Project extends ORM\Entity {
     
 }
-`
+
+```
