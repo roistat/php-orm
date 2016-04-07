@@ -21,7 +21,13 @@ ORM
 
 ```
 class Project extends ORM\Entity {
-    
+    public $id;
+    public $name;
+    public $user_id;
 }
 
+class User extends ORM\Entity {
+    public $id;
+    public $name;
+} 
 ```
