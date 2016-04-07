@@ -20,6 +20,8 @@ ORM
 -------
 
 ```php
+<?php
+
 class Project extends ORM\Entity {
     public $id;
     public $name;
