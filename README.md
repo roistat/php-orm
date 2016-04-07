@@ -34,7 +34,7 @@ class Project extends ORM\Entity {
 }
 
 // Движок работает с ORM\Entity, содержит всю основную логику
-$engine = ORM\Engine::mysql()
+$engine = new ORM\Engine();
 
 // Объекты программист может создавать как обычно
 $project = new Project();
@@ -96,6 +96,6 @@ $dateToUpdate = [
     ],
 ];
 
-
+// Загрузка
 
 ```
