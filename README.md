@@ -18,17 +18,11 @@ Examples:
 ```php
 <?php
 
-class User extends ORM\Entity {
-    public $id;
-    public $name;
-}
-
 class Project extends ORM\Entity {
     public $id;
     public $name;
     public $user_id;
 }
-
 $engine = new ORM\Engine();
 
 // You could create objects as usual
