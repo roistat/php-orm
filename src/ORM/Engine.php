@@ -12,7 +12,7 @@ class Engine {
      * @return bool
      */
     public function isNew(Entity $entity) {
-        return count($entity->getInitialState()) === 0;
+        return count($entity->__getInitialState()) === 0;
     }
 
     /**
@@ -37,7 +37,7 @@ class Engine {
     public function diff(Entity $entity) {
         $result = [];
 
-        $initialState = $entity->getInitialState();
+        $initialState = $entity->__getInitialState();
         $currentState = $entity->__getCurrentState();
         foreach ($initialState as $param => $value) {
             if (!array_key_exists($param, $currentState)) {

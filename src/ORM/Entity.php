@@ -20,7 +20,7 @@ abstract class Entity {
     /**
      * @return array
      */
-    public function getInitialState() {
+    public function __getInitialState() {
         return $this->__initialState;
     }
 
