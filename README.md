@@ -73,13 +73,7 @@ class Project extends ORM\Entity {
 $queryEngine = Query\Engine::mysql();
 
 // Load project by user_id
-$userId = 1;
 $filter = new Query\Filter\Equal(Project::userId());
-$preparedQuery = $queryEngine->buildSelectByFilter(Project::table(), $filter); // SELECT * FROM `project` WHERE `user_id` = 1;
-$result = $queryEngine->send($preparedQuery, [Project::userId() => $userId]);
-if ($result !== null) {
-    $project = new Project();
-    $project->__setInitialState($result);
-}
+$preparedQuery = $queryEngine->buildPreparedSelectByFilter(Project::table(), $filter); // SELECT * FROM `project` WHERE `user_id` = :user_id;
 
 ```
