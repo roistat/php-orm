@@ -12,7 +12,24 @@ class Entity extends RSDB\ORM\Entity {
     public $name;
     public $external_id;
 
-    public static function filterByName($name) {
-        return
+    /**
+     * @return string
+     */
+    public static function name() {
+        return 'name';
+    }
+
+    /**
+     * @return string
+     */
+    public static function id() {
+        return 'id';
+    }
+
+    /**
+     * @return string
+     */
+    public static function externalId() {
+        return 'external_id';
     }
 }
