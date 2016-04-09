@@ -28,7 +28,7 @@ abstract class Entity {
      * @param array $initialState
      * @param int $autoIncrementId
      */
-    public function setInitialState(array $initialState, $autoIncrementId = null) {
+    public function __setInitialState(array $initialState, $autoIncrementId = null) {
         // @TODO throw exception if initial state has wrong param
         $this->__initialState = $initialState;
         if ($autoIncrementId !== null) {
@@ -39,7 +39,7 @@ abstract class Entity {
     /**
      * @return array
      */
-    public function getCurrentState() {
+    public function __getCurrentState() {
         $result = [];
         foreach (get_object_vars($this) as $param => $value) {
             if (strpos($param, '__') === 0) {

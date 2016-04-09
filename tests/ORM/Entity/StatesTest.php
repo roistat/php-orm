@@ -22,17 +22,17 @@ class StatesTest extends RSDBTest\Base {
 
     public function testStatesOperations() {
         $this->assertSame([], $this->_project->getInitialState());
-        $this->_project->setInitialState(['name' => 'Test']);
+        $this->_project->__setInitialState(['name' => 'Test']);
         $this->assertSame(['name' => 'Test'], $this->_project->getInitialState());
 
-        $this->_project->setInitialState(['name' => 'Test1'], 1);
+        $this->_project->__setInitialState(['name' => 'Test1'], 1);
         $this->_assertAssocArraysEquals(['id' => 1, 'name' => 'Test1'], $this->_project->getInitialState());
 
         $this->_project->id = 3;
         $this->_assertAssocArraysEquals(['id' => 1, 'name' => 'Test1'], $this->_project->getInitialState());
-        $this->_project->setInitialState(['id' => 2]);
+        $this->_project->__setInitialState(['id' => 2]);
         $this->_assertAssocArraysEquals(['id' => 2], $this->_project->getInitialState());
         $this->assertSame(3, $this->_project->id);
-        $this->_assertAssocArraysEquals(['id' => 3], $this->_project->getCurrentState());
+        $this->_assertAssocArraysEquals(['id' => 3], $this->_project->__getCurrentState());
     }
 }

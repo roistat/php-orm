@@ -27,7 +27,7 @@ class Engine {
      * @param Entity $entity
      */
     public function flush(Entity $entity) {
-        $entity->setInitialState($entity->getCurrentState());
+        $entity->__setInitialState($entity->__getCurrentState());
     }
 
     /**
@@ -38,7 +38,7 @@ class Engine {
         $result = [];
 
         $initialState = $entity->getInitialState();
-        $currentState = $entity->getCurrentState();
+        $currentState = $entity->__getCurrentState();
         foreach ($initialState as $param => $value) {
             if (!array_key_exists($param, $currentState)) {
                 $result[$param] = null;
