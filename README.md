@@ -47,3 +47,39 @@ $isChanged = $engine->isChanged($project); // false
 $diff = $engine->diff($project); // []
 
 ```
+
+Query
+-----
+
+Examples:
+
+```php
+<?php
+
+class Project extends ORM\Entity {
+    public $id;
+    public $name;
+    public $user_id;
+    
+    public static function table() {
+        return 'project';
+    }
+    
+    public static function userId() {
+        return 'user_id';
+    }
+}
+
+$queryEngine = Query\Engine::mysql();
+
+// Load project by user_id
+$userId = 1;
+$filter = new Query\Filter\Equal(Project::userId(), ':userId');
+$preparedQuery = $queryEngine->buildSelectByFilter(Project::table(), $filter); // SELECT * FROM `project` WHERE `user_id` = 1;
+$result = $queryEngine->send($preparedQuery, [':userId' => $userId]);
+if ($result !== null) {
+    $project = new Project();
+    $project->__setInitialState($result);
+}
+
+```
