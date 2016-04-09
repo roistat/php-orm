@@ -1,7 +1,7 @@
 RSDB
 ====
 
-Simple and fast DB utils with no magic methods
+Simple and fast DB utils with no magic methods. It could be used in high load projects even with partitioning and sharding. 
 
 * ORM package — responsible for object state management. Returns the data that prepared for usage in DB queries.
 * Query package — responsible for creating queries from ORM data to specified DB engine. 
