@@ -6,10 +6,10 @@
 
 namespace RSDB\Query\Filter;
 
-class FilterAnd extends AbstractMultipleFilter {
+class In extends AbstractBinaryFilter {
     
-	protected function _operator() {
-		return " AND ";
-	}
+    protected function _operator() {
+        return " IN ";
+    }
     
 }

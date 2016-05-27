@@ -6,10 +6,10 @@
 
 namespace RSDB\Query\Filter;
 
-class Gt extends AbstractBinaryFilter {
-
+class Like extends AbstractBinaryFilter {
+    
     protected function _operator() {
-        return " > ";
+        return " LIKE ";
     }
-
+    
 }
