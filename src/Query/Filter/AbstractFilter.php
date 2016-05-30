@@ -6,56 +6,75 @@
 
 namespace RSDB\Query\Filter;
 
-abstract class AbstractFilter {
+abstract class AbstractFilter implements LogicInterface {
     
     /**
-     * @var string[]|AbstractFilter[]
+     * @var string
      */
-    protected $_operands;
+    protected $_field;
     
     /**
-     * @param string[]|AbstractFilter[] $operands
+     * @var mixed[]
      */
-    public function __construct(array $operands) {
-        if (count($operands) === 1 && is_string($operands[0])) {
-            $operands[] = ":" . $operands[0];
+    protected $_parameters = [];
+    
+    /**
+     * @param string $field
+     * @throws \Exception
+     */
+    public function __construct($field) {
+        if (!is_string($field)) {
+            throw new \Exception("Wrong field type");
         }
-        $this->_operands = $operands;
+        $this->_field = $field;
     }
     
     /**
      * @return string
      */
-    abstract public function prepare();
-    
-    /**
-     * @param int $index
-     * @return string
-     */
-    protected function _prepareOperand($index) {
-        if (is_array($this->_operands[$index])) {
-            return "(" . implode(", ", $this->_operands[$index]) . ")";
-        }
-        if ($this->_operands[$index] instanceof AbstractFilter) {
-            return "(" . $this->_operands[$index]->prepare() . ")";
-        }
-        return $this->_operands[$index];
-    }
-    
-    /**
-     * @return string[]
-     */
-    protected function _prepareOperands() {
-        $result = [];
-        foreach ($this->_operands as $index => $operand) {
-            $result[$index] = $this->_prepareOperand($index);
-        }
-        return $result;
+    public function prepare() {
+        return "`{$this->_field}`{$this->_prepareOperator()}{$this->_prepareParameters()}";
     }
     
     /**
      * @return string
      */
     abstract protected function _operator();
+    
+    /**
+     * @return string
+     */
+    protected function _prepareOperator() {
+        if (count($this->_parameters) === 0) {
+            $postfix = "";
+        }
+        else {
+            $postfix = " ";
+        }
+        return " " . $this->_operator() . $postfix;
+    }
+    
+    /**
+     * return string
+     */
+    protected function _prepareParameters() {
+        switch (count($this->_parameters)) {
+            case 0:
+                return "";
+            case 1:
+                return "?";
+            case 2:
+                return "? AND ?";
+            default :
+                return "(" . str_repeat("?, ", count($this->_parameters) - 1) . "?)";
+        }
+    }
+    
+    /**
+     * @return mixed[]
+     */
+    public function getParameters() {
+        return $this->_parameters;
+    }
     
 }

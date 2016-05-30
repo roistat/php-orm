@@ -6,10 +6,10 @@
 
 namespace RSDB\Query\Filter;
 
-class Lt extends AbstractBinaryFilter {
+class Lt extends AbstractComparativeFilter {
 
     protected function _operator() {
-        return " < ";
+        return "<";
     }
 
 }

@@ -6,10 +6,10 @@
 
 namespace RSDB\Query\Filter;
 
-class FilterOr extends AbstractMultipleFilter {
+class LogicalOr extends AbstractLogicAndOr {
     
-	protected function _operator() {
-		return " OR ";
-	}
+    protected function _operator() {
+        return "OR";
+    }
     
 }

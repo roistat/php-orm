@@ -8,12 +8,13 @@ namespace RSDB\Query\Filter;
 
 class Between extends AbstractFilter {
     
-    protected function _operator() {
-        return " BETWEEN ";
+    public function __construct($field, $min, $max) {
+        parent::__construct($field);
+        $this->_parameters = [$min, $max];
     }
     
-    public function prepare() {
-        return $this->_prepareOperand(0) . $this->_operator() . $this->_prepareOperand(1) . " AND " . $this->_prepareOperand(2);
+    protected function _operator() {
+        return "BETWEEN";
     }
     
 }

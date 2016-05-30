@@ -6,10 +6,10 @@
 
 namespace RSDB\Query\Filter;
 
-class Not extends AbstractUnaryFilter {
+class LogicalAnd extends AbstractLogicAndOr {
     
     protected function _operator() {
-        return "NOT ";
+        return "AND";
     }
     
 }

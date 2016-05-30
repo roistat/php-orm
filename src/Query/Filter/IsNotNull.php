@@ -6,14 +6,10 @@
 
 namespace RSDB\Query\Filter;
 
-class IsNotNull extends AbstractUnaryFilter {
+class IsNotNull extends AbstractFilter {
 
     protected function _operator() {
-        return " IS NOT NULL";
-    }
-
-    protected function _isPrefix() {
-        return false;
+        return "IS NOT NULL";
     }
 
 }
