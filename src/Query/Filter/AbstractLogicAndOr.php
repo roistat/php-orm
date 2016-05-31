@@ -6,11 +6,6 @@
 
 namespace RSDB\Query\Filter;
 
-/**
- * Description of AbstractLogicAndOr
- *
- * @author Michael Slyshkin <m.slyshkin@gmail.com>
- */
 abstract class AbstractLogicAndOr extends AbstractLogic {
     
     /**
