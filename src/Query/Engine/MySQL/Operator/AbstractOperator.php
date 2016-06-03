@@ -9,17 +9,33 @@ namespace RSDB\Query\Engine\MySQL\Operator;
 use RSDB\Query\Engine\MySQL\Operand;
 
 abstract class AbstractOperator {
+    
+    /**
+     * @var Operand\AbstractOperand[]|AbstractOperator[]
+     */
     protected $_operands = [];
+    
+    /**
+     * @var array
+     */
     protected $_values = [];
+    
+    /**
+     * @param Operand\AbstractOperand[]|AbstractOperator[] $operands
+     */
     public function __construct(array $operands) {
         foreach ($operands as $operand) {
-            if ($operand instanceof Operand\AbstractOperand) {
+            if ($operand instanceof Operand\AbstractOperand || $operand instanceof AbstractOperator) {
                 $this->_operands[] = $operand;
             } else {
-                $this->_operands[] = new Operand\Simple($operand);
+                throw new \Exception(); // todo
             }
         }
     }
+    
+    /**
+     * @return string
+     */
     public function prepare() {
         $result = "";
         foreach ($this->_operands as $operand) {
@@ -33,7 +49,20 @@ abstract class AbstractOperator {
         }
         return $result;
     }
+    
+    /**
+     * @return string
+     */
     abstract protected function _operator();
-    abstract protected function _precedence(); // ?
-    public function values() {}
+    
+    /**
+     * @return int
+     */
+    abstract protected function _precedence(); // todo?
+    
+    /**
+     * @return array
+     */
+    public function values() {} // todo
+    
 }

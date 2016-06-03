@@ -13,13 +13,12 @@ use RSDBTest;
 class OperatorTest extends RSDBTest\Base {
     
     public function testEqual() {
-        $operator = new Operator\Equal(1, 2);
+        $operator = new Operator\Equal(new Operand\Value(1), new Operand\Value(2));
         $this->assertEquals("? = ?", $operator->prepare());
-        $operator = new Operator\Equal(new Operand\Column("id"), 2);
+        $operator = new Operator\Equal(new Operand\Column("id"), new Operand\Value(3));
         $this->assertEquals("`id` = ?", $operator->prepare());
-        $operator = new Operator\Equal(2, new Operand\Column("id"));
+        $operator = new Operator\Equal(new Operand\Value(2), new Operand\Column("id"));
         $this->assertEquals("? = `id`", $operator->prepare());
-        //$this->assertEquals([13], $operator->getParameters());
     }
     
 }

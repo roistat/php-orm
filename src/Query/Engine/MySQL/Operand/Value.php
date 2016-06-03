@@ -6,11 +6,20 @@
 
 namespace RSDB\Query\Engine\MySQL\Operand;
 
-class Simple extends AbstractOperand {
+class Value extends AbstractOperand {
+    
+    /**
+     * @param mixed $operand
+     */
     public function __construct($operand) {
         parent::__construct([$operand]);
     }
+    
+    /**
+     * @return string
+     */
     public function prepare() {
         return "?";
     }
+    
 }
