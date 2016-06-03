@@ -6,13 +6,13 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Equal extends AbstractPairOperator {
+class LogicalAnd extends AbstractMultipleOperator {
     
     /**
      * @return string
      */
     protected function _operator() {
-        return "=";
+        return "AND";
     }
     
 }

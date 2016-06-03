@@ -6,13 +6,13 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Equal extends AbstractPairOperator {
+class IsNot extends AbstractPairOperator {
     
     /**
      * @return string
      */
     protected function _operator() {
-        return "=";
+        return "IS NOT";
     }
     
 }

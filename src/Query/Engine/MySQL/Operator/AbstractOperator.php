@@ -8,61 +8,51 @@ namespace RSDB\Query\Engine\MySQL\Operator;
 
 use RSDB\Query\Engine\MySQL\Operand;
 
-abstract class AbstractOperator {
+abstract class AbstractOperator extends Operand\AbstractOperand {
     
     /**
-     * @var Operand\AbstractOperand[]|AbstractOperator[]
-     */
-    protected $_operands = [];
-    
-    /**
-     * @var array
+     * @var Operand\AbstractOperand[]
      */
     protected $_values = [];
-    
+        
     /**
-     * @param Operand\AbstractOperand[]|AbstractOperator[] $operands
+     * @param Operand\AbstractOperand[] $operands
      */
     public function __construct(array $operands) {
         foreach ($operands as $operand) {
-            if ($operand instanceof Operand\AbstractOperand || $operand instanceof AbstractOperator) {
-                $this->_operands[] = $operand;
-            } else {
+            if (!$operand instanceof Operand\AbstractOperand) {
                 throw new \Exception(); // todo
             }
         }
+        parent::__construct($operands);
     }
     
     /**
+     * @param Operand\AbstractOperand $operand
      * @return string
      */
-    public function prepare() {
-        $result = "";
-        foreach ($this->_operands as $operand) {
-            if ($result) {
-                $result .= " {$this->_operator()} ";
-            }
-            $result .= $operand->prepare();
+    protected function _prepareOperand(Operand\AbstractOperand $operand) {
+        if ($operand instanceof AbstractOperator) {
+            return "({$operand->prepare()})";
+        } else {
+            return $operand->prepare();
         }
-        if (count($this->_operands) === 1) {
-            return "{$this->_operator()} {$result}";
-        }
-        return $result;
     }
     
     /**
      * @return string
      */
     abstract protected function _operator();
-    
-    /**
-     * @return int
-     */
-    abstract protected function _precedence(); // todo?
-    
+        
     /**
      * @return array
      */
-    public function values() {} // todo
+    public function values() {
+        $result = [];
+        foreach ($this->_values as $operand) {
+            $result = array_merge($result, $operand->values());
+        }
+        return $result;
+    }
     
 }

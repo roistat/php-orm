@@ -9,8 +9,8 @@ namespace RSDB\Query\Engine\MySQL\Operand;
 class Interval extends AbstractOperand {
     
     /**
-     * @param mixed $min
-     * @param mixed $max
+     * @param int|float|string $min
+     * @param int|float|string $max
      */
     public function __construct($min, $max) {
         parent::__construct([$min, $max]);

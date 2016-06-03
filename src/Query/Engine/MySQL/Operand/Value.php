@@ -9,10 +9,10 @@ namespace RSDB\Query\Engine\MySQL\Operand;
 class Value extends AbstractOperand {
     
     /**
-     * @param mixed $operand
+     * @param int|float|string $value
      */
-    public function __construct($operand) {
-        parent::__construct([$operand]);
+    public function __construct($value) {
+        parent::__construct([$value]);
     }
     
     /**
