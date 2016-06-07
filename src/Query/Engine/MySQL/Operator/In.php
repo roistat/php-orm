@@ -6,15 +6,13 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-use RSDB\Query\Engine\MySQL\Operand;
-
 class In extends AbstractPairOperator {
     
     /**
-     * @param Operand\AbstractOperand $operand
-     * @param Operand\Enum $enum
+     * @param bool|int|float|string|AbstractOperator $operand
+     * @param Enum $enum
      */
-    public function __construct(Operand\AbstractOperand $operand, Operand\Enum $enum) {
+    public function __construct($operand, Enum $enum) {
         parent::__construct($operand, $enum);
     }
     

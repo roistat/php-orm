@@ -4,26 +4,31 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RSDB\Query\Engine\MySQL\Operand;
+namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Column extends AbstractOperand {
+class Column extends AbstractOperator {
+    
+    /**
+     * @var string
+     */
+    private $_name;
     
     /**
      * @param string $name
      */
     public function __construct($name) {
-        parent::__construct([$name]);
+        $this->_name = $name;
     }
     
     /**
      * @return string
      */
     public function prepare() {
-        return "`{$this->_values[0]}`";
+        return "`{$this->_name}`";
     }
     
     /**
-     * @return array
+     * @return string[]
      */
     public function values() {
         return [];

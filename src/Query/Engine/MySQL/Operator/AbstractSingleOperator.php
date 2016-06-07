@@ -6,14 +6,18 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-use RSDB\Query\Engine\MySQL\Operand;
-
-abstract class AbstractSingleOperator extends AbstractOperator {
+abstract class AbstractSingleOperator extends AbstractComplexOperator {
     
     /**
-     * @param Operand\AbstractOperand $operand
+     * @return string
      */
-    public function __construct(Operand\AbstractOperand $operand) {
+    abstract protected function _operator();
+    
+    /**
+     * 
+     * @param bool|int|float|string|AbstractOperator $operand
+     */
+    public function __construct($operand) {
         parent::__construct([$operand]);
     }
     
@@ -21,7 +25,8 @@ abstract class AbstractSingleOperator extends AbstractOperator {
      * @return string
      */
     public function prepare() {
-        return "{$this->_operator()} {$this->_prepareOperand($this->_values[0])}";
+        $values = $this->_prepareValues();
+        return "{$this->_operator()} {$values[0]}";
     }
     
 }

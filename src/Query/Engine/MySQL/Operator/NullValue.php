@@ -4,13 +4,9 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RSDB\Query\Engine\MySQL\Operand;
+namespace RSDB\Query\Engine\MySQL\Operator;
 
-class NullValue extends AbstractOperand {
-    
-    public function __construct() {
-        parent::__construct([]);
-    }
+class NullValue extends AbstractOperator {
     
     /**
      * @return string

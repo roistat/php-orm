@@ -6,20 +6,18 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-abstract class AbstractMultipleOperator extends AbstractOperator {
+abstract class AbstractMultipleOperator extends AbstractComplexOperator {
+    
+    /**
+     * @return string
+     */
+    abstract protected function _operator();
     
     /**
      * @return string
      */
     public function prepare() {
-        $result = "";
-        foreach ($this->_values as $value) {
-            if ($result) {
-                $result .= " {$this->_operator()} ";
-            }
-            $result .= $this->_prepareOperand($value);
-        }
-        return $result;
+        return implode(" {$this->_operator()} ", $this->_prepareValues());
     }
-    
+
 }

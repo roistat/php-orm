@@ -6,15 +6,13 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-use RSDB\Query\Engine\MySQL\Operand;
-
 class IsNull extends Is {
     
     /**
-     * @param Operand\AbstractOperand $operand1
+     * @param bool|int|float|string|AbstractOperator $operand
      */
-    public function __construct(Operand\AbstractOperand $operand1) {
-        parent::__construct($operand1, new Operand\NullValue());
+    public function __construct($operand) {
+        parent::__construct($operand, new NullValue());
     }
     
 }

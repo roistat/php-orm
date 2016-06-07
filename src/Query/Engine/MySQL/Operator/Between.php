@@ -6,15 +6,13 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-use RSDB\Query\Engine\MySQL\Operand;
-
 class Between extends AbstractPairOperator {
     
     /**
-     * @param Operand\AbstractOperand $operand
-     * @param Operand\Interval $interval
+     * @param bool|int|float|string|AbstractOperator $operand
+     * @param Interval $interval
      */
-    public function __construct(Operand\AbstractOperand $operand, Operand\Interval $interval) {
+    public function __construct($operand, Interval $interval) {
         parent::__construct($operand, $interval);
     }
     

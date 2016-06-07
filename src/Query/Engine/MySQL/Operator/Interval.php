@@ -6,16 +6,13 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-abstract class AbstractOperator {
+class Interval extends AbstractPairOperator {
     
     /**
      * @return string
      */
-    abstract public function prepare();
-    
-    /**
-     * @return string
-     */
-    abstract public function values();
+    protected function _operator() {
+        return "AND";
+    }
     
 }

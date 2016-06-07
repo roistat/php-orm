@@ -4,15 +4,15 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RSDB\Query\Engine\MySQL\Operand;
+namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Enum extends AbstractOperand {
+class Enum extends AbstractComplexOperator {
     
     /**
      * @return string
      */
     public function prepare() {
-        return "(" . str_repeat("?, ", count($this->_values) - 1) . "?)";
+        return implode(", ", $this->_prepareValues());
     }
     
 }
