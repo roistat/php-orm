@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Value extends AbstractOperator {
+class Value extends AbstractOperand {
     
     /**
      * @var int|float|string

@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Enum extends AbstractComplexOperator {
+class Enum extends AbstractComplexOperand {
     
     /**
      * @return string

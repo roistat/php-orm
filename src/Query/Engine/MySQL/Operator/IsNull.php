@@ -9,7 +9,7 @@ namespace RSDB\Query\Engine\MySQL\Operator;
 class IsNull extends Is {
     
     /**
-     * @param bool|int|float|string|AbstractOperator $operand
+     * @param bool|int|float|string|AbstractOperand $operand
      */
     public function __construct($operand) {
         parent::__construct($operand, new NullValue());

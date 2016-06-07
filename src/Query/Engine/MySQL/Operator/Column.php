@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Column extends AbstractOperator {
+class Column extends AbstractOperand {
     
     /**
      * @var string

@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-abstract class AbstractPairOperator extends AbstractComplexOperator {
+abstract class AbstractPairOperand extends AbstractComplexOperand {
     
     /**
      * @return string
@@ -14,8 +14,8 @@ abstract class AbstractPairOperator extends AbstractComplexOperator {
     abstract protected function _operator();
     
     /**
-     * @param bool|int|float|string|AbstractOperator $operand1
-     * @param bool|int|float|string|AbstractOperator $operand2
+     * @param bool|int|float|string|AbstractOperand $operand1
+     * @param bool|int|float|string|AbstractOperand $operand2
      */
     public function __construct($operand1, $operand2) {
         parent::__construct([$operand1, $operand2]);

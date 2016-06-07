@@ -6,10 +6,10 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class In extends AbstractPairOperator {
+class In extends AbstractPairOperand {
     
     /**
-     * @param bool|int|float|string|AbstractOperator $operand
+     * @param bool|int|float|string|AbstractOperand $operand
      * @param Enum $enum
      */
     public function __construct($operand, Enum $enum) {

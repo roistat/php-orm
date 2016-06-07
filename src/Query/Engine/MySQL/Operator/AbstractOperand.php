@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-abstract class AbstractOperator {
+abstract class AbstractOperand {
     
     /**
      * @return string

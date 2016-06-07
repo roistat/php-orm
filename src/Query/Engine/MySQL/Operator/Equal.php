@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Equal extends AbstractPairOperator {
+class Equal extends AbstractPairOperand {
     
     /**
      * @return string

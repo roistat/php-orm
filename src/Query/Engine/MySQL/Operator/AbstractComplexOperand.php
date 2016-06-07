@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-abstract class AbstractComplexOperator extends AbstractOperator {
+abstract class AbstractComplexOperand extends AbstractOperand {
     
     /**
      * @var array
@@ -18,7 +18,7 @@ abstract class AbstractComplexOperator extends AbstractOperator {
      */
     public function __construct(array $values) {
         foreach ($values as $key => $value) {
-            if (!$value instanceof AbstractOperator) {
+            if (!$value instanceof AbstractOperand) {
                 $values[$key] = new Value($value);
             }
         }
@@ -31,7 +31,7 @@ abstract class AbstractComplexOperator extends AbstractOperator {
     protected function _prepareValues() {
         $result = [];
         foreach ($this->_values as $value) {
-            if ($value instanceof AbstractComplexOperator && !$value instanceof Interval) {
+            if ($value instanceof AbstractComplexOperand && !$value instanceof Interval) {
                 $result[] = "({$value->prepare()})";
             } else {
                 $result[] = $value->prepare();

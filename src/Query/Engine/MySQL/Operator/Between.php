@@ -6,10 +6,10 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Between extends AbstractPairOperator {
+class Between extends AbstractPairOperand {
     
     /**
-     * @param bool|int|float|string|AbstractOperator $operand
+     * @param bool|int|float|string|AbstractOperand $operand
      * @param Interval $interval
      */
     public function __construct($operand, Interval $interval) {

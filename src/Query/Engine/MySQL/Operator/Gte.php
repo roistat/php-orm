@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Gte extends AbstractPairOperator {
+class Gte extends AbstractPairOperand {
     
     /**
      * @return string

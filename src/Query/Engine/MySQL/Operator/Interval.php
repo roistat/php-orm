@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class Interval extends AbstractPairOperator {
+class Interval extends AbstractPairOperand {
     
     /**
      * @return string

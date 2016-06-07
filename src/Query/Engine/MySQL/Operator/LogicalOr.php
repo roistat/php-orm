@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class LogicalOr extends AbstractMultipleOperator {
+class LogicalOr extends AbstractMultipleOperand {
     
     /**
      * @return string

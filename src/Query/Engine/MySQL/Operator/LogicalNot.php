@@ -6,7 +6,7 @@
 
 namespace RSDB\Query\Engine\MySQL\Operator;
 
-class LogicalNot extends AbstractSingleOperator {
+class LogicalNot extends AbstractSingleOperand {
     
     /**
      * @return string
