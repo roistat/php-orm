@@ -31,7 +31,7 @@ abstract class AbstractComplexOperand extends AbstractOperand {
     protected function _prepareValues() {
         $result = [];
         foreach ($this->_values as $value) {
-            if ($value instanceof AbstractComplexOperand && !$value instanceof Interval) {
+            if ($value instanceof AbstractComplexOperand) {
                 $result[] = "({$value->prepare()})";
             } else {
                 $result[] = $value->prepare();
