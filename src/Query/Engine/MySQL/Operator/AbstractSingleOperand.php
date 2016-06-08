@@ -14,7 +14,6 @@ abstract class AbstractSingleOperand extends AbstractComplexOperand {
     abstract protected function _operator();
     
     /**
-     * 
      * @param bool|int|float|string|AbstractOperand $operand
      */
     public function __construct($operand) {
