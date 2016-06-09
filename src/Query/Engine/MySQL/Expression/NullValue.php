@@ -12,11 +12,11 @@ class NullValue extends AbstractOperand {
      * @return string
      */
     public function prepare() {
-        return "NULL";
+        return "null";
     }
     
     public function value() {
-        return NULL;
+        return null;
     }
     
 }

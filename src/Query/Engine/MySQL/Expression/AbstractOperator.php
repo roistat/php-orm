@@ -26,11 +26,10 @@ abstract class AbstractOperator implements ObjectInterface {
     public function values() {
         $result = [];
         foreach ($this->_operands as $operand) {
-            if ($operand instanceof Value) {
-                $result[] = $operand->value();
-            }
-            if ($operand instanceof AbstractOperator) {
+            if ($operand instanceof self) {
                 $result = array_merge($result, $operand->values());
+            } elseif ($operand->value() !== null) {
+                $result[] = $operand->value();
             }
         }
         return $result;

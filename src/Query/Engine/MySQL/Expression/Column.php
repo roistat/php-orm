@@ -28,7 +28,7 @@ class Column extends AbstractOperand {
     }
     
     public function value() {
-        return NULL;
+        return null;
     }
     
 }

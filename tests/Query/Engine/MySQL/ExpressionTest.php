@@ -14,7 +14,7 @@ class ExpressionTest extends RSDBTest\Base {
     public function testColumn() {
         $col = new Expression\Column("id");
         $this->assertSame("`id`", $col->prepare());
-        $this->assertSame(NULL, $col->value());
+        $this->assertSame(null, $col->value());
     }
     
     public function testValueInt() {
@@ -46,8 +46,8 @@ class ExpressionTest extends RSDBTest\Base {
     
     public function testNullValue() {
         $null = new Expression\NullValue();
-        $this->assertSame("NULL", $null->prepare());
-        $this->assertSame(NULL, $null->value());
+        $this->assertSame("null", $null->prepare());
+        $this->assertSame(null, $null->value());
     }
     
     public function testEqual() {
@@ -94,25 +94,25 @@ class ExpressionTest extends RSDBTest\Base {
 //    
 //    public function testIs() {
 //        $expr = new Expression\Is(new Expression\Column("id"), new Expression\NullValue());
-//        $this->assertSame("`id` IS NULL", $expr->prepare());
+//        $this->assertSame("`id` IS null", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
 //    public function testIsNot() {
 //        $expr = new Expression\IsNot(new Expression\Column("id"), new Expression\NullValue());
-//        $this->assertSame("`id` IS NOT NULL", $expr->prepare());
+//        $this->assertSame("`id` IS NOT null", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
 //    public function testIsNull() {
 //        $expr = new Expression\IsNull(new Expression\Column("id"));
-//        $this->assertSame("`id` IS NULL", $expr->prepare());
+//        $this->assertSame("`id` IS null", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
 //    public function testIsNotNull() {
 //        $expr = new Expression\IsNotNull(new Expression\Column("id"));
-//        $this->assertSame("`id` IS NOT NULL", $expr->prepare());
+//        $this->assertSame("`id` IS NOT null", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
@@ -129,7 +129,7 @@ class ExpressionTest extends RSDBTest\Base {
 //    }
 //    
 //    public function testLogicalNotValues() {
-//        $expr = new Expression\LogicalNot(new Expression\Value(FALSE));
+//        $expr = new Expression\LogicalNot(new Expression\Value(false));
 //        $this->assertSame("NOT ?", $expr->prepare());
 //        $this->assertSame([0], $expr->values());
 //    }
