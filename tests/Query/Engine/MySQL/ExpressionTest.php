@@ -46,7 +46,7 @@ class ExpressionTest extends RSDBTest\Base {
     
     public function testNullValue() {
         $null = new Expression\NullValue();
-        $this->assertSame("null", $null->prepare());
+        $this->assertSame("NULL", $null->prepare());
         $this->assertSame(null, $null->value());
     }
     
@@ -94,25 +94,25 @@ class ExpressionTest extends RSDBTest\Base {
 //    
 //    public function testIs() {
 //        $expr = new Expression\Is(new Expression\Column("id"), new Expression\NullValue());
-//        $this->assertSame("`id` IS null", $expr->prepare());
+//        $this->assertSame("`id` IS NULL", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
 //    public function testIsNot() {
 //        $expr = new Expression\IsNot(new Expression\Column("id"), new Expression\NullValue());
-//        $this->assertSame("`id` IS NOT null", $expr->prepare());
+//        $this->assertSame("`id` IS NOT NULL", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
 //    public function testIsNull() {
 //        $expr = new Expression\IsNull(new Expression\Column("id"));
-//        $this->assertSame("`id` IS null", $expr->prepare());
+//        $this->assertSame("`id` IS NULL", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
 //    public function testIsNotNull() {
 //        $expr = new Expression\IsNotNull(new Expression\Column("id"));
-//        $this->assertSame("`id` IS NOT null", $expr->prepare());
+//        $this->assertSame("`id` IS NOT NULL", $expr->prepare());
 //        $this->assertSame([], $expr->values());
 //    }
 //    
