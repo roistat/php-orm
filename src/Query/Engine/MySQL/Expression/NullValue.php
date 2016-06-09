@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RSDB\Query\Engine\MySQL\Operator;
+namespace RSDB\Query\Engine\MySQL\Expression;
 
 class NullValue extends AbstractOperand {
     
@@ -15,11 +15,8 @@ class NullValue extends AbstractOperand {
         return "NULL";
     }
     
-    /**
-     * @return array
-     */
-    public function values() {
-        return [];
+    public function value() {
+        return null;
     }
     
 }

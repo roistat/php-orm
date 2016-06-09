@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RSDB\Query\Engine\MySQL\Operator;
+namespace RSDB\Query\Engine\MySQL\Expression;
 
 class Column extends AbstractOperand {
     
@@ -27,11 +27,8 @@ class Column extends AbstractOperand {
         return "`{$this->_name}`";
     }
     
-    /**
-     * @return string[]
-     */
-    public function values() {
-        return [];
+    public function value() {
+        return null;
     }
     
 }
