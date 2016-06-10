@@ -3,12 +3,12 @@
  * @author Evgeniy Udodov <flr.null@gmail.com>
  */
 
-namespace RSDBTest\ORM\Entity;
+namespace RsORMTest\State\Entity;
 
-use RSDBTest;
-use RSDBTest\ORM\Stub;
+use RsORMTest;
+use RsORMTest\State\Stub;
 
-class StatesTest extends RSDBTest\Base {
+class StatesTest extends RsORMTest\Base {
 
     /**
      * @var Stub\Entity

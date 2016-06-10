@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RSDB\Query\Engine\MySQL\Expression;
+namespace RsORM\Query\Engine\MySQL\Expression;
 
 class In extends AbstractCustomOperator {
     

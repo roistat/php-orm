@@ -3,11 +3,11 @@
  * @author Evgeniy Udodov <flr.null@gmail.com>
  */
 
-namespace RSDBTest\ORM\Stub;
+namespace RsORMTest\State\Stub;
 
-use RSDB;
+use RsORM;
 
-class Entity extends RSDB\ORM\Entity {
+class Entity extends RsORM\State\Entity {
     public $id;
     public $name;
     public $external_id;

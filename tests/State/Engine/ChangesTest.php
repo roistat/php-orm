@@ -3,13 +3,13 @@
  * @author Evgeniy Udodov <flr.null@gmail.com>
  */
 
-namespace RSDBTest\ORM\Engine;
+namespace RsORMTest\State\Engine;
 
-use RSDB\ORM\Engine;
-use RSDBTest;
-use RSDBTest\ORM\Stub;
+use RsORM\State\Engine;
+use RsORMTest;
+use RsORMTest\State\Stub;
 
-class ChangesTest extends RSDBTest\Base {
+class ChangesTest extends RsORMTest\Base {
 
     /**
      * @var Stub\Entity
