@@ -15,15 +15,4 @@ abstract class AbstractMultipleOperator extends AbstractSimpleOperator {
         return implode(" {$this->_prepareOperator()} ", $this->_prepareOperands());
     }
     
-    /**
-     * @return string[]
-     */
-    protected function _prepareOperands() {
-        $result = [];
-        foreach ($this->_operands as $operand) {
-            $result[] = $operand->prepare();
-        }
-        return $result;
-    }
-    
 }

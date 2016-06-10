@@ -19,7 +19,8 @@ abstract class AbstractUnaryOperator extends AbstractSimpleOperator {
      * @return string
      */
     public function prepare() {
-        return "{$this->_prepareOperator()} {$this->_operands[0]->prepare()}";
+        $preparedOperands = $this->_prepareOperands();
+        return "{$this->_prepareOperator()} {$preparedOperands[0]}";
     }
     
 }

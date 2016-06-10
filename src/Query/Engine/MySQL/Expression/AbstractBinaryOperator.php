@@ -20,7 +20,8 @@ abstract class AbstractBinaryOperator extends AbstractSimpleOperator {
      * @return string
      */
     public function prepare() {
-        return "{$this->_operands[0]->prepare()} {$this->_prepareOperator()} {$this->_operands[1]->prepare()}";
+        $preparedOperands = $this->_prepareOperands();
+        return "{$preparedOperands[0]} {$this->_prepareOperator()} {$preparedOperands[1]}";
     }
     
 }
