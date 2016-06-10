@@ -1,5 +1,4 @@
-RsORM
-=====
+# RsORM
 
 Simple and fast DB utils with no magic methods. It could be used in high load projects even with partitioning and sharding. 
 
@@ -7,13 +6,12 @@ Simple and fast DB utils with no magic methods. It could be used in high load pr
 * Query package — responsible for creating queries from ORM data to specified DB engine. 
 
 
-State
------
+## State
 
 All entities should be extended from RsORM\State\Entity which encapsulates object state data and get/set methods. All actions are going in RsORM\State\Engine.
 Engine has several methods: isNew, isChanged, diff. Diff method returns array of changed fields with values.
 
-Examples:
+### Examples:
 
 ```php
 <?php
@@ -48,10 +46,9 @@ $diff = $engine->diff($project); // []
 
 ```
 
-Query
------
+## Query
 
-Examples:
+### Examples:
 
 ```php
 <?php
@@ -80,7 +77,7 @@ $preparedQuery = $queryEngine->buildPreparedSelectByFilter(Project::table(), $ex
 
 ```
 
-# Expressions
+## Expressions
 
 Logical expressions (RsORM\Query\Engine\MySQL\Expression\*) is a part of the MySQL engine for query builder. Expressions are builded from logical operators and operands. There are 3 types of operands:
 
@@ -104,7 +101,7 @@ Operators:
     * Between
     * In
 
-## Operand examples
+### Operand examples
 
 ```php
 // Column
@@ -128,7 +125,7 @@ $null->prepare(); // NULL
 $null->value(); // null
 ```
 
-## Operator examples
+### Operator examples
 
 ```php
 // Binary operator
