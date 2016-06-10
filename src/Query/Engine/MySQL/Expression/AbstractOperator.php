@@ -35,4 +35,19 @@ abstract class AbstractOperator implements ObjectInterface {
         return $result;
     }
     
+    /**
+     * @return string[]
+     */
+    protected function _prepareOperands() {
+        $result = [];
+        foreach ($this->_operands as $operand) {
+            if ($operand instanceof self) {
+                $result[] = "({$operand->prepare()})";
+            } else {
+                $result[] = $operand->prepare();
+            }
+        }
+        return $result;
+    }
+
 }
