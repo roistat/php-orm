@@ -6,7 +6,7 @@
  * Time: 21:30
  */
 
-namespace RSDBTest;
+namespace RsORMTest;
 
 abstract class Base extends \PHPUnit_Framework_TestCase {
 

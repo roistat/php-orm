@@ -12,12 +12,12 @@
  */
 function testAutoLoad($className) {
     $path = str_replace('\\', '/', $className);
-    if (strpos($className, 'RSDBTest') === 0) {
-        $relativePath = 'tests'. preg_replace('~^RSDBTest/~', '/', $path) . '.php';
+    if (strpos($className, 'RsORMTest') === 0) {
+        $relativePath = 'tests'. preg_replace('~^RsORMTest/~', '/', $path) . '.php';
         require_once __DIR__ . "/../" . $relativePath;
     }
-    if (strpos($className, 'RSDB') === 0) {
-        $relativePath = 'src'. preg_replace('~^RSDB/~', '/', $path) . '.php';
+    if (strpos($className, 'RsORM') === 0) {
+        $relativePath = 'src'. preg_replace('~^RsORM/~', '/', $path) . '.php';
         require_once __DIR__ . "/../" . $relativePath;
     }
 }

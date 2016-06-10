@@ -4,12 +4,12 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RSDBTest\Query\Engine\MySQL\Expression;
+namespace RsORMTest\Query\Engine\MySQL\Expression;
 
-use RSDB\Query\Engine\MySQL\Expression;
-use RSDBTest;
+use RsORM\Query\Engine\MySQL\Expression;
+use RsORMTest;
 
-class ExpressionTest extends RSDBTest\Base {
+class ExpressionTest extends RsORMTest\Base {
     
     public function testColumn() {
         $col = new Expression\Column("id");

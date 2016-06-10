@@ -3,7 +3,7 @@
  * @author Evgeniy Udodov <flr.null@gmail.com>
  */
 
-namespace RSDB\ORM;
+namespace RsORM\State;
 
 class Exception extends \Exception {
 
