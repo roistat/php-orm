@@ -73,13 +73,13 @@ $queryEngine = Query\Engine::mysql();
 $column = new Query\Engine\MySQL\Expression\Column(Project::userId());
 $value = new Query\Engine\MySQL\Expression\Value(123);
 $expression = new Query\Engine\MySQL\Expression\Equal($column, $value);
-$preparedQuery = $queryEngine->buildPreparedSelectByFilter(Project::table(), $expression); // SELECT * FROM `project` WHERE `user_id` = :user_id;
+$preparedQuery = $queryEngine->buildPreparedSelectByFilter(Project::table(), $expression); // SELECT * FROM `project` WHERE `user_id` = ?;
 
 ```
 
 ## Expressions
 
-Logical expressions (RsORM\Query\Engine\MySQL\Expression\*) is a part of the MySQL engine for query builder. Expressions are builded from logical operators and operands. There are 3 types of operands:
+Logical expressions (RsORM\Query\Engine\MySQL\Expression) is a part of the MySQL engine for query builder. Expressions are builded from logical operators and operands. There are 3 types of operands:
 
 * Column
 * Value
