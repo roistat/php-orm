@@ -10,11 +10,11 @@ class In extends AbstractCustomOperator {
     
     /**
      * @param ObjectInterface $operand
-     * @param ObjectInterface[] $list
+     * @param ObjectInterface[] $operands
      */
-    public function __construct(ObjectInterface $operand, array $list) {
-        array_unshift($list, $operand);
-        parent::__construct($list);
+    public function __construct(ObjectInterface $operand, array $operands) {
+        array_unshift($operands, $operand);
+        parent::__construct($operands);
     }
     
     /**
@@ -23,8 +23,8 @@ class In extends AbstractCustomOperator {
     public function prepare() {
         $preparedOperands = $this->_prepareOperands();
         $operand = array_shift($preparedOperands);
-        $list = implode(", ", $preparedOperands);
-        return "{$operand} IN ({$list})";
+        $operands = implode(", ", $preparedOperands);
+        return "{$operand} IN ({$operands})";
     }
     
 }
