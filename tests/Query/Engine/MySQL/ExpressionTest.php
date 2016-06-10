@@ -116,17 +116,17 @@ class ExpressionTest extends RSDBTest\Base {
         $this->assertSame([], $expr->values());
     }
     
-//    public function testBetween() {
-//        $expr = new Expression\Between(new Expression\Column("id"), new Expression\Value(10), new Expression\Value(20));
-//        $this->assertSame("`id` BETWEEN ? AND ?", $expr->prepare());
-//        $this->assertSame([10, 20], $expr->values());
-//    }
-//    
-//    public function testIn() {
-//        $expr = new Expression\In(new Expression\Column("id"), [new Expression\Value(1), new Expression\Value(10), new Expression\Value(100)]);
-//        $this->assertSame("`id` IN (?, ?, ?)", $expr->prepare());
-//        $this->assertSame([1, 10, 100], $expr->values());
-//    }
+    public function testBetween() {
+        $expr = new Expression\Between(new Expression\Column("id"), new Expression\Value(10), new Expression\Value(20));
+        $this->assertSame("`id` BETWEEN ? AND ?", $expr->prepare());
+        $this->assertSame([10, 20], $expr->values());
+    }
+    
+    public function testIn() {
+        $expr = new Expression\In(new Expression\Column("id"), [new Expression\Value(1), new Expression\Value(10), new Expression\Value(100)]);
+        $this->assertSame("`id` IN (?, ?, ?)", $expr->prepare());
+        $this->assertSame([1, 10, 100], $expr->values());
+    }
     
     public function testLogicalNotValues() {
         $expr = new Expression\LogicalNot(new Expression\Value(false));
