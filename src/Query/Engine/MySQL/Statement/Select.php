@@ -26,9 +26,17 @@ class Select {
         $this->_fields = $fields;
         $this->_arguments = [$table, $filter];
     }
+    
+    /**
+     * @return string
+     */
     public function prepare() {
         return "SELECT " . implode(", ", $this->_prepareFields()) . " " . implode(" ", $this->_prepareArguments());
     }
+    
+    /**
+     * @return string[]
+     */
     private function _prepareArguments() {
         $result = [];
         foreach ($this->_arguments as $argument) {
@@ -36,6 +44,10 @@ class Select {
         }
         return $result;
     }
+    
+    /**
+     * @return string[]
+     */
     private function _prepareFields() {
         $result = [];
         foreach ($this->_fields as $field) {
@@ -43,4 +55,22 @@ class Select {
         }
         return $result;
     }
+    
+    
+    /**
+     * @return array
+     */
+    public function values() {
+        $result = [];
+        foreach ($this->_fields as $field) {
+            if ($field->value() !== null) {
+                $result[] = $field->value();
+            }
+        }
+        foreach ($this->_arguments as $argument) {
+            $result = array_merge($result, $argument->values());
+        }
+        return $result;
+    }
+    
 }
