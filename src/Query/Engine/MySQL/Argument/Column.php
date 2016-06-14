@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Argument;
 
-class Column extends AbstractArgument {
+use RsORM\Query\Engine\MySQL;
+
+class Column implements MySQL\SingleValueInterface {
     
     /**
      * @var string

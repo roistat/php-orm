@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Argument;
 
-class Value extends AbstractArgument {
+use RsORM\Query\Engine\MySQL;
+
+class Value implements MySQL\SingleValueInterface {
     
     /**
      * @var int|float|string

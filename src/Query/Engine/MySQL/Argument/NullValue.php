@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Argument;
 
-class NullValue extends AbstractArgument {
+use RsORM\Query\Engine\MySQL;
+
+class NullValue implements MySQL\SingleValueInterface {
     
     /**
      * @return string

@@ -4,12 +4,11 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Engine\MySQL\Clause;
+namespace RsORM\Query\Engine\MySQL\Argument;
 
 use RsORM\Query\Engine\MySQL;
-use RsORM\Query\Engine\MySQL\Argument;
 
-class Field extends AbstractClause {
+class Field implements MySQL\MultiValueInterface {
     
     /**
      * @var MySQL\ExpressionInterface
@@ -34,14 +33,14 @@ class Field extends AbstractClause {
      * @return string
      */
     public function prepare() {
-        return $this->_prepareExpression() . $this->_prepareAlias();
+        return $this->_expression->prepare() . $this->_prepareAlias();
     }
     
     /**
      * @return array
      */
     public function values() {
-        if ($this->_expression instanceof Argument\AbstractArgument) {
+        if ($this->_expression instanceof MySQL\SingleValueInterface) {
             if ($this->_expression->value() === null) {
                 return [];
             } else {
@@ -62,13 +61,5 @@ class Field extends AbstractClause {
             return " AS {$this->_alias}";
         }
     }
-    
-    private function _prepareExpression() {
-        if ($this->_expression instanceof Argument\AbstractArgument) {
-            return $this->_expression->prepare();
-        } else {
-            return "({$this->_expression->prepare()})";
-        }
-    }
-    
+        
 }
