@@ -6,21 +6,16 @@
 
 namespace RsORM\Query\Engine\MySQL\Clause;
 
-class Filter {
-    
-    /**
-     * @param type $condition
-     */
-    public function __construct($condition) {}
+abstract class AbstractClause {
     
     /**
      * @return string
      */
-    public function prepare() {}
+    abstract public function prepare();
     
     /**
      * @return array
      */
-    public function values() {}
+    abstract public function values();
     
 }
