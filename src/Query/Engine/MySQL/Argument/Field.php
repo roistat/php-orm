@@ -7,6 +7,7 @@
 namespace RsORM\Query\Engine\MySQL\Argument;
 
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Exception;
 
 class Field implements MySQL\MultiValueInterface {
     
@@ -46,8 +47,10 @@ class Field implements MySQL\MultiValueInterface {
             } else {
                 return [$this->_expression->value()];
             }
-        } else {
+        } elseif($this->_expression instanceof MySQL\MultiValueInterface) {
             return $this->_expression->values();
+        } else {
+            throw new Exception\WrongExpressionType(get_class($this->_expression));
         }
     }
     
