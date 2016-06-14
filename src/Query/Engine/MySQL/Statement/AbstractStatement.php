@@ -6,22 +6,23 @@
 
 namespace RsORM\Query\Engine\MySQL\Statement;
 
+use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Clause;
 
-abstract class AbstractStatement {
+abstract class AbstractStatement implements MySQL\ExpressionInterface {
     
     /**
      * @var Clause\AbstractClause[]
      */
-    protected $_clauses = [];
+    private $_clauses = [];
     
     /**
      * @return string
      */
-    abstract protected function _name();
+    abstract protected function _statementOperator();
     
     /**
-     * @param Clause\AbstractClause $clauses
+     * @param Clause\AbstractClause[] $clauses
      */
     public function __construct(array $clauses) {
         $this->_clauses = $clauses;
@@ -31,7 +32,7 @@ abstract class AbstractStatement {
      * @return string
      */
     public function prepare() {
-        return $this->_name() . " " . implode(" ", $this->_prepareClauses());
+        return $this->_statementOperator() . " " . implode(" ", $this->_prepareClauses());
     }
     
     /**
@@ -48,7 +49,7 @@ abstract class AbstractStatement {
     /**
      * @return string[]
      */
-    protected function _prepareClauses() {
+    private function _prepareClauses() {
         $result = [];
         foreach ($this->_clauses as $clause) {
             $result[] = $clause->prepare();

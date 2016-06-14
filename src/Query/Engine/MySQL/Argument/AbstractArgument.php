@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Argument;
 
-abstract class AbstractArgument {
+use RsORM\Query\Engine\MySQL;
+
+abstract class AbstractArgument implements MySQL\ExpressionInterface {
     
     /**
      * @return string
@@ -14,7 +16,7 @@ abstract class AbstractArgument {
     public function prepare();
     
     /**
-     * @return array
+     * @return int|float|string
      */
     public function value();
     

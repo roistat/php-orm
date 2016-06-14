@@ -22,7 +22,7 @@ class Select extends AbstractStatement {
     /**
      * @return string
      */
-    protected function _name() {
+    protected function _statementOperator() {
         return "SELECT";
     }
     

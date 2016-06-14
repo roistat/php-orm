@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Clause;
 
-abstract class AbstractClause {
+use RsORM\Query\Engine\MySQL;
+
+abstract class AbstractClause implements MySQL\ExpressionInterface {
     
     /**
      * @return string
