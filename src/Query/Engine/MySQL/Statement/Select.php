@@ -15,23 +15,20 @@ class Select {
      */
     private $_arguments = [];
     
-    private $_fields = [];
-    
     /**
-     * @param array $fields
+     * @param Clause\Fields $fields
      * @param Clause\Table $table
      * @param Clause\Filter $filter
      */
-    public function __construct(array $fields, Clause\Table $table = null, Clause\Filter $filter = null) {
-        $this->_fields = $fields;
-        $this->_arguments = [$table, $filter];
+    public function __construct(Clause\Fields $fields, Clause\Table $table = null, Clause\Filter $filter = null) {
+        $this->_arguments = [$fields, $table, $filter];
     }
     
     /**
      * @return string
      */
     public function prepare() {
-        return "SELECT " . implode(", ", $this->_prepareFields()) . " " . implode(" ", $this->_prepareArguments());
+        return "SELECT " . implode(" ", $this->_prepareArguments());
     }
     
     /**
@@ -44,18 +41,6 @@ class Select {
         }
         return $result;
     }
-    
-    /**
-     * @return string[]
-     */
-    private function _prepareFields() {
-        $result = [];
-        foreach ($this->_fields as $field) {
-            $result[] = $field->prepare();
-        }
-        return $result;
-    }
-    
     
     /**
      * @return array

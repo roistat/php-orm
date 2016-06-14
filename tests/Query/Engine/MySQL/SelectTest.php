@@ -15,7 +15,10 @@ use RsORMTest;
 class SelectTest extends RsORMTest\Base {
 
     public function test() {
-        $fields = [new Argument\Field(new Argument\Column("id")), new Argument\Field(new Argument\Column("name"))];
+        $fields = new Clause\Fields([
+            new Argument\Field(new Argument\Column("id")),
+            new Argument\Field(new Argument\Column("name")),
+        ]);
         $table = new Clause\Table("table");
         $filter = new Clause\Filter("condition");
         $stmt = new Statement\Select($fields, $table, $filter);
