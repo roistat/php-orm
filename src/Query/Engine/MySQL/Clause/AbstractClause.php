@@ -11,11 +11,6 @@ use RsORM\Query\Engine\MySQL;
 abstract class AbstractClause implements MySQL\ExpressionInterface {
     
     /**
-     * @return string
-     */
-    abstract public function prepare();
-    
-    /**
      * @return array
      */
     abstract public function values();
