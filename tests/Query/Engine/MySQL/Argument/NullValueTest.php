@@ -14,7 +14,6 @@ class NullValueTest extends RsORMTest\Base {
     public function test() {
         $value = new Argument\NullValue();
         $this->assertSame("NULL", $value->prepare());
-        $this->assertSame(null, $value->value());
     }
     
 }

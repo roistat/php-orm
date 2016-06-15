@@ -12,10 +12,10 @@ class Select extends AbstractStatement {
     
     /**
      * @param Clause\Fields $fields
-     * @param Clause\Table $table
+     * @param Clause\From $table
      * @param Clause\Filter $filter
      */
-    public function __construct(Clause\Fields $fields, Clause\Table $table = null, Clause\Filter $filter = null) {
+    public function __construct(Clause\Fields $fields, Clause\From $table = null, Clause\Filter $filter = null) {
         parent::__construct([$fields, $table, $filter]);
     }
     

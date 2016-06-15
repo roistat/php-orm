@@ -17,15 +17,15 @@ class Field implements MySQL\MultiValueInterface {
     private $_expression;
     
     /**
-     * @var string
+     * @var Alias
      */
     private $_alias;
     
     /**
      * @param MySQL\ExpressionInterface $expression
-     * @param string $alias
+     * @param Alias $alias
      */
-    public function __construct(MySQL\ExpressionInterface $expression, $alias = null) {
+    public function __construct(MySQL\ExpressionInterface $expression, Alias $alias = null) {
         $this->_expression = $expression;
         $this->_alias = $alias;
     }
@@ -34,7 +34,11 @@ class Field implements MySQL\MultiValueInterface {
      * @return string
      */
     public function prepare() {
-        return $this->_expression->prepare() . $this->_prepareAlias();
+        if ($this->_alias === null) {
+            return $this->_expression->prepare();
+        } else {
+            return $this->_expression->prepare() . " AS " . $this->_alias->prepare();
+        }
     }
     
     /**
@@ -42,27 +46,12 @@ class Field implements MySQL\MultiValueInterface {
      */
     public function values() {
         if ($this->_expression instanceof MySQL\SingleValueInterface) {
-            if ($this->_expression->value() === null) {
-                return [];
-            } else {
-                return [$this->_expression->value()];
-            }
-        } elseif($this->_expression instanceof MySQL\MultiValueInterface) {
-            return $this->_expression->values();
-        } else {
-            throw new Exception\WrongExpressionType(get_class($this->_expression));
+            return [$this->_expression->value()];
         }
+        if ($this->_expression instanceof MySQL\MultiValueInterface) {
+            return $this->_expression->values();
+        }
+        return [];
     }
     
-    /**
-     * @return string
-     */
-    private function _prepareAlias() {
-        if (empty($this->_alias)) {
-            return "";
-        } else {
-            return " AS {$this->_alias}";
-        }
-    }
-        
 }

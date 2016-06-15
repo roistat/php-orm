@@ -25,7 +25,11 @@ abstract class AbstractStatement implements MySQL\ExpressionInterface {
      * @param Clause\AbstractClause[] $clauses
      */
     public function __construct(array $clauses) {
-        $this->_clauses = $clauses;
+        foreach ($clauses as $clause) {
+            if ($clause !== null) {
+                $this->_clauses[] = $clause;
+            }
+        }
     }
     
     /**
