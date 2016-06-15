@@ -11,7 +11,7 @@ use RsORM\Query\Engine\MySQL;
 class Group extends AbstractClause {
     
     /**
-     * @param MySQL\AbstractIdentifier[] $arguments
+     * @param MySQL\ExpressionInterface[] $arguments
      */
     public function __construct(array $arguments) {
         parent::__construct($arguments);

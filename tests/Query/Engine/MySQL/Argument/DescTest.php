@@ -12,7 +12,7 @@ use RsORM\Query\Engine\MySQL\Argument;
 class DescTest extends RsORMTest\Base {
 
     public function test() {
-        $arg = new Argument\Desc("id");
+        $arg = new Argument\Desc(new Argument\Column("id"));
         $this->assertSame("`id` DESC", $arg->prepare());
     }
     

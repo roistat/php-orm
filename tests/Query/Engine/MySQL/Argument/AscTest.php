@@ -12,7 +12,7 @@ use RsORM\Query\Engine\MySQL\Argument;
 class AscTest extends RsORMTest\Base {
 
     public function test() {
-        $arg = new Argument\Asc("id");
+        $arg = new Argument\Asc(new Argument\Column("id"));
         $this->assertSame("`id` ASC", $arg->prepare());
     }
     
