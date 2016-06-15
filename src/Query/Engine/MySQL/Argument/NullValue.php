@@ -8,17 +8,13 @@ namespace RsORM\Query\Engine\MySQL\Argument;
 
 use RsORM\Query\Engine\MySQL;
 
-class NullValue implements MySQL\SingleValueInterface {
+class NullValue implements MySQL\ExpressionInterface {
     
     /**
      * @return string
      */
     public function prepare() {
         return "NULL";
-    }
-    
-    public function value() {
-        return null;
     }
     
 }

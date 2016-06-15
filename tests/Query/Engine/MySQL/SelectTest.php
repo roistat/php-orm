@@ -19,12 +19,12 @@ class SelectTest extends RsORMTest\Base {
             new Argument\Field(new Argument\Column("id")),
             new Argument\Field(new Argument\Column("name")),
         ]);
-        $table = new Clause\Table("table");
-        $filter = new Clause\Filter(new Expression\LogicalOr([
-            new Expression\Equal(new Argument\Column("id"), new Argument\Value(10)),
-            new Expression\Equal(new Argument\Column("id"), new Argument\Value(20)),
-        ]));
-        $stmt = new Statement\Select($fields, $table, $filter);
+        $table = new Clause\From(new Argument\Table("table"));
+//        $filter = new Clause\Filter(new Expression\LogicalOr([
+//            new Expression\Equal(new Argument\Column("id"), new Argument\Value(10)),
+//            new Expression\Equal(new Argument\Column("id"), new Argument\Value(20)),
+//        ]));
+        $stmt = new Statement\Select($fields, $table);
         $this->assertSame("SELECT `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?)", $stmt->prepare());
         $this->assertSame([10, 20], $stmt->values());
     }

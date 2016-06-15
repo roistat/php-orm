@@ -8,6 +8,6 @@ namespace RsORM\Query\Engine\MySQL\Argument;
 
 use RsORM\Query\Engine\MySQL;
 
-class Column extends MySQL\AbstractIdentifier {
+class Table extends MySQL\AbstractIdentifier {
     
 }
