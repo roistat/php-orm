@@ -6,13 +6,15 @@
 
 namespace RsORM\Query\Engine\MySQL\Expression;
 
+use RsORM\Query\Engine\MySQL;
+
 abstract class AbstractBinaryOperator extends AbstractSimpleOperator {
     
     /**
-     * @param ObjectInterface $operand1
-     * @param ObjectInterface $operand2
+     * @param MySQL\ExpressionInterface $operand1
+     * @param MySQL\ExpressionInterface $operand2
      */
-    public function __construct(ObjectInterface $operand1, ObjectInterface $operand2) {
+    public function __construct(MySQL\ExpressionInterface $operand1, MySQL\ExpressionInterface $operand2) {
         parent::__construct([$operand1, $operand2]);
     }
     
@@ -20,8 +22,8 @@ abstract class AbstractBinaryOperator extends AbstractSimpleOperator {
      * @return string
      */
     public function prepare() {
-        $preparedOperands = $this->_prepareOperands();
-        return "{$preparedOperands[0]} {$this->_prepareOperator()} {$preparedOperands[1]}";
+        $preparedArguments = $this->_prepareArguments();
+        return "{$preparedArguments[0]} {$this->_prepareOperator()} {$preparedArguments[1]}";
     }
     
 }

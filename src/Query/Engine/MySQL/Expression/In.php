@@ -6,13 +6,15 @@
 
 namespace RsORM\Query\Engine\MySQL\Expression;
 
+use RsORM\Query\Engine\MySQL;
+
 class In extends AbstractCustomOperator {
     
     /**
-     * @param ObjectInterface $operand
-     * @param ObjectInterface[] $operands
+     * @param MySQL\ExpressionInterface $operand
+     * @param MySQL\ExpressionInterface[] $operands
      */
-    public function __construct(ObjectInterface $operand, array $operands) {
+    public function __construct(MySQL\ExpressionInterface $operand, array $operands) {
         array_unshift($operands, $operand);
         parent::__construct($operands);
     }
@@ -21,9 +23,9 @@ class In extends AbstractCustomOperator {
      * @return string
      */
     public function prepare() {
-        $preparedOperands = $this->_prepareOperands();
-        $operand = array_shift($preparedOperands);
-        $operands = implode(", ", $preparedOperands);
+        $preparedArguments = $this->_prepareArguments();
+        $operand = array_shift($preparedArguments);
+        $operands = implode(", ", $preparedArguments);
         return "{$operand} IN ({$operands})";
     }
     

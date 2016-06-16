@@ -6,8 +6,6 @@
 
 namespace RsORM\Query\Engine\MySQL\Clause;
 
-use RsORM\Query\Engine\MySQL;
-
 class Order extends AbstractClause {
     
     /**

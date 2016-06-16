@@ -6,13 +6,15 @@
 
 namespace RsORM\Query\Engine\MySQL\Expression;
 
+use RsORM\Query\Engine\MySQL;
+
 class IsNotNull extends IsNot {
     
     /**
-     * @param ObjectInterface $operand
+     * @param MySQL\ExpressionInterface $operand
      */
-    public function __construct(ObjectInterface $operand) {
-        parent::__construct($operand, new NullValue());
+    public function __construct(MySQL\ExpressionInterface $operand) {
+        parent::__construct($operand, new MySQL\Argument\NullValue());
     }
     
 }
