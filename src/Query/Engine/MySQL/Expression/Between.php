@@ -23,8 +23,8 @@ class Between extends AbstractCustomOperator {
      * @return string
      */
     public function prepare() {
-        $preparedArguments = $this->_prepareArguments();
-        return "{$preparedArguments[0]} BETWEEN {$preparedArguments[1]} AND {$preparedArguments[2]}";
+        $preparedOperands = $this->_prepareOperands();
+        return "{$preparedOperands[0]} BETWEEN {$preparedOperands[1]} AND {$preparedOperands[2]}";
     }
     
 }

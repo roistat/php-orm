@@ -12,7 +12,7 @@ abstract class AbstractMultipleOperator extends AbstractSimpleOperator {
      * @return string
      */
     public function prepare() {
-        return implode(" {$this->_prepareOperator()} ", $this->_prepareArguments());
+        return implode(" {$this->_prepareOperator()} ", $this->_prepareOperands());
     }
     
 }

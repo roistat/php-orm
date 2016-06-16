@@ -11,7 +11,7 @@ abstract class AbstractExpression implements MultiValueInterface {
     /**
      * @var ExpressionInterface[]
      */
-    private $_arguments = [];
+    protected $_arguments = [];
     
     /**
      * @param ExpressionInterface[] $arguments
@@ -46,11 +46,7 @@ abstract class AbstractExpression implements MultiValueInterface {
     protected function _prepareArguments() {
         $result = [];
         foreach ($this->_arguments as $argument) {
-            if ($this instanceof Expression\AbstractOperator && $argument instanceof Expression\AbstractOperator) {
-                $result[] = "({$argument->prepare()})";
-            } else {
-                $result[] = $argument->prepare();
-            }
+            $result[] = $argument->prepare();
         }
         return $result;
     }

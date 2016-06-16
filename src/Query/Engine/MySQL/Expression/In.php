@@ -23,9 +23,9 @@ class In extends AbstractCustomOperator {
      * @return string
      */
     public function prepare() {
-        $preparedArguments = $this->_prepareArguments();
-        $operand = array_shift($preparedArguments);
-        $operands = implode(", ", $preparedArguments);
+        $preparedOperands = $this->_prepareOperands();
+        $operand = array_shift($preparedOperands);
+        $operands = implode(", ", $preparedOperands);
         return "{$operand} IN ({$operands})";
     }
     
