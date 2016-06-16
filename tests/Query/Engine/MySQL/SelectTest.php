@@ -20,13 +20,17 @@ class SelectTest extends RsORMTest\Base {
             new Argument\Field(new Argument\Column("name")),
         ]);
         $table = new Clause\From(new Argument\Table("table"));
-//        $filter = new Clause\Filter(new Expression\LogicalOr([
-//            new Expression\Equal(new Argument\Column("id"), new Argument\Value(10)),
-//            new Expression\Equal(new Argument\Column("id"), new Argument\Value(20)),
-//        ]));
-        $stmt = new Statement\Select($fields, $table);
-        $this->assertSame("SELECT `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?)", $stmt->prepare());
-        $this->assertSame([10, 20], $stmt->values());
+        $filter = new Clause\Filter(new Expression\LogicalOr([
+            new Expression\Equal(new Argument\Column("id"), new Argument\Value(10)),
+            new Expression\Equal(new Argument\Column("id"), new Argument\Value(20)),
+        ]));
+        $group = new Clause\Group([new Argument\Column("id")]);
+        $having = new Clause\Having(new Expression\Equal(new Argument\Column("alive"), new Argument\Value(true)));
+        $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
+        $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
+        $stmt = new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit);
+        $this->assertSame("SELECT `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame([10, 20, 1, 5, 10], $stmt->values());
     }
     
 }
