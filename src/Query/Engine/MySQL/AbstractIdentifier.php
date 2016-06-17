@@ -6,7 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL;
 
-class AbstractIdentifier implements ExpressionInterface {
+class AbstractIdentifier implements ObjectInterface {
     
     /**
      * @var string

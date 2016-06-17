@@ -8,7 +8,7 @@ namespace RsORM\Query\Engine\MySQL\Argument;
 
 use RsORM\Query\Engine\MySQL;
 
-class NullValue implements MySQL\ExpressionInterface {
+class NullValue implements MySQL\ObjectInterface {
     
     /**
      * @return string

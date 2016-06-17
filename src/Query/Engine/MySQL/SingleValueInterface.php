@@ -6,7 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL;
 
-interface SingleValueInterface extends ExpressionInterface {
+interface SingleValueInterface extends ObjectInterface {
     
     /**
      * int|float|string

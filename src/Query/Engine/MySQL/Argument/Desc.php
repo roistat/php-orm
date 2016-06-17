@@ -8,7 +8,7 @@ namespace RsORM\Query\Engine\MySQL\Argument;
 
 use RsORM\Query\Engine\MySQL;
 
-class Desc implements MySQL\ExpressionInterface {
+class Desc implements MySQL\ObjectInterface {
     
     /**
      * @var MySQL\AbstractIdentifier

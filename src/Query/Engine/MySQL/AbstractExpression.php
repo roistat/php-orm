@@ -9,12 +9,12 @@ namespace RsORM\Query\Engine\MySQL;
 abstract class AbstractExpression implements MultiValueInterface {
     
     /**
-     * @var ExpressionInterface[]
+     * @var ObjectInterface[]
      */
     protected $_arguments = [];
     
     /**
-     * @param ExpressionInterface[] $arguments
+     * @param ObjectInterface[] $arguments
      */
     public function __construct(array $arguments) {
         foreach ($arguments as $argument) {
