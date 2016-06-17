@@ -70,20 +70,16 @@ class Project extends State\Entity {
 $queryEngine = Query\Engine::mysql();
 
 // Load project by user_id
-$column = new Query\Engine\MySQL\Expression\Column(Project::userId());
-$value = new Query\Engine\MySQL\Expression\Value(123);
-$filter = new Query\Engine\MySQL\Expression\Equal($column, $value);
+$column = new Query\Engine\MySQL\Argument\Column(Project::userId());
+$value = new Query\Engine\MySQL\Argument\Value(123);
+$filter = new Query\Engine\MySQL\Condition\Equal($column, $value);
 $preparedQuery = $queryEngine->buildPreparedSelectByFilter(Project::table(), $filter); // SELECT * FROM `project` WHERE `user_id` = ?;
 
 ```
 
-## Expressions
+## Condition
 
-Logical expressions (RsORM\Query\Engine\MySQL\Expression) is a part of the MySQL engine for query builder. Expressions are builded from logical operators and operands. There are 3 types of operands:
-
-* Column
-* Value
-* NullValue
+Logical expressions (RsORM\Query\Engine\MySQL\Condition) is a part of the MySQL engine for query builder. Conditions are builded from logical operators and arguments.
 
 Operators:
 
@@ -101,56 +97,54 @@ Operators:
     * Between
     * In
 
-### Operand examples
+### Argument examples
 
 ```php
 // Column
-$col = new Expression\Column("id");
+$col = new Argument\Column("id");
 $col->prepare(); // `id`
-$col->value(); // null
 
 // Value
-$val = new Expression\Value(123);
+$val = new Argument\Value(123);
 $val->prepare(); // ?
 $val->value(); // 123
 
 // Boolean value
-$val = new Expression\Value(true);
+$val = new Argument\Value(true);
 $val->prepare(); // ?
 $val->value(); // 1
 
 // NullValue
-$null = new Expression\NullValue();
+$null = new Argument\NullValue();
 $null->prepare(); // NULL
-$null->value(); // null
 ```
 
 ### Operator examples
 
 ```php
 // Binary operator
-$expr = new Expression\Equal(new Expression\Column("id"), new Expression\Value(123));
+$expr = new Condition\Equal(new Argument\Column("id"), new Argument\Value(123));
 $expr->prepare(); // `id` = ?
 $expr->values(); // [123]
 
 // Unary operator
-$expr = new Expression\Equal(new Expression\Column("id"), new Expression\Value(123));
-$expr2 = new Expression\Not($expr);
+$expr = new Condition\Equal(new Argument\Column("id"), new Argument\Value(123));
+$expr2 = new Condition\Not($expr);
 $expr2->prepare(); // NOT (`id` = ?)
 $expr2->values(); // [123]
 
 // Multiple operator
-$expr = new Expression\LogicalAnd([new Expression\Value(1), new Expression\Value(2), new Expression\Value(3)]);
+$expr = new Condition\LogicalAnd([new Argument\Value(1), new Argument\Value(2), new Argument\Value(3)]);
 $expr->prepare(); // ? AND ? AND ?
 $expr->values(); // [1, 2, 3]
 
 // Between operator
-$expr = new Expression\Between(new Expression\Column("id"), new Expression\Value(10), new Expression\Value(20));
+$expr = new Condition\Between(new Argument\Column("id"), new Argument\Value(10), new Argument\Value(20));
 $expr->prepare(); // `id` BETWEEN ? AND ?
 $expr->values(); // [10, 20]
 
 // In operator
-$expr = new Expression\In(new Expression\Column("id"), [new Expression\Value(1), new Expression\Value(10), new Expression\Value(100)]);
+$expr = new Condition\In(new Argument\Column("id"), [new Argument\Value(1), new Argument\Value(10), new Argument\Value(100)]);
 $expr->prepare(); // `id` IN (?, ?, ?)
 $expr->values(); // [1, 10, 100]
 ```

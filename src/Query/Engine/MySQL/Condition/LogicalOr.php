@@ -4,15 +4,15 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Engine\MySQL\Expression;
+namespace RsORM\Query\Engine\MySQL\Condition;
 
-class Lte extends AbstractBinaryOperator {
+class LogicalOr extends AbstractMultipleOperator {
     
     /**
      * @return string
      */
     protected function _operator() {
-        return "<=";
+        return "OR";
     }
     
 }
