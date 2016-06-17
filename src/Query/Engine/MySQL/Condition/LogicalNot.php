@@ -4,15 +4,15 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Engine\MySQL\Expression;
+namespace RsORM\Query\Engine\MySQL\Condition;
 
-class NotEqual extends AbstractBinaryOperator {
+class LogicalNot extends AbstractUnaryOperator {
     
     /**
      * @return string
      */
     protected function _operator() {
-        return "!=";
+        return "NOT";
     }
     
 }

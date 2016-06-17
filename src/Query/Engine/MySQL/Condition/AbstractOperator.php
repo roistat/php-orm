@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Engine\MySQL\Expression;
+namespace RsORM\Query\Engine\MySQL\Condition;
 
 use RsORM\Query\Engine\MySQL;
 
