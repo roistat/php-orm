@@ -6,13 +6,15 @@
 
 namespace RsORM\Query\Engine\MySQL\Expression;
 
+use RsORM\Query\Engine\MySQL;
+
 class In extends AbstractCustomOperator {
     
     /**
-     * @param ObjectInterface $operand
-     * @param ObjectInterface[] $operands
+     * @param MySQL\ObjectInterface $operand
+     * @param MySQL\ObjectInterface[] $operands
      */
-    public function __construct(ObjectInterface $operand, array $operands) {
+    public function __construct(MySQL\ObjectInterface $operand, array $operands) {
         array_unshift($operands, $operand);
         parent::__construct($operands);
     }

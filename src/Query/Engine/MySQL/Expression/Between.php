@@ -6,14 +6,16 @@
 
 namespace RsORM\Query\Engine\MySQL\Expression;
 
+use RsORM\Query\Engine\MySQL;
+
 class Between extends AbstractCustomOperator {
     
     /**
-     * @param ObjectInterface $operand
-     * @param ObjectInterface $min
-     * @param ObjectInterface $max
+     * @param MySQL\ObjectInterface $operand
+     * @param MySQL\ObjectInterface $min
+     * @param MySQL\ObjectInterface $max
      */
-    public function __construct(ObjectInterface $operand, ObjectInterface $min, ObjectInterface $max) {
+    public function __construct(MySQL\ObjectInterface $operand, MySQL\ObjectInterface $min, MySQL\ObjectInterface $max) {
         parent::__construct([$operand, $min, $max]);
     }
     
