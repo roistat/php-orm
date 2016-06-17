@@ -7,11 +7,12 @@
 namespace RsORM\Query\Engine\MySQL\Clause;
 
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Condition;
 
-class Values extends AbstractClause {
+class Set extends AbstractClause {
     
     /**
-     * @param MySQL\ObjectInterface[] $values
+     * @param Condition\Equal[] $values
      */
     public function __construct(array $values) {
         parent::__construct($values);
@@ -21,7 +22,7 @@ class Values extends AbstractClause {
      * @return string
      */
     public function prepare() {
-        return "VALUES (" . implode(", ", $this->_prepareArguments()) . ")";
+        return "SET " . implode(", ", $this->_prepareArguments());
     }
     
 }

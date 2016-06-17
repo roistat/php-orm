@@ -15,7 +15,7 @@ class Insert extends AbstractStatement {
      * @param Clause\Fields $fields
      * @param Clause\Values $values
      */
-    public function __construct(Clause\Into $table, Clause\Values $values, Clause\Fields $fields = null) {
+    public function __construct(Clause\Into $table, Clause\Values $values, Clause\InsertFields $fields = null) {
         parent::__construct([$table, $fields, $values]);
     }
     
