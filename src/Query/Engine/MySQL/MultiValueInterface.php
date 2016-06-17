@@ -6,7 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL;
 
-interface MultiValueInterface extends ExpressionInterface {
+interface MultiValueInterface extends ObjectInterface {
     
     /**
      * array

@@ -11,9 +11,9 @@ use RsORM\Query\Engine\MySQL;
 class Filter extends AbstractClause {
     
     /**
-     * @param MySQL\ExpressionInterface $condition
+     * @param MySQL\ObjectInterface $condition
      */
-    public function __construct(MySQL\ExpressionInterface $condition) {
+    public function __construct(MySQL\ObjectInterface $condition) {
         parent::__construct([$condition]);
     }
     

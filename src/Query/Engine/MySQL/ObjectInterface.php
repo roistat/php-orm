@@ -6,7 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL;
 
-interface ExpressionInterface {
+interface ObjectInterface {
     
     /**
      * @return string
