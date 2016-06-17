@@ -11,7 +11,7 @@ use RsORM\Query\Engine\MySQL;
 class Values extends AbstractClause {
     
     /**
-     * @param MySQL\ExpressionInterface[] $values
+     * @param MySQL\ObjectInterface[] $values
      */
     public function __construct(array $values) {
         parent::__construct($values);
