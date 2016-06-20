@@ -20,7 +20,7 @@ class MySQL {
      * @param Clause\Limit $limit
      * @return Statement\Select
      */
-    public function prepareSelect(Clause\Fields $fields, Clause\From $table = null, Clause\Filter $filter = null, Clause\Group $group = null, Clause\Having $having = null, Clause\Order $order = null, Clause\Limit $limit = null) {
+    public function select(Clause\Fields $fields, Clause\From $table = null, Clause\Filter $filter = null, Clause\Group $group = null, Clause\Having $having = null, Clause\Order $order = null, Clause\Limit $limit = null) {
         return new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit);
     }
     
@@ -31,7 +31,7 @@ class MySQL {
      * @param Clause\Limit $limit
      * @return Statement\Delete
      */
-    public function prepareDelete(Clause\From $table, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null) {
+    public function delete(Clause\From $table, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null) {
         return new Statement\Delete($table, $filter, $order, $limit);
     }
     
@@ -41,7 +41,7 @@ class MySQL {
      * @param Clause\Fields $fields
      * @return Statement\Insert
      */
-    public function prepareInsert(Clause\Into $table, Clause\Values $values, Clause\Fields $fields = null) {
+    public function insert(Clause\Into $table, Clause\Values $values, Clause\Fields $fields = null) {
         return new Statement\Insert($table, $values, $fields);
     }
     
@@ -53,7 +53,7 @@ class MySQL {
      * @param Clause\Limit $limit
      * @return Statement\Update
      */
-    public function prepareUpdate(Clause\Target $table, Clause\Set $set, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null) {
+    public function update(Clause\Target $table, Clause\Set $set, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null) {
         return new Statement\Update($table, $set, $filter, $order, $limit);
     }
     
