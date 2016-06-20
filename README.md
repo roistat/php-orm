@@ -70,14 +70,108 @@ class Project extends State\Entity {
 $queryEngine = Query\Engine::mysql();
 
 // Load project by user_id
-$column = new Query\Engine\MySQL\Argument\Column(Project::userId());
-$value = new Query\Engine\MySQL\Argument\Value(123);
-$filter = new Query\Engine\MySQL\Condition\Equal($column, $value);
-$preparedQuery = $queryEngine->buildPreparedSelectByFilter(Project::table(), $filter); // SELECT * FROM `project` WHERE `user_id` = ?;
+$fields = new Clause\Fields([
+	new Argument\Field(new Argument\Column(Project::userId())),
+	new Argument\Field(new Argument\Column(Project::name()))
+]);
+$table = new Clause\From(new Argument\Table("project"));
+$filter = new Clause\Filter(new Condition\Equal(new Argument\Column(Project::userId()), new Argument\Value(123)));
+$preparedQuery = $queryEngine->select($fields, $table, $filter);
+$preparedQuery->prepare(); // SELECT `user_id`, `name` FROM `project` WHERE `user_id` = ?;
+$preparedQuery->values(); [123]
 
 ```
 
-## Condition
+## Query\Engine
+
+Engine builds SQL statements by using MySQL class.
+
+**Initialize engine object**
+
+```php
+$engine = new Query\Engine();
+```
+
+## Engine\MySQL
+
+MySQL driver builds valid MySQL statements.
+
+```php
+$fields = new Clause\Fields([
+	new Argument\Field(new Argument\Column("id")),
+	new Argument\Field(new Argument\Column("name")),
+	new Argument\Field(new Argument\Column("password")),
+]);
+$table = new Clause\From(new Argument\Table("users"));
+$filter = new Clause\Filter(new Condition\Equal(
+	new Argument\Column("deleted"),
+	new Argument\Value(0)
+));
+$stmt = $engine->mysql()->select($fields, $table, $filter);
+$stmt->prepare(); // SELECT `id`, `name`, `password` FROM `table` WHERE `deleted` = ?
+$stmt->values(); // [0]
+```
+
+## MySQL\Statement
+
+ - Select
+	 - Fields
+	 - From
+	 - Filter
+	 - Group
+	 - Having
+	 - Order
+	 - Limit
+ - Insert
+ - Update
+ - Delete
+
+## MySQL\Argument
+
+Argument is a basic entity of MySQL statement. There are several types of them:
+
+- *Value* build value object in SQL-statement, as ?placeholder
+- *NullValue* build NULL object in SQL-statement
+- *Table* build object of table
+- *Column* build object of column
+- *Alias* build object of alias for table or column objects
+- *Field* is a complex object, build field object from column and alias (the last parameter is optional)
+- *Asc* is a complex object, build argument for sorting object
+- *Desc* is a complex object, build argument for sorting object
+
+### Examples
+
+```php
+// Value
+$arg = new Argument\Value(123);
+$arg->prepare(); // ?
+$arg->value(); // 123
+
+// NullValue
+$arg = new Argument\NullValue();
+$arg->prepare(); // NULL
+
+// Column
+$arg = new Argument\Column("id");
+$arg->prepare(); // `id`
+
+// Table and alias are same
+
+// Asc and Desc
+$arg = new Argument\Asc(new Argument\Column("id"));
+$arg->prepare(); // `id` ASC
+$arg = new Argument\Desc(new Argument\Column("id"));
+$arg->prepare(); // `id` DESC
+
+// Field
+$arg = new Argument\Field(
+	new Argument\Column("pass"),
+	new Argument\Alias("password") // optional
+);
+$arg->prepare(); // `pass` AS `password`
+```
+
+## MySQL\Condition
 
 Logical expressions (RsORM\Query\Engine\MySQL\Condition) is a part of the MySQL engine for query builder. Conditions are builded from logical operators and arguments.
 
@@ -96,28 +190,6 @@ Operators:
 * Custom operators
     * Between
     * In
-
-### Argument examples
-
-```php
-// Column
-$col = new Argument\Column("id");
-$col->prepare(); // `id`
-
-// Value
-$val = new Argument\Value(123);
-$val->prepare(); // ?
-$val->value(); // 123
-
-// Boolean value
-$val = new Argument\Value(true);
-$val->prepare(); // ?
-$val->value(); // 1
-
-// NullValue
-$null = new Argument\NullValue();
-$null->prepare(); // NULL
-```
 
 ### Operator examples
 
