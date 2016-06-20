@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Condition;
 
-class NotEqual extends AbstractBinaryOperator {
+use RsORM\Query\Engine\MySQL\Operator;
+
+class NotEqual extends Operator\AbstractBinaryOperator {
     
     /**
      * @return string
