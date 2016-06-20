@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Condition;
 
-class Lt extends AbstractBinaryOperator {
+use RsORM\Query\Engine\MySQL\Operator;
+
+class Lt extends Operator\AbstractBinaryOperator {
     
     /**
      * @return string

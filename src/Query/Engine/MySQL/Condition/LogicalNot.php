@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Condition;
 
-class LogicalNot extends AbstractUnaryOperator {
+use RsORM\Query\Engine\MySQL\Operator;
+
+class LogicalNot extends Operator\AbstractUnaryOperator {
     
     /**
      * @return string

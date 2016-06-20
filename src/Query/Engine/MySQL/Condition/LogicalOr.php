@@ -6,7 +6,9 @@
 
 namespace RsORM\Query\Engine\MySQL\Condition;
 
-class LogicalOr extends AbstractMultipleOperator {
+use RsORM\Query\Engine\MySQL\Operator;
+
+class LogicalOr extends Operator\AbstractMultipleOperator {
     
     /**
      * @return string

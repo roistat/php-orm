@@ -7,8 +7,9 @@
 namespace RsORM\Query\Engine\MySQL\Condition;
 
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Operator;
 
-class Between extends AbstractCustomOperator {
+class Between extends Operator\AbstractCustomOperator {
     
     /**
      * @param MySQL\ObjectInterface $operand
