@@ -4,10 +4,10 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace Driver;
+namespace RsORM\Driver;
 
 use RsORM\Query\Engine\MySQL\Statement;
-use Driver\Exception\DB\Connection;
+use RsORM\Driver\Exception\DB\Connection;
 
 class Driver {
     
