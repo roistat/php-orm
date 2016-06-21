@@ -9,7 +9,7 @@ namespace RsORM\Driver;
 use RsORM\Query\Engine\MySQL\Statement;
 use RsORM\Driver\Exception\DB\Connection;
 
-class Driver {
+class MySQL {
     
     const UTF8 = "utf8";
     
