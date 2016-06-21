@@ -4,12 +4,12 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace PDOChainer;
+namespace Driver;
 
 use RsORM\Query\Engine\MySQL\Statement;
-use PDOChainer\Exception;
+use Driver\Exception\DB\Connection;
 
-class PDOChainer {
+class Driver {
     
     const UTF8 = "utf8";
     
@@ -84,27 +84,10 @@ class PDOChainer {
     
     /**
      * @param Statement\AbstractStatement $statement
-     * @param int $type
-     * @param string $class
-     * @return array
-     */
-    public function fetch(Statement\AbstractStatement $statement, $type, $class = null) {
-        $sth = $this->dbh()->prepare($statement->prepare());
-        $sth->execute($statement->values());
-        switch ($type) {
-            case \PDO::FETCH_ASSOC:
-                return $sth->fetchAll($type);
-            case \PDO::FETCH_CLASS:
-                return $sth->fetchAll($type, $class);
-        }
-    }
-    
-    /**
-     * @param Statement\AbstractStatement $statement
      * @return array
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
-        return $this->fetch($statement, \PDO::FETCH_ASSOC);
+        return $this->_fetch($statement);
     }
     
     /**
@@ -113,7 +96,7 @@ class PDOChainer {
      * @return array
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
-        return $this->fetch($statement, \PDO::FETCH_CLASS, $class);
+        return $this->_fetch($statement, $class);
     }
     
     private function init() {
@@ -126,7 +109,7 @@ class PDOChainer {
             $this->_dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->_dbh->exec("set names {$this->_charset}");
         } catch (\PDOException $e) {
-            new Exception\DBConnectionFail("Database error: {$e->getMessage()}");
+            new Connection\Fail("Database error: {$e->getMessage()}");
         }
     }
     
@@ -138,6 +121,21 @@ class PDOChainer {
             $this->init();
         }
         return $this->_dbh;
+    }
+    
+    /**
+     * @param Statement\AbstractStatement $statement
+     * @param string $class
+     * @return array
+     */
+    private function _fetch(Statement\AbstractStatement $statement, $class = null) {
+        $sth = $this->dbh()->prepare($statement->prepare());
+        $sth->execute($statement->values());
+        if ($class === null) {
+            return $sth->fetchAll(\PDO::FETCH_ASSOC);
+        } else {
+            return $sth->fetchAll(\PDO::FETCH_CLASS, $class);
+        }
     }
     
 }
