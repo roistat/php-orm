@@ -6,16 +6,14 @@ Simple and fast DB utils with no magic methods. It could be used in high load pr
 * Query package — responsible for creating queries from ORM data to specified DB engine. 
 
 
-## State
+## State\Engine
 
-All entities should be extended from RsORM\State\Entity which encapsulates object state data and get/set methods. All actions are going in RsORM\State\Engine.
-Engine has several methods: isNew, isChanged, diff. Diff method returns array of changed fields with values.
+All entities should be extended from ```RsORM\State\Entity``` which encapsulates object state data and get/set methods. All actions are going in ```RsORM\State\Engine```.
+Engine has several methods: ```isNew```, ```isChanged```, ```diff```. Diff method returns array of changed fields with values.
 
 ### Examples:
 
 ```php
-<?php
-
 class Project extends State\Entity {
     public $id;
     public $name;
@@ -43,16 +41,13 @@ $engine->flush($project);
 $isNew = $engine->isNew($project); // false
 $isChanged = $engine->isChanged($project); // false
 $diff = $engine->diff($project); // []
-
 ```
 
-## Query
+## State\Entity
 
 ### Examples:
 
 ```php
-<?php
-
 class Project extends State\Entity {
     public $id;
     public $name;
@@ -79,22 +74,17 @@ $filter = new Clause\Filter(new Condition\Equal(new Argument\Column(Project::use
 $preparedQuery = $queryEngine->select($fields, $table, $filter);
 $preparedQuery->prepare(); // SELECT `user_id`, `name` FROM `project` WHERE `user_id` = ?;
 $preparedQuery->values(); [123]
-
 ```
 
 ## Query\Engine
 
 Engine builds SQL statements by using MySQL class.
 
-**Initialize engine object**
-
-```php
-$engine = new Query\Engine();
-```
-
 ## Engine\MySQL
 
 MySQL driver builds valid MySQL statements.
+
+```Query\Engine::mysql()->select(...)```
 
 ```php
 $fields = new Clause\Fields([
@@ -112,24 +102,11 @@ $stmt->prepare(); // SELECT `id`, `name`, `password` FROM `table` WHERE `deleted
 $stmt->values(); // [0]
 ```
 
-## MySQL\Statement
-
- - Select
-	 - Fields
-	 - From
-	 - Filter
-	 - Group
-	 - Having
-	 - Order
-	 - Limit
- - Insert
- - Update
- - Delete
-
 ## MySQL\Argument
 
 Argument is a basic entity of MySQL statement. There are several types of them:
 
+- *Any* build SQL identifier for any field
 - *Value* build value object in SQL-statement, as ?placeholder
 - *NullValue* build NULL object in SQL-statement
 - *Table* build object of table
@@ -142,6 +119,10 @@ Argument is a basic entity of MySQL statement. There are several types of them:
 ### Examples
 
 ```php
+// Any
+$arg = new Argument\Any();
+$arg->prepare(); // *
+
 // Value
 $arg = new Argument\Value(123);
 $arg->prepare(); // ?
@@ -171,9 +152,35 @@ $arg = new Argument\Field(
 $arg->prepare(); // `pass` AS `password`
 ```
 
+## MySQL\Operator
+
+Operator is a basic expression in SQL syntax. Operators implement ```MultiValueInterface```. There are several types of them:
+
+- Unary operators - operators with only one operand
+Syntax: ```new Operator($operand)```
+- Binary operators - operators with two operands
+Syntax: ```new Operator($operand1, $operand2)```
+- Multiple operators - operators with one or more operands
+Syntax: ```new Operator([$operand1, $operand2, ...])```
+- Custom operators - operators with non-standart structure
+
+Usually operators are the part of filter entity in SQL statements. That`s why, the most part of them are located in the ```MySQL\Condition``` namespace. Non-logic operators are located here, in ```MySQL\Operator```.
+
+### Example
+
+```php
+// Assign
+$operator = new Operator\Assign(
+	new Argument\Column("id"),
+	new Argument\Value(123)
+);
+$operator->prepare(); // `id` = ?
+$operator->values(); // [123]
+```
+
 ## MySQL\Condition
 
-Logical expressions (RsORM\Query\Engine\MySQL\Condition) is a part of the MySQL engine for query builder. Conditions are builded from logical operators and arguments.
+Logical expressions consist of operators. Logical expressions are the part of the MySQL engine for query builder. Conditions are built from logical operators and arguments.
 
 Operators:
 
@@ -191,7 +198,7 @@ Operators:
     * Between
     * In
 
-### Operator examples
+### Examples
 
 ```php
 // Binary operator
@@ -219,4 +226,260 @@ $expr->values(); // [10, 20]
 $expr = new Condition\In(new Argument\Column("id"), [new Argument\Value(1), new Argument\Value(10), new Argument\Value(100)]);
 $expr->prepare(); // `id` IN (?, ?, ?)
 $expr->values(); // [1, 10, 100]
+```
+
+## MySQL\Clause
+
+Clause is a part of SQL-statement. It builds from arguments, operators, conditions, SQL-expressions. All clauses implement ```MultiValueInterface```.
+
+### Examples
+
+```php
+// Fields
+$fields = new Clause\Fields([
+	new Argument\Field(new Argument\Column("id")),
+	new Argument\Field(new Argument\Column("name")),
+]);
+$fields->prepare(); // `id`, `name`
+$fields->values(); // []
+
+// InsertFields
+$fields = new Clause\InsertFields([
+	new Argument\Field(new Argument\Column("id")),
+	new Argument\Field(new Argument\Column("name")),
+]);
+$fields->prepare(); // (`id`, `name`)
+$fields->values(); // []
+
+// From
+$target = new Clause\From(new Argument\Table("table"));
+$target->prepare(); // FROM `table`
+$target->values(); // []
+
+// Into
+$target = new Clause\Into(new Argument\Table("table"));
+$target->prepare(); // INTO `table`
+$target->values(); // []
+
+// Target
+$target = new Clause\Target(new Argument\Table("table"));
+$target->prepare(); // `table`
+$target->values(); // []
+
+// Filter
+$filter = new Clause\Filter(
+	new Condition\And([
+		new Condition\Equal(
+			new Argument\Column("id"),
+			new Argument\Value(123);
+		),
+		new Condition\Equal(
+			new Argument\Column("alive"),
+			new Argument\Value(1);
+		)
+	])
+);
+$filter->prepare(); // WHERE `id` = ? AND `alive` = ?
+$filter->values(); // [123, 1]
+
+// Having
+$having = new Clause\Having(
+	new Condition\And([
+		new Condition\Equal(
+			new Argument\Column("id"),
+			new Argument\Value(123);
+		),
+		new Condition\Equal(
+			new Argument\Column("alive"),
+			new Argument\Value(1);
+		)
+	])
+);
+$having->prepare(); // HAVING `id` = ? AND `alive` = ?
+$having->values(); // [123, 1]
+
+// Set
+$set = new Clause\Set([
+	new Operator\Assign(
+		new Argument\Column("id"),
+		new Argument\Value(123)
+	),
+	new Operator\Assign(
+		new Argument\Column("name"),
+		new Argument\Value("Mike")
+	)
+]);
+$set->prepare(); // SET `id` = ?, `name` = ?
+$set->values(); // [123, "Mike"]
+
+// Values
+$values = new Clause\Values([
+	new Argument\Value(123),
+	new Argument\Value("Mike")
+]);
+$values->prepare(); // VALUES (?, ?)
+$values->values(); // [123, "Mike"]
+
+// Group
+$group = new Clause\Group([
+	new Argument\Column("id"),
+	new Argument\Column("name")
+]);
+$group->prepare(); // GROUP BY `id`, `name`
+$group->values(); // []
+
+// Order
+$order = new Clause\Order([
+	new Argument\Asc(new Argument\Column("id")),
+	new Argument\Desc(new Argument\Column("name"))
+]);
+$order->prepare(); // ORDER BY `id` ASC, `name` DESC
+$order->values(); // []
+
+// Limit
+$limit = new Clause\Limit(
+	new Argument\Value(5),
+	new Argument\Value(10)
+);
+$limit->prepare(); // LIMIT ?, ?
+$limit->values(); // [5, 10]
+```
+
+## MySQL\Statement
+
+SQL statements implement ```MultiValueInterface``` and are built from ```MySQL\Clause``` objects.
+
+```php
+Select::__construct(
+	Clause\Fields $fields,
+	Clause\From $table = null,
+	Clause\Filter $filter = null,
+	Clause\Group $group = null,
+	Clause\Having $having = null,
+	Clause\Order $order = null,
+	Clause\Limit $limit = null
+);
+```
+
+- ```$fields``` - set of fields for Select statement, required parameter
+- ```$table``` - target table, optional parameter
+- ```$filter``` - condition for select statement
+- ```$group``` - grouping
+- ```$having``` - having condition
+- ```$order``` - ordering (it can be asc or desc, asc by default)
+- ```$limit``` - limiting
+
+```php
+Delete::__construct(
+	Clause\From $table,
+	Clause\Filter $filter = null,
+	Clause\Order $order = null,
+	Clause\Limit $limit = null
+);
+```
+
+- ```$table``` - required parameter
+- ```$filter```, ```$order```, ```$limit``` - are the same as in select statement
+
+```php
+Insert::__construct(
+	Clause\Into $table,
+	Clause\Values $values,
+	Clause\Fields $fields = null
+);
+```
+
+- ```$table``` - required parameter
+- ```$values``` - required parameter, set values
+- ```$fields``` - optional parameter, set of inserted fields
+
+```php
+Update::__construct(
+	Clause\Target $table,
+	Clause\Set $set,
+	Clause\Filter $filter = null,
+	Clause\Order $order = null,
+	Clause\Limit $limit = null
+);
+```
+
+- ```$table``` - required parameter
+- ```$set``` - also required parameter, set of key-value
+- ```$filter```, ```$order```, ```$limit``` - are the same as in select statement
+
+### Examples
+
+```php
+// Select
+$fields = new Clause\Fields([
+	new Argument\Field(new Argument\Column("id")),
+	new Argument\Field(new Argument\Column("name")),
+]);
+$table = new Clause\From(new Argument\Table("table"));
+$filter = new Clause\Filter(new Condition\LogicalOr([
+	new Condition\Equal(
+		new Argument\Column("id"),
+		new Argument\Value(10)),
+	new Condition\Equal(
+		new Argument\Column("id"),
+		new Argument\Value(20)
+	),
+]));
+$group = new Clause\Group([new Argument\Column("id")]);
+$having = new Clause\Having(
+	new Condition\Equal(
+		new Argument\Column("alive"),
+		new Argument\Value(true)
+	)
+);
+$order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
+$limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
+$stmt = new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit);
+$stmt->prepare(); // SELECT `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?
+$stmt->values(); // [10, 20, 1, 5, 10]
+
+// Delete
+$table = new Clause\From(new Argument\Table("table"));
+$filter = new Clause\Filter(new Condition\LogicalOr([
+	new Condition\Equal(new Argument\Column("id"), new Argument\Value(10)),
+	new Condition\Equal(new Argument\Column("id"), new Argument\Value(20)),
+]));
+$order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
+$limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
+$stmt = new Statement\Delete($table, $filter, $order, $limit);
+$stmt->prepare(); // DELETE FROM `table` WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
+$stmt->values(); // [10, 20, 5, 10]
+
+// Insert
+$fields = new Clause\InsertFields([
+	new Argument\Column("id"),
+	new Argument\Column("name"),
+	new Argument\Column("qwe"),
+]);
+$table = new Clause\Into(new Argument\Table("table"));
+$values = new Clause\Values([
+	new Argument\Value(1),
+	new Argument\Value("Mike"),
+	new Argument\NullValue(),
+]);
+$stmt = new Statement\Insert($table, $values, $fields);
+$stmt->prepare(); // INSERT INTO `table` (`id`, `name`, `qwe`) VALUES (?, ?, NULL)
+$stmt->values(); // [1, "Mike"]
+
+// Update
+$table = new Clause\Target(new Argument\Table("table"));
+$set = new Clause\Set([
+	new Operator\Assign(new Argument\Column("id"), new Argument\Value(1)),
+	new Operator\Assign(new Argument\Column("name"), new Argument\Value("Mike")),
+	new Operator\Assign(new Argument\Column("qwerty"), new Argument\NullValue()),
+]);
+$filter = new Clause\Filter(new Condition\LogicalOr([
+	new Condition\Equal(new Argument\Column("id"), new Argument\Value(10)),
+	new Condition\Equal(new Argument\Column("id"), new Argument\Value(20)),
+]));
+$order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
+$limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
+$stmt = new Statement\Update($table, $set, $filter, $order, $limit);
+$stmt->prepare(); // "UPDATE `table` SET `id` = ?, `name` = ?, `qwerty` = NULL WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
+$stmt->values(); // [1, "Mike", 10, 20, 5, 10]
 ```
