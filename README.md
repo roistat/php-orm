@@ -84,7 +84,9 @@ Engine builds SQL statements by using MySQL class.
 
 MySQL driver builds valid MySQL statements.
 
-```Query\Engine::mysql()->select(...)```
+```php
+Query\Engine::mysql()->select(...)
+```
 
 ```php
 $fields = new Clause\Fields([
