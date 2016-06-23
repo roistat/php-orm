@@ -110,7 +110,7 @@ class MySQL {
     
     /**
      * @param Statement\AbstractStatement $statement
-     * @param type $class
+     * @param string $class
      * @return State\Entity[]
      */
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
