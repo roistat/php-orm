@@ -88,7 +88,10 @@ class MySQL {
      * @return array
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
-        return $this->_query($statement)->fetch(\PDO::FETCH_ASSOC);
+        if (!$sth = $this->_query($statement)) {
+            return null;
+        }
+        return $sth->fetch(\PDO::FETCH_ASSOC);
     }
     
     /**
@@ -96,7 +99,10 @@ class MySQL {
      * @return array
      */
     public function fetchAllAssoc(Statement\AbstractStatement $statement) {
-        return $this->_query($statement)->fetchAll(\PDO::FETCH_ASSOC);
+        if (!$sth = $this->_query($statement)) {
+            return [];
+        }
+        return $sth->fetchAll(\PDO::FETCH_ASSOC);
     }
     
     /**
@@ -105,7 +111,10 @@ class MySQL {
      * @return State\Entity
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
-        return $this->_query($statement)->fetch(\PDO::FETCH_CLASS, $class);
+        if (!$sth = $this->_query($statement)) {
+            return null;
+        }
+        return $sth->fetch(\PDO::FETCH_CLASS, $class);
     }
     
     /**
@@ -114,7 +123,25 @@ class MySQL {
      * @return State\Entity[]
      */
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
-        return $this->_query($statement)->fetchAll(\PDO::FETCH_CLASS, $class);
+        if (!$sth = $this->_query($statement)) {
+            return [];
+        }
+        return $sth->fetchAll(\PDO::FETCH_CLASS, $class);
+    }
+    
+    /**
+     * @param Statement\AbstractStatement $statement
+     * @return boolean
+     */
+    public function query(Statement\AbstractStatement $statement) {
+        return (bool) $this->_query($statement);
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLastInsertId() {
+        return $this->dbh()->lastInsertId();
     }
     
     private function _init() {
@@ -143,11 +170,13 @@ class MySQL {
     
     /**
      * @param Statement\AbstractStatement $statement
-     * @return \PDOStatement
+     * @return \PDOStatement|boolean
      */
     private function _query(Statement\AbstractStatement $statement) {
         $result = $this->dbh()->prepare($statement->prepare());
-        $result->execute($statement->values());
+        if (!$result->execute($statement->values())) {
+            return false;
+        }
         return $result;
     }
     
