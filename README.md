@@ -76,6 +76,33 @@ $preparedQuery->prepare(); // SELECT `user_id`, `name` FROM `project` WHERE `use
 $preparedQuery->values(); [123]
 ```
 
+## Driver\MySQL
+
+PDO abstract layer. Connection is initialized by first prepare / execute.
+
+ - ```__construct(string $host, int $port, string $user, string $pass, string $dbname)``` All parameters are optional.
+ - ```setCharset(string $charset)``` Charset are specified by constants. For example, ```Driver\MySQL::UTF8```
+ - ```setOptions(array $options)``` Set valid PDO options.
+ - ```fetchAssoc(Statement\AbstractStatement $statement)``` Prepare, execute SQL-statement and return associated array (row).
+ - ```fetchAllAssoc(Statement\AbstractStatement $statement)``` Prepare, execute SQL-statement and return associated array (rows).
+ - ```fetchClass(Statement\AbstractStatement $statement, string $class)``` Prepare, execute SQL-statement and return object of specified class.
+ - ```fetchAllClass(Statement\AbstractStatement $statement, string $class)``` Prepare, execute SQL-statement and return specified class object array.
+
+### Example
+
+```php
+$dbh = new Driver\MySQL("127.0.0.1", 3306, "root", "123456", "main_db");
+$dbh->setCharset(Driver\MySQL::UTF8);
+$dbh->setOptions([
+	\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+]);
+$stmt = Query\Engine::mysql()->select(...);
+$dbh->fetchAssoc($stmt); // return row
+$dbh->fetchAllAssoc($stmt); // return array
+$dbh->fetchClass($stmt, "User"); // return object of User class
+$dbh->fetchAllClass($stmt, "User"); // return array of User objects
+```
+
 ## Query\Engine
 
 Engine builds SQL statements by using MySQL class.
@@ -84,9 +111,7 @@ Engine builds SQL statements by using MySQL class.
 
 MySQL driver builds valid MySQL statements.
 
-```php
-Query\Engine::mysql()->select(...)
-```
+```Query\Engine::mysql()->select(...)```
 
 ```php
 $fields = new Clause\Fields([
@@ -99,7 +124,8 @@ $filter = new Clause\Filter(new Condition\Equal(
 	new Argument\Column("deleted"),
 	new Argument\Value(0)
 ));
-$stmt = $engine->mysql()->select($fields, $table, $filter);
+$engine = Query\Engine::mysql();
+$stmt = $engine->select($fields, $table, $filter);
 $stmt->prepare(); // SELECT `id`, `name`, `password` FROM `table` WHERE `deleted` = ?
 $stmt->values(); // [0]
 ```

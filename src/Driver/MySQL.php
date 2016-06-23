@@ -8,6 +8,7 @@ namespace RsORM\Driver;
 
 use RsORM\Query\Engine\MySQL\Statement;
 use RsORM\Driver\Exception\DB\Connection;
+use RsORM\State;
 
 class MySQL {
     
@@ -71,14 +72,14 @@ class MySQL {
     /**
      * @param string $charset
      */
-    public function charset($charset) {
+    public function setCharset($charset) {
         $this->_charset = $charset;
     }
     
     /**
      * @param array $options
      */
-    public function options(array $options) {
+    public function setOptions(array $options) {
         $this->_options = $options;
     }
     
@@ -87,19 +88,36 @@ class MySQL {
      * @return array
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
-        return $this->_fetch($statement);
+        return $this->_query($statement)->fetch(\PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * @param Statement\AbstractStatement $statement
+     * @return array
+     */
+    public function fetchAllAssoc(Statement\AbstractStatement $statement) {
+        return $this->_query($statement)->fetchAll(\PDO::FETCH_ASSOC);
     }
     
     /**
      * @param Statement\AbstractStatement $statement
      * @param string $class
-     * @return array
+     * @return State\Entity
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
-        return $this->_fetch($statement, $class);
+        return $this->_query($statement)->fetch(\PDO::FETCH_CLASS, $class);
     }
     
-    private function init() {
+    /**
+     * @param Statement\AbstractStatement $statement
+     * @param type $class
+     * @return State\Entity[]
+     */
+    public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
+        return $this->_query($statement)->fetchAll(\PDO::FETCH_CLASS, $class);
+    }
+    
+    private function _init() {
         $dsn = "mysql:host={$this->_host};port={$this->_port};";
         if ($this->_dbname !== null) {
             $dsn .= "dbname={$this->_dbname};";
@@ -118,24 +136,19 @@ class MySQL {
      */
     private function dbh() {
         if ($this->_dbh === null) {
-            $this->init();
+            $this->_init();
         }
         return $this->_dbh;
     }
     
     /**
      * @param Statement\AbstractStatement $statement
-     * @param string $class
-     * @return array
+     * @return \PDOStatement
      */
-    private function _fetch(Statement\AbstractStatement $statement, $class = null) {
-        $sth = $this->dbh()->prepare($statement->prepare());
-        $sth->execute($statement->values());
-        if ($class === null) {
-            return $sth->fetchAll(\PDO::FETCH_ASSOC);
-        } else {
-            return $sth->fetchAll(\PDO::FETCH_CLASS, $class);
-        }
+    private function _query(Statement\AbstractStatement $statement) {
+        $result = $this->dbh()->prepare($statement->prepare());
+        $result->execute($statement->values());
+        return $result;
     }
     
 }
