@@ -87,6 +87,8 @@ PDO abstract layer. Connection is initialized by first prepare / execute.
  - ```fetchAllAssoc(Statement\AbstractStatement $statement)``` Prepare, execute SQL-statement and return associated array (rows).
  - ```fetchClass(Statement\AbstractStatement $statement, string $class)``` Prepare, execute SQL-statement and return object of specified class.
  - ```fetchAllClass(Statement\AbstractStatement $statement, string $class)``` Prepare, execute SQL-statement and return specified class object array.
+ - ```query(Statement\AbstractStatement $statement)``` Prepare and execute SQL-statement.
+ - ```getLastInsertId()``` Return last insert ID.
 
 ### Example
 
@@ -101,6 +103,9 @@ $dbh->fetchAssoc($stmt); // return row
 $dbh->fetchAllAssoc($stmt); // return array
 $dbh->fetchClass($stmt, "User"); // return object of User class
 $dbh->fetchAllClass($stmt, "User"); // return array of User objects
+$stmt = Query\Engine::mysql()->insert(...);
+$dbh->query($stmt); // true on success and false on failure
+$dbh->getLastInsertId(); // return last insert ID
 ```
 
 ## Query\Engine

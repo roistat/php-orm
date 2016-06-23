@@ -117,6 +117,20 @@ class MySQL {
         return $this->_query($statement)->fetchAll(\PDO::FETCH_CLASS, $class);
     }
     
+    /**
+     * @param Statement\AbstractStatement $statement
+     */
+    public function query(Statement\AbstractStatement $statement) {
+        $this->_query($statement);
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLastInsertId() {
+        return $this->dbh()->lastInsertId();
+    }
+    
     private function _init() {
         $dsn = "mysql:host={$this->_host};port={$this->_port};";
         if ($this->_dbname !== null) {
@@ -144,10 +158,16 @@ class MySQL {
     /**
      * @param Statement\AbstractStatement $statement
      * @return \PDOStatement
+     * @throws Exception\PrepareStatementFail
+     * @throws Exception\ExecuteStatementFail
      */
     private function _query(Statement\AbstractStatement $statement) {
-        $result = $this->dbh()->prepare($statement->prepare());
-        $result->execute($statement->values());
+        if (!($result = $this->dbh()->prepare($statement->prepare()))) {
+            throw new Exception\PrepareStatementFail();
+        }
+        if (!$result->execute($statement->values())) {
+            throw new Exception\ExecuteStatementFail();
+        }
         return $result;
     }
     
