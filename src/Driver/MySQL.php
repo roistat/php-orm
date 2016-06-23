@@ -88,10 +88,7 @@ class MySQL {
      * @return array
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
-        if (!$sth = $this->_query($statement)) {
-            return null;
-        }
-        return $sth->fetch(\PDO::FETCH_ASSOC);
+        return $this->_query($statement)->fetch(\PDO::FETCH_ASSOC);
     }
     
     /**
@@ -99,10 +96,7 @@ class MySQL {
      * @return array
      */
     public function fetchAllAssoc(Statement\AbstractStatement $statement) {
-        if (!$sth = $this->_query($statement)) {
-            return [];
-        }
-        return $sth->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->_query($statement)->fetchAll(\PDO::FETCH_ASSOC);
     }
     
     /**
@@ -111,10 +105,7 @@ class MySQL {
      * @return State\Entity
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
-        if (!$sth = $this->_query($statement)) {
-            return null;
-        }
-        return $sth->fetch(\PDO::FETCH_CLASS, $class);
+        return $this->_query($statement)->fetch(\PDO::FETCH_CLASS, $class);
     }
     
     /**
@@ -123,18 +114,14 @@ class MySQL {
      * @return State\Entity[]
      */
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
-        if (!$sth = $this->_query($statement)) {
-            return [];
-        }
-        return $sth->fetchAll(\PDO::FETCH_CLASS, $class);
+        return $this->_query($statement)->fetchAll(\PDO::FETCH_CLASS, $class);
     }
     
     /**
      * @param Statement\AbstractStatement $statement
-     * @return boolean
      */
     public function query(Statement\AbstractStatement $statement) {
-        return (bool) $this->_query($statement);
+        $this->_query($statement);
     }
     
     /**
@@ -170,12 +157,16 @@ class MySQL {
     
     /**
      * @param Statement\AbstractStatement $statement
-     * @return \PDOStatement|boolean
+     * @return \PDOStatement
+     * @throws Exception\PrepareStatementFail
+     * @throws Exception\ExecuteStatementFail
      */
     private function _query(Statement\AbstractStatement $statement) {
-        $result = $this->dbh()->prepare($statement->prepare());
-        if (!$result->execute($statement->values())) {
-            return false;
+        if (!($result = $this->dbh()->prepare($statement->prepare()))) {
+            throw new Exception\PrepareStatementFail();
+        }
+        if (!($result->execute($statement->values()))) {
+            throw new Exception\ExecuteStatementFail();
         }
         return $result;
     }
