@@ -165,7 +165,7 @@ class MySQL {
         if (!($result = $this->dbh()->prepare($statement->prepare()))) {
             throw new Exception\PrepareStatementFail();
         }
-        if (!($result->execute($statement->values()))) {
+        if (!$result->execute($statement->values())) {
             throw new Exception\ExecuteStatementFail();
         }
         return $result;
