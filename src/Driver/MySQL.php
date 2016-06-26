@@ -88,7 +88,9 @@ class MySQL {
      * @return array
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
-        return $this->_query($statement)->fetch(\PDO::FETCH_ASSOC);
+		$sth = $this->_query($statement);
+		$sth->setFetchMode(\PDO::FETCH_ASSOC);
+        return $sth->fetch();
     }
     
     /**
@@ -96,7 +98,9 @@ class MySQL {
      * @return array
      */
     public function fetchAllAssoc(Statement\AbstractStatement $statement) {
-        return $this->_query($statement)->fetchAll(\PDO::FETCH_ASSOC);
+		$sth = $this->_query($statement);
+		$sth->setFetchMode(\PDO::FETCH_ASSOC);
+        return $sth->fetchAll();
     }
     
     /**
@@ -105,7 +109,9 @@ class MySQL {
      * @return State\Entity
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
-        return $this->_query($statement)->fetch(\PDO::FETCH_CLASS, $class);
+		$sth = $this->_query($statement);
+		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
+        return $sth->fetch();
     }
     
     /**
@@ -114,7 +120,9 @@ class MySQL {
      * @return State\Entity[]
      */
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
-        return $this->_query($statement)->fetchAll(\PDO::FETCH_CLASS, $class);
+		$sth = $this->_query($statement);
+		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
+		return $sth->fetchAll();
     }
     
     /**
