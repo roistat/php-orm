@@ -184,7 +184,7 @@ class MySQL {
     }
     
     /**
-     * @param State\Entity $object
+     * @param mixed $object
      */
     private function _flushObject($object) {
         if ($object instanceof State\Entity) {
@@ -193,7 +193,7 @@ class MySQL {
     }
     
     /**
-     * @param State\Entity[] $objects
+     * @param mixed[] $objects
      */
     private function _flushObjects(array $objects) {
         foreach ($objects as $object) {
