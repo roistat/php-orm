@@ -111,7 +111,9 @@ class MySQL {
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
 		$sth = $this->_query($statement);
 		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
-        return $sth->fetch();
+        $object = $sth->fetch();
+        $this->_flushObject($object);
+        return $object;
     }
     
     /**
@@ -122,7 +124,9 @@ class MySQL {
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
 		$sth = $this->_query($statement);
 		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
-		return $sth->fetchAll();
+        $objects = $sth->fetchAll();
+        $this->_flushObjects($objects);
+		return $objects;
     }
     
     /**
@@ -177,6 +181,24 @@ class MySQL {
             throw new Exception\ExecuteStatementFail();
         }
         return $result;
+    }
+    
+    /**
+     * @param State\Entity $object
+     */
+    private function _flushObject($object) {
+        if ($object instanceof State\Entity) {
+            State\Engine::getInstance()->flush($object);
+        }
+    }
+    
+    /**
+     * @param State\Entity[] $objects
+     */
+    private function _flushObjects(array $objects) {
+        foreach ($objects as $object) {
+            $this->_flushObject($object);
+        }
     }
     
 }
