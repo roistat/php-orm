@@ -88,8 +88,8 @@ class MySQL {
      * @return array
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_ASSOC);
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_ASSOC);
         return $sth->fetch();
     }
     
@@ -98,8 +98,8 @@ class MySQL {
      * @return array
      */
     public function fetchAllAssoc(Statement\AbstractStatement $statement) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_ASSOC);
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_ASSOC);
         return $sth->fetchAll();
     }
     
@@ -109,8 +109,8 @@ class MySQL {
      * @return State\Entity
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_CLASS, $class);
         $object = $sth->fetch();
         $this->_flushObject($object);
         return $object;
@@ -122,11 +122,11 @@ class MySQL {
      * @return State\Entity[]
      */
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_CLASS, $class);
         $objects = $sth->fetchAll();
         $this->_flushObjects($objects);
-		return $objects;
+        return $objects;
     }
     
     /**
