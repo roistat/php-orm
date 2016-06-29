@@ -88,8 +88,8 @@ class MySQL {
      * @return array
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_ASSOC);
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_ASSOC);
         return $sth->fetch();
     }
     
@@ -98,8 +98,8 @@ class MySQL {
      * @return array
      */
     public function fetchAllAssoc(Statement\AbstractStatement $statement) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_ASSOC);
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_ASSOC);
         return $sth->fetchAll();
     }
     
@@ -109,9 +109,11 @@ class MySQL {
      * @return State\Entity
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
-        return $sth->fetch();
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_CLASS, $class);
+        $object = $sth->fetch();
+        $this->_flushObject($object);
+        return $object;
     }
     
     /**
@@ -120,9 +122,11 @@ class MySQL {
      * @return State\Entity[]
      */
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
-		$sth = $this->_query($statement);
-		$sth->setFetchMode(\PDO::FETCH_CLASS, $class);
-		return $sth->fetchAll();
+        $sth = $this->_query($statement);
+        $sth->setFetchMode(\PDO::FETCH_CLASS, $class);
+        $objects = $sth->fetchAll();
+        $this->_flushObjects($objects);
+        return $objects;
     }
     
     /**
@@ -185,6 +189,24 @@ class MySQL {
             throw new Exception\ExecuteStatementFail();
         }
         return $result;
+    }
+    
+    /**
+     * @param mixed $object
+     */
+    private function _flushObject($object) {
+        if ($object instanceof State\Entity) {
+            State\Engine::getInstance()->flush($object);
+        }
+    }
+    
+    /**
+     * @param mixed[] $objects
+     */
+    private function _flushObjects(array $objects) {
+        foreach ($objects as $object) {
+            $this->_flushObject($object);
+        }
     }
     
 }

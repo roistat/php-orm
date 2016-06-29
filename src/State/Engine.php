@@ -6,6 +6,21 @@
 namespace RsORM\State;
 
 class Engine {
+    
+    /**
+     * @var Engine
+     */
+    private static $_instance;
+    
+    /**
+     * @return Engine
+     */
+    public static function getInstance() {
+        if (self::$_instance) {
+            return self::$_instance;
+        }
+        return self::$_instance = new self();
+    }
 
     /**
      * @param Entity $entity
