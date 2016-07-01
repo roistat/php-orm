@@ -137,6 +137,14 @@ class MySQL {
     }
     
     /**
+     * @param string $query
+     * @return \PDOStatement
+     */
+    public function queryCustom($query) {
+        return $this->dbh()->query($query);
+    }
+    
+    /**
      * @return string
      */
     public function getLastInsertId() {

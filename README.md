@@ -1,6 +1,6 @@
 # RsORM
 
-[![Build Status](https://travis-ci.org/slyshkin/orm.svg?branch=query3)](https://travis-ci.org/slyshkin/orm)
+[![Build Status](https://travis-ci.org/roistat/orm.svg?branch=master)](https://travis-ci.org/roistat/orm)
 
 Simple and fast DB utils with no magic methods. It could be used in high load projects even with partitioning and sharding. 
 
