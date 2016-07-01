@@ -123,28 +123,28 @@ phpunit --configuration tests/phpunit.xml
 
 # License
 
-MIT License.
+The MIT License (MIT)
+Copyright (c) 2016 Roistat
 
 # Documentation
 
+[**State**](#state)  
+[**Query**](#query)  
+[**Driver**](#driver)
+
+## State
+
 [**State\Engine**](#stateengine)  
-[**State\Entity**](#stateentity)  
-[**Driver\MySQL**](#drivermysql)  
-[**Engine\MySQL**](#enginemysql)  
-[**MySQL\Argument**](#mysqlargument)  
-[**MySQL\Operator**](#mysqloperator)  
-[**MySQL\Condition**](#mysqlcondition)  
-[**MySQL\Clause**](#mysqlclause)  
-[**MySQL\Statement**](#mysqlstatement)
+[**State\Entity**](#stateentity)
 
-## State\Engine
+### State\Engine
 
-`RsORM\State\Engine`
+Namespace: `RsORM\State\Engine`
 
-All entities should be extended from ```RsORM\State\Entity``` which encapsulates object state data and get/set methods. All actions are going in ```RsORM\State\Engine```.
-Engine has several methods: ```isNew```, ```isChanged```, ```diff```. Diff method returns array of changed fields with values.
+All entities should be extended from `RsORM\State\Entity` which encapsulates object state data and get/set methods. All actions are going in `RsORM\State\Engine`.
+Engine has several methods: `isNew`, `isChanged`, `diff`. Diff method returns array of changed fields with values.
 
-### Examples:
+#### Examples:
 
 ```php
 class Project extends State\Entity {
@@ -176,11 +176,11 @@ $isChanged = $engine->isChanged($project); // false
 $diff = $engine->diff($project); // []
 ```
 
-## State\Entity
+### State\Entity
 
-`RsORM\State\Entity`
+Namespace: `RsORM\State\Entity`
 
-### Examples:
+#### Examples:
 
 ```php
 class Project extends State\Entity {
@@ -211,53 +211,30 @@ $preparedQuery->prepare(); // SELECT `user_id`, `name` FROM `project` WHERE `use
 $preparedQuery->values(); [123]
 ```
 
-## Driver\MySQL
+## Query
 
-`RsORM\Driver\MySQL`
+[**Engine\MySQL**](#enginemysql)  
+[**MySQL\Argument**](#mysqlargument)  
+[**MySQL\Operator**](#mysqloperator)  
+[**MySQL\Condition**](#mysqlcondition)  
+[**MySQL\Clause**](#mysqlclause)  
+[**MySQL\Statement**](#mysqlstatement)
 
-PDO abstract layer. Connection is initialized by first prepare / execute.
+### Query\Engine
 
- - ```__construct(string $host, int $port, string $user, string $pass, string $dbname)``` All parameters are optional.
- - ```setCharset(string $charset)``` Charset are specified by constants. For example, ```Driver\MySQL::UTF8```
- - ```setOptions(array $options)``` Set valid PDO options.
- - ```fetchAssoc(Statement\AbstractStatement $statement)``` Prepare, execute SQL-statement and return associated array (row).
- - ```fetchAllAssoc(Statement\AbstractStatement $statement)``` Prepare, execute SQL-statement and return associated array (rows).
- - ```fetchClass(Statement\AbstractStatement $statement, string $class)``` Prepare, execute SQL-statement and return object of specified class.
- - ```fetchAllClass(Statement\AbstractStatement $statement, string $class)``` Prepare, execute SQL-statement and return specified class object array.
- - ```query(Statement\AbstractStatement $statement)``` Prepare and execute SQL-statement.
- - ```getLastInsertId()``` Return last insert ID.
-
-### Example
-
-```php
-$dbh = new Driver\MySQL("127.0.0.1", 3306, "root", "123456", "main_db");
-$dbh->setCharset(Driver\MySQL::UTF8);
-$dbh->setOptions([
-	\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-]);
-$stmt = Query\Engine::mysql()->select(...);
-$dbh->fetchAssoc($stmt); // return row
-$dbh->fetchAllAssoc($stmt); // return array
-$dbh->fetchClass($stmt, "User"); // return object of User class
-$dbh->fetchAllClass($stmt, "User"); // return array of User objects
-$stmt = Query\Engine::mysql()->insert(...);
-$dbh->query($stmt); // true on success and false on failure
-$dbh->getLastInsertId(); // return last insert ID
-```
-
-## Query\Engine
-
-`RsORM\Query\Engine`
+Namespace: `RsORM\Query\Engine`
 
 Engine builds SQL statements by using MySQL class.
 
-## Engine\MySQL
+### Engine\MySQL
 
-`RsORM\Query\Engine\MySQL`
+Namespace: `RsORM\Query\Engine\MySQL`
 
 MySQL driver builds valid MySQL statements.
 
 `Query\Engine::mysql()->select(...)`
+
+#### Example
 
 ```php
 $fields = new Clause\Fields([
@@ -276,9 +253,9 @@ $stmt->prepare(); // SELECT `id`, `name`, `password` FROM `table` WHERE `deleted
 $stmt->values(); // [0]
 ```
 
-## MySQL\Argument
+### MySQL\Argument
 
-`RsORM\Query\Engine\MySQL\Argument`
+Namespace: `RsORM\Query\Engine\MySQL\Argument`
 
 Argument is a basic entity of MySQL statement. There are several types of them:
 
@@ -292,7 +269,7 @@ Argument is a basic entity of MySQL statement. There are several types of them:
 - *Asc* is a complex object, build argument for sorting object
 - *Desc* is a complex object, build argument for sorting object
 
-### Examples
+#### Examples
 
 ```php
 // Any
@@ -328,23 +305,23 @@ $arg = new Argument\Field(
 $arg->prepare(); // `pass` AS `password`
 ```
 
-## MySQL\Operator
+### MySQL\Operator
 
-`RsORM\Query\Engine\MySQL\Operator`
+Namespace: `RsORM\Query\Engine\MySQL\Operator`
 
-Operator is a basic expression in SQL syntax. Operators implement ```MultiValueInterface```. There are several types of them:
+Operator is a basic expression in SQL syntax. Operators implement `MultiValueInterface`. There are several types of them:
 
 - Unary operators - operators with only one operand
-Syntax: ```new Operator($operand)```
+Syntax: `new Operator($operand)`
 - Binary operators - operators with two operands
-Syntax: ```new Operator($operand1, $operand2)```
+Syntax: `new Operator($operand1, $operand2)`
 - Multiple operators - operators with one or more operands
-Syntax: ```new Operator([$operand1, $operand2, ...])```
+Syntax: `new Operator([$operand1, $operand2, ...])`
 - Custom operators - operators with non-standart structure
 
-Usually operators are the part of filter entity in SQL statements. That`s why, the most part of them are located in the ```MySQL\Condition``` namespace. Non-logic operators are located here, in ```MySQL\Operator```.
+Usually operators are the part of filter entity in SQL statements. That`s why, the most part of them are located in the `MySQL\Condition` namespace. Non-logic operators are located here, in `MySQL\Operator`.
 
-### Example
+#### Example
 
 ```php
 // Assign
@@ -356,9 +333,9 @@ $operator->prepare(); // `id` = ?
 $operator->values(); // [123]
 ```
 
-## MySQL\Condition
+### MySQL\Condition
 
-`RsORM\Query\Engine\MySQL\Condition`
+Namespace: `RsORM\Query\Engine\MySQL\Condition`
 
 Logical expressions consist of operators. Logical expressions are the part of the MySQL engine for query builder. Conditions are built from logical operators and arguments.
 
@@ -378,7 +355,7 @@ Operators:
     * Between
     * In
 
-### Examples
+#### Examples
 
 ```php
 // Binary operator
@@ -408,13 +385,13 @@ $expr->prepare(); // `id` IN (?, ?, ?)
 $expr->values(); // [1, 10, 100]
 ```
 
-## MySQL\Clause
+### MySQL\Clause
 
-`RsORM\Query\Engine\MySQL\Clause`
+Namespace: `RsORM\Query\Engine\MySQL\Clause`
 
-Clause is a part of SQL-statement. It builds from arguments, operators, conditions, SQL-expressions. All clauses implement ```MultiValueInterface```.
+Clause is a part of SQL-statement. It builds from arguments, operators, conditions, SQL-expressions. All clauses implement `MultiValueInterface`.
 
-### Examples
+#### Examples
 
 ```php
 // Fields
@@ -527,11 +504,11 @@ $limit->prepare(); // LIMIT ?, ?
 $limit->values(); // [5, 10]
 ```
 
-## MySQL\Statement
+### MySQL\Statement
 
-`RsORM\Query\Engine\MySQL\Statement`
+Namespace: `RsORM\Query\Engine\MySQL\Statement`
 
-SQL statements implement ```MultiValueInterface``` and are built from ```MySQL\Clause``` objects.
+SQL statements implement `MultiValueInterface` and are built from `MySQL\Clause` objects.
 
 ```php
 Select::__construct(
@@ -545,13 +522,13 @@ Select::__construct(
 );
 ```
 
-- ```$fields``` - set of fields for Select statement, required parameter
-- ```$table``` - target table, optional parameter
-- ```$filter``` - condition for select statement
-- ```$group``` - grouping
-- ```$having``` - having condition
-- ```$order``` - ordering (it can be asc or desc, asc by default)
-- ```$limit``` - limiting
+- `$fields` - set of fields for Select statement, required parameter
+- `$table` - target table, optional parameter
+- `$filter` - condition for select statement
+- `$group` - grouping
+- `$having` - having condition
+- `$order` - ordering (it can be asc or desc, asc by default)
+- `$limit` - limiting
 
 ```php
 Delete::__construct(
@@ -562,8 +539,8 @@ Delete::__construct(
 );
 ```
 
-- ```$table``` - required parameter
-- ```$filter```, ```$order```, ```$limit``` - are the same as in select statement
+- `$table` - required parameter
+- `$filter`, `$order`, `$limit` - are the same as in select statement
 
 ```php
 Insert::__construct(
@@ -573,9 +550,9 @@ Insert::__construct(
 );
 ```
 
-- ```$table``` - required parameter
-- ```$values``` - required parameter, set values
-- ```$fields``` - optional parameter, set of inserted fields
+- `$table` - required parameter
+- `$values` - required parameter, set values
+- `$fields` - optional parameter, set of inserted fields
 
 ```php
 Update::__construct(
@@ -587,11 +564,11 @@ Update::__construct(
 );
 ```
 
-- ```$table``` - required parameter
-- ```$set``` - also required parameter, set of key-value
-- ```$filter```, ```$order```, ```$limit``` - are the same as in select statement
+- `$table` - required parameter
+- `$set` - also required parameter, set of key-value
+- `$filter`, `$order`, `$limit` - are the same as in select statement
 
-### Examples
+#### Examples
 
 ```php
 // Select
@@ -666,4 +643,40 @@ $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
 $stmt = new Statement\Update($table, $set, $filter, $order, $limit);
 $stmt->prepare(); // "UPDATE `table` SET `id` = ?, `name` = ?, `qwerty` = NULL WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
 $stmt->values(); // [1, "Mike", 10, 20, 5, 10]
+```
+
+## Driver
+
+### Driver\MySQL
+
+Namespace: `RsORM\Driver\MySQL`
+
+PDO abstract layer. Connection is initialized by first prepare / execute.
+
+ - `__construct(string $host, int $port, string $user, string $pass, string $dbname)` All parameters are optional.
+ - `setCharset(string $charset)` Charset are specified by constants. For example, `Driver\MySQL::UTF8`
+ - `setOptions(array $options)` Set valid PDO options.
+ - `fetchAssoc(Statement\AbstractStatement $statement)` Prepare, execute SQL-statement and return associated array (row).
+ - `fetchAllAssoc(Statement\AbstractStatement $statement)` Prepare, execute SQL-statement and return associated array (rows).
+ - `fetchClass(Statement\AbstractStatement $statement, string $class)` Prepare, execute SQL-statement and return object of specified class.
+ - `fetchAllClass(Statement\AbstractStatement $statement, string $class)` Prepare, execute SQL-statement and return specified class object array.
+ - `query(Statement\AbstractStatement $statement)` Prepare and execute SQL-statement.
+ - `getLastInsertId()` Return last insert ID.
+
+#### Example
+
+```php
+$dbh = new Driver\MySQL("127.0.0.1", 3306, "root", "123456", "main_db");
+$dbh->setCharset(Driver\MySQL::UTF8);
+$dbh->setOptions([
+	\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+]);
+$stmt = Query\Engine::mysql()->select(...);
+$dbh->fetchAssoc($stmt); // return row
+$dbh->fetchAllAssoc($stmt); // return array
+$dbh->fetchClass($stmt, "User"); // return object of User class
+$dbh->fetchAllClass($stmt, "User"); // return array of User objects
+$stmt = Query\Engine::mysql()->insert(...);
+$dbh->query($stmt); // true on success and false on failure
+$dbh->getLastInsertId(); // return last insert ID
 ```
