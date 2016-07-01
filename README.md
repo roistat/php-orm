@@ -9,7 +9,7 @@
 
 RsORM — simple and fast set of DB utils. There are no magic methods. All code is typehinted. It could be used in high load projects even with partitioning and sharding. 
 
-There are three tools in this set. You could use combine them or use some of them separately.
+There are three tools in this set. You could combine them or use some of them separately.
 
 * State package — responsible for object state management. Prepares data for usage in DB queries.
 * Query package — query builder. It could use data from State package or any other sources. 
