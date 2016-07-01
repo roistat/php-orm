@@ -3,8 +3,7 @@
 [![Build Status](https://travis-ci.org/roistat/orm.svg?branch=master)](https://travis-ci.org/roistat/orm)
 
 [**Getting started**](#getting-started)  
-[**Tests**](#tests)  
-[**Documentation**](#documentation)
+[**Documentation**](#documentation)  
 [**License**](#license)
 
 # Getting started
@@ -102,23 +101,6 @@ $statement = $query->delete($table, $filter);
 
 // Remove current client from DB
 $driver->execute($statement);
-```
-
-# Tests
-
-All tests are located in directory `tests/` in source directory. They have identical namespace structure with main namespace `RsORMTest`.
-
-To run the tests:
-
-```
-cd tests/
-phpunit
-```
-
-or
-
-```
-phpunit --configuration tests/phpunit.xml
 ```
 
 # Documentation
