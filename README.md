@@ -125,7 +125,7 @@ phpunit --configuration tests/phpunit.xml
 
 # License
 
-license text
+MIT License.
 
 # Documentation
 
