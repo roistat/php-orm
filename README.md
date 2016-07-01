@@ -134,15 +134,16 @@ Copyright (c) 2016 Roistat
 
 ## State
 
-[**State\Engine**](#stateengine)  
-[**State\Entity**](#stateentity)
+Namespace: `RsORM\State`
 
-### State\Engine
+State package consists of `State\Entity` and `State\Engine` classes.  
+All entities should be extended from `RsORM\State\Entity` which encapsulates object state data and get/set methods. All actions are going in `RsORM\State\Engine`. Entity class may be extended with methods, which could return table name or field names.  
+`State\Engine` class has static method `getInstance`, which initialize new object of `State\Engine` class or get existing and return it.
 
-Namespace: `RsORM\State\Engine`
-
-All entities should be extended from `RsORM\State\Entity` which encapsulates object state data and get/set methods. All actions are going in `RsORM\State\Engine`.
-Engine has several methods: `isNew`, `isChanged`, `diff`. Diff method returns array of changed fields with values.
+* `boolean isNew(State\Entity $entity)` - check `$entity` is new.
+* `boolean isChanged(State\Entity $entity)` - check `$entity` is changed.
+* `flush(State\Entity $entity)` - flush all changes in `$entity`.
+* `array diff(State\Entity $entity)` - get all changed properties of `$entity`, return data in form of key-value array.
 
 #### Examples:
 
@@ -174,41 +175,6 @@ $engine->flush($project);
 $isNew = $engine->isNew($project); // false
 $isChanged = $engine->isChanged($project); // false
 $diff = $engine->diff($project); // []
-```
-
-### State\Entity
-
-Namespace: `RsORM\State\Entity`
-
-#### Examples:
-
-```php
-class Project extends State\Entity {
-    public $id;
-    public $name;
-    public $user_id;
-    
-    public static function table() {
-        return 'project';
-    }
-    
-    public static function userId() {
-        return 'user_id';
-    }
-}
-
-$queryEngine = Query\Engine::mysql();
-
-// Load project by user_id
-$fields = new Clause\Fields([
-	new Argument\Field(new Argument\Column(Project::userId())),
-	new Argument\Field(new Argument\Column(Project::name()))
-]);
-$table = new Clause\From(new Argument\Table("project"));
-$filter = new Clause\Filter(new Condition\Equal(new Argument\Column(Project::userId()), new Argument\Value(123)));
-$preparedQuery = $queryEngine->select($fields, $table, $filter);
-$preparedQuery->prepare(); // SELECT `user_id`, `name` FROM `project` WHERE `user_id` = ?;
-$preparedQuery->values(); [123]
 ```
 
 ## Query
