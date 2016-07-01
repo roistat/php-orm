@@ -1,5 +1,3 @@
-![Roistat](http://roistat.com/img/logo_black.png)
-
 # RsORM
 
 [![Build Status](https://travis-ci.org/roistat/orm.svg?branch=master)](https://travis-ci.org/roistat/orm)
