@@ -13,7 +13,7 @@ Simple and fast DB utils with no magic methods. It could be used in high load pr
 [**Basic Usage**](#basic-usage)  
 [**Tests**](#tests)  
 [**License**](#license)  
-[**Documentation**](#docs)
+[**Documentation**](#documentation)
 
 # Basic usage
 
