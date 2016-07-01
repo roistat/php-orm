@@ -10,9 +10,9 @@ Simple and fast DB utils with no magic methods. It could be used in high load pr
 * Query package — responsible for creating queries from ORM data to specified DB engine.
 * Driver package — responsible for executing ORM generated queries.
 
-[**Basic Usage**](#basic-usage)
-[**Tests**](#tests)
-[**License**](#license)
+[**Basic Usage**](#basic-usage)  
+[**Tests**](#tests)  
+[**License**](#license)  
 [**Documentation**](#docs)
 
 # Basic usage
@@ -129,14 +129,14 @@ license text
 
 # Documentation
 
-[**State\Engine**](#stateengine)
-[**State\Entity**](#stateentity)
-[**Driver\MySQL**](#drivermysql)
-[**Engine\MySQL**](#enginemysql)
-[**MySQL\Argument**](#mysqlargument)
-[**MySQL\Operator**](#mysqloperator)
-[**MySQL\Condition**](#mysqlcondition)
-[**MySQL\Clause**](#mysqlclause)
+[**State\Engine**](#stateengine)  
+[**State\Entity**](#stateentity)  
+[**Driver\MySQL**](#drivermysql)  
+[**Engine\MySQL**](#enginemysql)  
+[**MySQL\Argument**](#mysqlargument)  
+[**MySQL\Operator**](#mysqloperator)  
+[**MySQL\Condition**](#mysqlcondition)  
+[**MySQL\Clause**](#mysqlclause)  
 [**MySQL\Statement**](#mysqlstatement)
 
 ## State\Engine
@@ -259,7 +259,7 @@ Engine builds SQL statements by using MySQL class.
 
 MySQL driver builds valid MySQL statements.
 
-```Query\Engine::mysql()->select(...)```
+`Query\Engine::mysql()->select(...)`
 
 ```php
 $fields = new Clause\Fields([
