@@ -4,7 +4,6 @@
 
 [**Getting started**](#getting-started)  
 [**Documentation**](#documentation)  
-[**License**](#license)
 
 # Getting started
 
