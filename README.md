@@ -7,11 +7,13 @@
 
 # Getting started
 
-Simple and fast DB utils with no magic methods. It could be used in high load projects even with partitioning and sharding. 
+RsORM — simple and fast set of DB utils. There are no magic methods. All code is typehinted. It could be used in high load projects even with partitioning and sharding. 
 
-* State package — responsible for object state management. Returns the data that prepared for usage in DB queries.
-* Query package — responsible for creating queries from ORM data to specified DB engine.
-* Driver package — responsible for executing ORM generated queries.
+There are three tools in this set. You could use combine them or use some of them separately.
+
+* State package — responsible for object state management. Prepares data for usage in DB queries.
+* Query package — query builder. It could use data from State package or any other sources. 
+* Driver package — sends queries to database and parses results. 
 
 It is the simple example of usage ORM, which includes initialization of MySQL driver and state engine, declaration of state entity class and procedures of creating, selecting and deleting objects.
 
