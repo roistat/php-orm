@@ -2,18 +2,18 @@
 
 [![Build Status](https://travis-ci.org/roistat/orm.svg?branch=master)](https://travis-ci.org/roistat/orm)
 
+[**Getting started**](#getting-started)  
+[**Tests**](#tests)  
+[**Documentation**](#documentation)
+[**License**](#license)
+
+# Getting started
+
 Simple and fast DB utils with no magic methods. It could be used in high load projects even with partitioning and sharding. 
 
 * State package — responsible for object state management. Returns the data that prepared for usage in DB queries.
 * Query package — responsible for creating queries from ORM data to specified DB engine.
 * Driver package — responsible for executing ORM generated queries.
-
-[**Basic Usage**](#basic-usage)  
-[**Tests**](#tests)  
-[**License**](#license)  
-[**Documentation**](#documentation)
-
-# Basic usage
 
 It is the simple example of usage ORM, which includes initialization of MySQL driver and state engine, declaration of state entity class and procedures of creating, selecting and deleting objects.
 
@@ -120,11 +120,6 @@ or
 ```
 phpunit --configuration tests/phpunit.xml
 ```
-
-# License
-
-The MIT License (MIT)  
-Copyright (c) 2016 Roistat
 
 # Documentation
 
@@ -646,3 +641,7 @@ $stmt = Query\Engine::mysql()->insert(...);
 $dbh->query($stmt); // true on success and false on failure
 $dbh->getLastInsertId(); // return last insert ID
 ```
+
+# License
+
+MIT
