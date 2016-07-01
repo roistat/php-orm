@@ -1,14 +1,147 @@
-[![Build Status](https://travis-ci.org/slyshkin/orm.svg?branch=query3)](https://travis-ci.org/slyshkin/orm)
+![Roistat](http://roistat.com/img/logo_black.png)
 
 # RsORM
+
+[![Build Status](https://travis-ci.org/slyshkin/orm.svg?branch=query3)](https://travis-ci.org/slyshkin/orm)
 
 Simple and fast DB utils with no magic methods. It could be used in high load projects even with partitioning and sharding. 
 
 * State package — responsible for object state management. Returns the data that prepared for usage in DB queries.
-* Query package — responsible for creating queries from ORM data to specified DB engine. 
+* Query package — responsible for creating queries from ORM data to specified DB engine.
+* Driver package — responsible for executing ORM generated queries.
 
+[**Basic Usage**](#basic-usage)
+[**Tests**](#tests)
+[**License**](#license)
+[**Documentation**](#docs)
+
+# Basic usage
+
+It is the simple example of usage ORM, which includes initialization of MySQL driver and state engine, declaration of state entity class and procedures of creating, selecting and deleting objects.
+
+```php
+// Initialize MySQL driver and State engine
+$driver = new Driver\MySQL();
+$state = State\Engine::getInstance();
+$query = Query\Engine::mysql();
+
+// Declare class for Client entity
+class Client extends State\Entity {
+	public $id;
+	public $name;
+	public $age;
+	public static function table() {
+		return "user";
+	}
+	public static function id() {
+		return "id";
+	}
+	public static function name() {
+		return "name";
+	}
+	public static function age() {
+		return "age";
+	}
+}
+
+// Now we can create new client
+$client = new Client();
+$client->name = "Mike";
+$client->age = 30;
+
+// Prepare INSERT statement
+$table = new Clause\Into(
+	new Argument\Table(Client::table())
+);
+$diff = $state->diff($client);
+// ["name" => "Mike", "age" => 30]
+$vals = array_values($diff);
+$values = new Clause\Values([
+	new Argument\Value($vals[0]),
+	new Argument\Value($vals[1]),
+]);
+$keys = array_keys($diff);
+$fields = new Clause\Fields([
+	new Argument\Field(new Argument\Column($keys[0])),
+	new Argument\Field(new Argument\Column($keys[1])),
+]);
+$statement = $query->insert($table, $values, $fields);
+
+// Save client into database table
+$driver->query($statement);
+$state->flush($client);
+
+// Prepare select statement
+$fields = new Clause\Fields([
+	new Argument\Field(new Argument\Column(Client::name())),
+	new Argument\Field(new Argument\Column(Client::age())),
+]);
+$from = new Clause\From(
+	new Argument\Table(Client::table())
+);
+$filter = new Clause\Filter(
+	new Condition\Equal(
+		new Argument\Column(Client::id()),
+		new Argument\Value(123)
+	)
+);
+$statement = $query->select($fields, $from, $filter);
+
+// Get client with id = 123
+$client = $driver->fetchClass($statement, "Client");
+
+// Prepare DELETE statement
+$table = new Clause\From(
+	new Argument\Table(Client::table())
+);
+$filter = new Clause\Filter(
+	new Condition\Equal(
+		new Argument\Column(Client::id()),
+		new Argument\Value($client->id)
+	)
+);
+$statement = $query->delete($table, $filter);
+
+// Remove current client from DB
+$driver->execute($statement);
+```
+
+# Tests
+
+All tests are located in directory `tests/` in source directory. They have identical namespace structure with main namespace `RsORMTest`.
+
+To run the tests:
+
+```
+cd tests/
+phpunit
+```
+
+or
+
+```
+phpunit --configuration tests/phpunit.xml
+```
+
+# License
+
+license text
+
+# Documentation
+
+[**State\Engine**](#stateengine)
+[**State\Entity**](#stateentity)
+[**Driver\MySQL**](#drivermysql)
+[**Engine\MySQL**](#enginemysql)
+[**MySQL\Argument**](#mysqlargument)
+[**MySQL\Operator**](#mysqloperator)
+[**MySQL\Condition**](#mysqlcondition)
+[**MySQL\Clause**](#mysqlclause)
+[**MySQL\Statement**](#mysqlstatement)
 
 ## State\Engine
+
+`RsORM\State\Engine`
 
 All entities should be extended from ```RsORM\State\Entity``` which encapsulates object state data and get/set methods. All actions are going in ```RsORM\State\Engine```.
 Engine has several methods: ```isNew```, ```isChanged```, ```diff```. Diff method returns array of changed fields with values.
@@ -21,7 +154,7 @@ class Project extends State\Entity {
     public $name;
     public $user_id;
 }
-$engine = new State\Engine();
+$engine = State\Engine::getInstance();
 
 // You could create objects as usual
 $project = new Project();
@@ -46,6 +179,8 @@ $diff = $engine->diff($project); // []
 ```
 
 ## State\Entity
+
+`RsORM\State\Entity`
 
 ### Examples:
 
@@ -80,6 +215,8 @@ $preparedQuery->values(); [123]
 
 ## Driver\MySQL
 
+`RsORM\Driver\MySQL`
+
 PDO abstract layer. Connection is initialized by first prepare / execute.
 
  - ```__construct(string $host, int $port, string $user, string $pass, string $dbname)``` All parameters are optional.
@@ -112,9 +249,13 @@ $dbh->getLastInsertId(); // return last insert ID
 
 ## Query\Engine
 
+`RsORM\Query\Engine`
+
 Engine builds SQL statements by using MySQL class.
 
 ## Engine\MySQL
+
+`RsORM\Query\Engine\MySQL`
 
 MySQL driver builds valid MySQL statements.
 
@@ -138,6 +279,8 @@ $stmt->values(); // [0]
 ```
 
 ## MySQL\Argument
+
+`RsORM\Query\Engine\MySQL\Argument`
 
 Argument is a basic entity of MySQL statement. There are several types of them:
 
@@ -189,6 +332,8 @@ $arg->prepare(); // `pass` AS `password`
 
 ## MySQL\Operator
 
+`RsORM\Query\Engine\MySQL\Operator`
+
 Operator is a basic expression in SQL syntax. Operators implement ```MultiValueInterface```. There are several types of them:
 
 - Unary operators - operators with only one operand
@@ -214,6 +359,8 @@ $operator->values(); // [123]
 ```
 
 ## MySQL\Condition
+
+`RsORM\Query\Engine\MySQL\Condition`
 
 Logical expressions consist of operators. Logical expressions are the part of the MySQL engine for query builder. Conditions are built from logical operators and arguments.
 
@@ -264,6 +411,8 @@ $expr->values(); // [1, 10, 100]
 ```
 
 ## MySQL\Clause
+
+`RsORM\Query\Engine\MySQL\Clause`
 
 Clause is a part of SQL-statement. It builds from arguments, operators, conditions, SQL-expressions. All clauses implement ```MultiValueInterface```.
 
@@ -381,6 +530,8 @@ $limit->values(); // [5, 10]
 ```
 
 ## MySQL\Statement
+
+`RsORM\Query\Engine\MySQL\Statement`
 
 SQL statements implement ```MultiValueInterface``` and are built from ```MySQL\Clause``` objects.
 
