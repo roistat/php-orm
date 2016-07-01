@@ -1,6 +1,6 @@
 # RsORM
 
-[![Build Status](https://travis-ci.org/roistat/orm.svg?branch=master)](https://travis-ci.org/roistat/orm)
+[![Build Status](https://travis-ci.org/roistat/php-orm.svg?branch=master)](https://travis-ci.org/roistat/php-orm)
 
 [**Getting started**](#getting-started)  
 [**Documentation**](#documentation)  
