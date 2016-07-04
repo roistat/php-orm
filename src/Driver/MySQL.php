@@ -150,7 +150,10 @@ class MySQL {
     public function getLastInsertId() {
         return $this->dbh()->lastInsertId();
     }
-    
+
+    /**
+     * @throws Connection\Fail
+     */
     private function _init() {
         $dsn = "mysql:host={$this->_host};port={$this->_port};";
         if ($this->_dbname !== null) {
@@ -161,7 +164,7 @@ class MySQL {
             $this->_dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->_dbh->exec("set names {$this->_charset}");
         } catch (\PDOException $e) {
-            new Connection\Fail("Database error: {$e->getMessage()}");
+            throw new Connection\Fail("Database error: {$e->getMessage()}");
         }
     }
     
@@ -207,6 +210,5 @@ class MySQL {
         foreach ($objects as $object) {
             $this->_flushObject($object);
         }
-    }
-    
+    }    
 }
