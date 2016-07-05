@@ -10,6 +10,7 @@ use RsORM\Query\Engine\MySQL\Condition;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL\Statement;
+use RsORM\Query\Engine\MySQL\Flag;
 use RsORMTest;
 
 class InsertTest extends RsORMTest\Base {
@@ -26,8 +27,12 @@ class InsertTest extends RsORMTest\Base {
             new Argument\Value("Mike"),
             new Argument\NullValue(),
         ]);
-        $stmt = new Statement\Insert($table, $values, $fields);
-        $this->assertSame("INSERT INTO `table` (`id`, `name`, `qwe`) VALUES (?, ?, NULL)", $stmt->prepare());
+        $flags = new Clause\Flags([
+            new Flag\Delayed(),
+            new Flag\Ignore(),
+        ]);
+        $stmt = new Statement\Insert($table, $values, $fields, $flags);
+        $this->assertSame("INSERT DELAYED IGNORE INTO `table` (`id`, `name`, `qwe`) VALUES (?, ?, NULL)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     

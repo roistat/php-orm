@@ -20,8 +20,9 @@ class ValuesTest extends RsORMTest\Base {
             new Argument\Value(true),
             new Argument\Value(false),
             new Argument\NullValue(),
+            new Argument\DefaultValue(),
         ]);
-        $this->assertSame("VALUES (?, ?, ?, ?, ?, NULL)", $values->prepare());
+        $this->assertSame("VALUES (?, ?, ?, ?, ?, NULL, DEFAULT)", $values->prepare());
         $this->assertSame([123, 3.14, "qwe", 1, 0], $values->values());
     }
     
