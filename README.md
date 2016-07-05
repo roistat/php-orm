@@ -395,6 +395,16 @@ $func = new Func\Concat([
 ]);
 $func->prepare(); // CONCAT(?, `infix`, ?)
 $func->values(); // ["qwe", "rty"]
+
+// Select with function example
+$func = new Func\Concat([
+	new Argument\Value("prefix"),
+	new Argument\Value("postfix"),
+]);
+$fields = new Clause\Fields([$func]);
+$stmt = Query\Engine::mysql()->select($fields);
+$stmt->prepare(); // SELECT CONCAT(?, ?)
+$stmt->values(); // ["prefix", "postfix"]
 ```
 
 ### MySQL\Flag
