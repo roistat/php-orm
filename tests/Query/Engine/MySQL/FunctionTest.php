@@ -20,13 +20,8 @@ class FunctionTest extends RsORMTest\Base {
     }
     
     public function testCountDistinct() {
-        $fields = new Clause\Fields([
-            new Argument\Field(new Argument\Column("id")),
-            new Argument\Field(new Argument\Column("name")),
-        ]);
-        $distinct = new Clause\Distinct($fields);
-        $func = new Func\Count($distinct);
-        $this->assertSame("COUNT(DISTINCT `id`, `name`)", $func->prepare());
+        $func = new Func\Count(new Argument\Column("id"), true);
+        $this->assertSame("COUNT(DISTINCT `id`)", $func->prepare());
         $this->assertSame([], $func->values());
     }
     
@@ -36,9 +31,21 @@ class FunctionTest extends RsORMTest\Base {
         $this->assertSame([], $func->values());
     }
     
+    public function testAvgDisinct() {
+        $func = new Func\Avg(new Argument\Column("balance"), true);
+        $this->assertSame("AVG(DISTINCT `balance`)", $func->prepare());
+        $this->assertSame([], $func->values());
+    }
+    
     public function testSum() {
         $func = new Func\Sum(new Argument\Column("balance"));
         $this->assertSame("SUM(`balance`)", $func->prepare());
+        $this->assertSame([], $func->values());
+    }
+    
+    public function testSumDistinct() {
+        $func = new Func\Sum(new Argument\Column("balance"), true);
+        $this->assertSame("SUM(DISTINCT `balance`)", $func->prepare());
         $this->assertSame([], $func->values());
     }
     

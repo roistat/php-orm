@@ -6,7 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL\Func;
 
-class Count extends AbstractUnaryFunction {
+class Count extends AbstractDistinctFunction {
     
     /**
      * @return string

@@ -6,7 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL\Func;
 
-class Sum extends AbstractUnaryFunction {
+class Sum extends AbstractDistinctFunction {
     
     /**
      * @return string

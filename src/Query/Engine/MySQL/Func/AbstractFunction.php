@@ -20,7 +20,14 @@ abstract class AbstractFunction extends MySQL\AbstractExpression {
      */
     public function prepare() {
         $preparedArguments = implode(", ", $this->_prepareArguments());
-        return "{$this->_function()}({$preparedArguments})";
+        return "{$this->_function()}({$this->_prefix()}{$preparedArguments})";
+    }
+    
+    /**
+     * @return string
+     */
+    protected function _prefix() {
+        return "";
     }
     
 }

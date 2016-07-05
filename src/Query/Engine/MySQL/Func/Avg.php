@@ -6,7 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL\Func;
 
-class Avg extends AbstractUnaryFunction {
+class Avg extends AbstractDistinctFunction {
     
     /**
      * @return string
