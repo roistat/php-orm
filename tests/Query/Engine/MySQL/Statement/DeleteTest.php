@@ -10,6 +10,7 @@ use RsORM\Query\Engine\MySQL\Condition;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL\Statement;
+use RsORM\Query\Engine\MySQL\Flag;
 use RsORMTest;
 
 class DeleteTest extends RsORMTest\Base {
@@ -22,8 +23,13 @@ class DeleteTest extends RsORMTest\Base {
         ]));
         $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
         $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
-        $stmt = new Statement\Delete($table, $filter, $order, $limit);
-        $this->assertSame("DELETE FROM `table` WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
+        $flags = new Clause\Flags([
+            new Flag\LowPriority(),
+            new Flag\Quick(),
+            new Flag\Ignore(),
+        ]);
+        $stmt = new Statement\Delete($table, $filter, $order, $limit, $flags);
+        $this->assertSame("DELETE LOW_PRIORITY QUICK IGNORE FROM `table` WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([10, 20, 5, 10], $stmt->values());
     }
     

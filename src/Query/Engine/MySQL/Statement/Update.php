@@ -16,9 +16,10 @@ class Update extends AbstractStatement {
      * @param Clause\Filter $filter
      * @param Clause\Order $order
      * @param Clause\Limit $limit
+     * @param Clause\Flags $flags
      */
-    public function __construct(Clause\Target $table, Clause\Set $set, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null) {
-        parent::__construct([$table, $set, $filter, $order, $limit]);
+    public function __construct(Clause\Target $table, Clause\Set $set, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Flags $flags = null) {
+        parent::__construct([$flags, $table, $set, $filter, $order, $limit]);
     }
     
     /**

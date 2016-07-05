@@ -11,6 +11,7 @@ use RsORM\Query\Engine\MySQL\Operator;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL\Statement;
+use RsORM\Query\Engine\MySQL\Flag;
 use RsORMTest;
 
 class UpdateTest extends RsORMTest\Base {
@@ -28,8 +29,12 @@ class UpdateTest extends RsORMTest\Base {
         ]));
         $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
         $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
-        $stmt = new Statement\Update($table, $set, $filter, $order, $limit);
-        $this->assertSame("UPDATE `table` SET `id` = ?, `name` = ?, `qwerty` = NULL WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
+        $flags = new Clause\Flags([
+            new Flag\LowPriority(),
+            new Flag\Ignore(),
+        ]);
+        $stmt = new Statement\Update($table, $set, $filter, $order, $limit, $flags);
+        $this->assertSame("UPDATE LOW_PRIORITY IGNORE `table` SET `id` = ?, `name` = ?, `qwerty` = NULL WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([1, "Mike", 10, 20, 5, 10], $stmt->values());
     }
     

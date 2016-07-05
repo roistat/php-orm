@@ -10,6 +10,7 @@ use RsORM\Query\Engine\MySQL\Condition;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL\Statement;
+use RsORM\Query\Engine\MySQL\Flag;
 use RsORMTest;
 
 class SelectTest extends RsORMTest\Base {
@@ -28,8 +29,13 @@ class SelectTest extends RsORMTest\Base {
         $having = new Clause\Having(new Condition\Equal(new Argument\Column("alive"), new Argument\Value(true)));
         $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
         $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
-        $stmt = new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit);
-        $this->assertSame("SELECT `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
+        $flags = new Clause\Flags([
+            new Flag\Distinct(),
+            new Flag\HighPriority(),
+            new Flag\SQLNoCache(),
+        ]);
+        $stmt = new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit, $flags);
+        $this->assertSame("SELECT DISTINCT HIGH_PRIORITY SQL_NO_CACHE `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([10, 20, 1, 5, 10], $stmt->values());
     }
     
