@@ -59,7 +59,7 @@ $values = new Clause\Values([
 	new Argument\Value($vals[1]),
 ]);
 $keys = array_keys($diff);
-$fields = new Clause\Fields([
+$fields = new Clause\Objects([
 	new Argument\Field(new Argument\Column($keys[0])),
 	new Argument\Field(new Argument\Column($keys[1])),
 ]);
@@ -70,7 +70,7 @@ $driver->query($statement);
 $state->flush($client);
 
 // Prepare select statement
-$fields = new Clause\Fields([
+$fields = new Clause\Objects([
 	new Argument\Field(new Argument\Column(Client::name())),
 	new Argument\Field(new Argument\Column(Client::age())),
 ]);
@@ -205,7 +205,7 @@ MySQL driver builds valid MySQL statements.
 #### Example
 
 ```php
-$fields = new Clause\Fields([
+$fields = new Clause\Objects([
 	new Argument\Field(new Argument\Column("id")),
 	new Argument\Field(new Argument\Column("name")),
 	new Argument\Field(new Argument\Column("password")),
@@ -401,7 +401,7 @@ $func = new Func\Concat([
 	new Argument\Value("prefix"),
 	new Argument\Value("postfix"),
 ]);
-$fields = new Clause\Fields([$func]);
+$fields = new Clause\Objects([$func]);
 $stmt = Query\Engine::mysql()->select($fields);
 $stmt->prepare(); // SELECT CONCAT(?, ?)
 $stmt->values(); // ["prefix", "postfix"]
@@ -445,8 +445,8 @@ Clause is a part of SQL-statement. It builds from arguments, operators, conditio
 #### Examples
 
 ```php
-// Fields
-$fields = new Clause\Fields([
+// Objects
+$fields = new Clause\Objects([
 	new Argument\Field(new Argument\Column("id")),
 	new Argument\Field(new Argument\Column("name")),
 ]);
@@ -570,7 +570,7 @@ SQL statements implement `MultiValueInterface` and are built from `MySQL\Clause`
 
 ```php
 Select::__construct(
-	Clause\Fields $fields,
+	Clause\Objects $fields,
 	Clause\From $table = null,
 	Clause\Filter $filter = null,
 	Clause\Group $group = null,
@@ -636,7 +636,7 @@ Update::__construct(
 
 ```php
 // Select
-$fields = new Clause\Fields([
+$fields = new Clause\Objects([
 	new Argument\Field(new Argument\Column("id")),
 	new Argument\Field(new Argument\Column("name")),
 ]);

@@ -8,13 +8,20 @@ namespace RsORM\Query\Engine\MySQL\Clause;
 
 use RsORM\Query\Engine\MySQL\Argument;
 
-class InsertFields extends Fields {
+class InsertFields extends AbstractClause {
+    
+    /**
+     * @param Argument\Field[] $fields
+     */
+    public function __construct(array $fields) {
+        parent::__construct($fields);
+    }
     
     /**
      * @return string
      */
     public function prepare() {
-        return "(" . parent::prepare() . ")";
+        return "(" . implode(", ", $this->_prepareArguments()) . ")";
     }
     
 }

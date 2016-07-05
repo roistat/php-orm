@@ -19,7 +19,7 @@ class FunctionTest extends RsORMTest\Base {
             new Argument\Value("prefix"),
             new Argument\Value("postfix"),
         ]);
-        $fields = new Clause\Fields([$func]);
+        $fields = new Clause\Objects([$func]);
         $stmt = Query\Engine::mysql()->select($fields);
         $this->assertSame("SELECT CONCAT(?, ?)", $stmt->prepare());
         $this->assertSame(["prefix", "postfix"], $stmt->values());

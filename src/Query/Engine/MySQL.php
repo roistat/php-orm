@@ -11,17 +11,18 @@ use RsORM\Query\Engine\MySQL\Statement;
 class MySQL {
     
     /**
-     * @param Clause\Fields $fields
+     * @param Clause\Objects $objects
      * @param Clause\From $table
      * @param Clause\Filter $filter
      * @param Clause\Group $group
      * @param Clause\Having $having
      * @param Clause\Order $order
      * @param Clause\Limit $limit
+     * @param Clause\Flags $flags
      * @return Statement\Select
      */
-    public function select(Clause\Fields $fields, Clause\From $table = null, Clause\Filter $filter = null, Clause\Group $group = null, Clause\Having $having = null, Clause\Order $order = null, Clause\Limit $limit = null) {
-        return new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit);
+    public function select(Clause\Objects $objects, Clause\From $table = null, Clause\Filter $filter = null, Clause\Group $group = null, Clause\Having $having = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Flags $flags = null) {
+        return new Statement\Select($objects, $table, $filter, $group, $having, $order, $limit, $flags);
     }
     
     /**
@@ -38,10 +39,10 @@ class MySQL {
     /**
      * @param Clause\Into $table
      * @param Clause\Values $values
-     * @param Clause\Fields $fields
+     * @param Clause\InsertFields $fields
      * @return Statement\Insert
      */
-    public function insert(Clause\Into $table, Clause\Values $values, Clause\Fields $fields = null) {
+    public function insert(Clause\Into $table, Clause\Values $values, Clause\InsertFields $fields = null) {
         return new Statement\Insert($table, $values, $fields);
     }
     
