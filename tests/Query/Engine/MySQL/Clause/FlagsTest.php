@@ -14,9 +14,10 @@ class FlagsTest extends RsORMTest\Base {
 
     public function test() {
         $flags = new Clause\Flags([
+            new Flag\HighPriority(),
             new Flag\Distinct(),
         ]);
-        $this->assertSame("DISTINCT", $flags->prepare());
+        $this->assertSame("HIGH_PRIORITY DISTINCT", $flags->prepare());
         $this->assertSame([], $flags->values());
     }
     
