@@ -183,6 +183,8 @@ $diff = $engine->diff($project); // []
 [**MySQL\Argument**](#mysqlargument)  
 [**MySQL\Operator**](#mysqloperator)  
 [**MySQL\Condition**](#mysqlcondition)  
+[**MySQL\Func**](#mysqlfunc)  
+[**MySQL\Flag**](#mysqlflag)  
 [**MySQL\Clause**](#mysqlclause)  
 [**MySQL\Statement**](#mysqlstatement)
 
@@ -228,6 +230,7 @@ Argument is a basic entity of MySQL statement. There are several types of them:
 - *Any* build SQL identifier for any field
 - *Value* build value object in SQL-statement, as ?placeholder
 - *NullValue* build NULL object in SQL-statement
+- *DefaultValue* build DEFAULT object in SQL-statement
 - *Table* build object of table
 - *Column* build object of column
 - *Alias* build object of alias for table or column objects
@@ -250,6 +253,10 @@ $arg->value(); // 123
 // NullValue
 $arg = new Argument\NullValue();
 $arg->prepare(); // NULL
+
+// DefaultValue
+$arg = new Argument\DefaultValue();
+$arg->prepare(); // DEFAULT
 
 // Column
 $arg = new Argument\Column("id");
@@ -349,6 +356,74 @@ $expr->values(); // [10, 20]
 $expr = new Condition\In(new Argument\Column("id"), [new Argument\Value(1), new Argument\Value(10), new Argument\Value(100)]);
 $expr->prepare(); // `id` IN (?, ?, ?)
 $expr->values(); // [1, 10, 100]
+```
+
+### MySQL\Func
+
+Namespace: `RsORM\Query\Engine\MySQL\Func`
+
+Predefined MySQL functions are part of various MySQL statements.
+
+Functions with optional distinct parameter:
+
+ - Avg
+ - Count
+ - Sum
+
+Functions with multiple parameters:
+
+ - Concat
+
+#### Examples
+
+```php
+// COUNT without DISTINCT
+$func = new Func\Count(new Argument\Column("id"));
+$func->prepare(); // COUNT(`id`)
+$func->values(); // []
+
+// COUNT with DISTINCT
+$func = new Func\Count(new Argument\Column("id"), true);
+$func->prepare(); // COUNT(DISTINCT `id`)
+$func->values(); // []
+
+// CONCAT
+$func = new Func\Concat([
+	new Argument\Value("qwe"),
+	new Argument\Column("infix"),
+	new Argument\Value("rty"),
+]);
+$func->prepare(); // CONCAT(?, `infix`, ?)
+$func->values(); // ["qwe", "rty"]
+```
+
+### MySQL\Flag
+
+Namespace: `RsORM\Query\Engine\MySQL\Flag`
+
+Flag is a part of clause Flags, which is part of different SQL-statements. All flags implement basic `ObjectInterface` and have only one public method `prepare`. Constructor has no parameters. Here is all available flags:
+
+* All
+* Delayed
+* Distinct
+* DistinctRow
+* HighPriority
+* Ignore
+* LowPriority
+* Quick
+* SQLBigResult
+* SQLBufferResult
+* SQLCache
+* SQLCalcFoundRows
+* SQLNoCache
+* SQLSmallResult
+* StraightJoin
+
+#### Examples
+
+```php
+$flag = new Flag\SQLSmallResult();
+$flag->prepare(); // SQL_SMALL_RESULT
 ```
 
 ### MySQL\Clause
@@ -468,6 +543,13 @@ $limit = new Clause\Limit(
 );
 $limit->prepare(); // LIMIT ?, ?
 $limit->values(); // [5, 10]
+
+// Flags
+$flags = new Clause\Flags([
+	new Flag\Ignore(),
+	new Flag\SQLNoCache(),
+]);
+$flags->prepare(); // IGNORE SQL_NO_CACHE
 ```
 
 ### MySQL\Statement
@@ -484,7 +566,8 @@ Select::__construct(
 	Clause\Group $group = null,
 	Clause\Having $having = null,
 	Clause\Order $order = null,
-	Clause\Limit $limit = null
+	Clause\Limit $limit = null,
+	Clause\Flags $flags = null
 );
 ```
 
@@ -495,30 +578,34 @@ Select::__construct(
 - `$having` - having condition
 - `$order` - ordering (it can be asc or desc, asc by default)
 - `$limit` - limiting
+- `$flags` - flags in the beginning of the statement
 
 ```php
 Delete::__construct(
 	Clause\From $table,
 	Clause\Filter $filter = null,
 	Clause\Order $order = null,
-	Clause\Limit $limit = null
+	Clause\Limit $limit = null,
+	Clause\Flags $flags = null
 );
 ```
 
 - `$table` - required parameter
-- `$filter`, `$order`, `$limit` - are the same as in select statement
+- `$filter`, `$order`, `$limit`, `$flags` - are the same as in select statement
 
 ```php
 Insert::__construct(
 	Clause\Into $table,
 	Clause\Values $values,
-	Clause\Fields $fields = null
+	Clause\Fields $fields = null,
+	Clause\Flags $flags = null
 );
 ```
 
 - `$table` - required parameter
 - `$values` - required parameter, set values
 - `$fields` - optional parameter, set of inserted fields
+- `$flags` - flags in the beginning of the statement
 
 ```php
 Update::__construct(
@@ -526,13 +613,14 @@ Update::__construct(
 	Clause\Set $set,
 	Clause\Filter $filter = null,
 	Clause\Order $order = null,
-	Clause\Limit $limit = null
+	Clause\Limit $limit = null,
+	Clause\Flags $flags = null
 );
 ```
 
 - `$table` - required parameter
 - `$set` - also required parameter, set of key-value
-- `$filter`, `$order`, `$limit` - are the same as in select statement
+- `$filter`, `$order`, `$limit`, `$flags` - are the same as in select statement
 
 #### Examples
 
@@ -561,8 +649,13 @@ $having = new Clause\Having(
 );
 $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
 $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
+$flags = new Clause\Flags([
+	new Flag\Distinct(),
+	new Flag\HighPriority(),
+	new Flag\SQLNoCache(),
+]);
 $stmt = new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit);
-$stmt->prepare(); // SELECT `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?
+$stmt->prepare(); // SELECT DISTINCT HIGH_PRIORITY SQL_NO_CACHE `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?
 $stmt->values(); // [10, 20, 1, 5, 10]
 
 // Delete
@@ -573,8 +666,13 @@ $filter = new Clause\Filter(new Condition\LogicalOr([
 ]));
 $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
 $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
+$flags = new Clause\Flags([
+	new Flag\LowPriority(),
+	new Flag\Quick(),
+	new Flag\Ignore(),
+]);
 $stmt = new Statement\Delete($table, $filter, $order, $limit);
-$stmt->prepare(); // DELETE FROM `table` WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
+$stmt->prepare(); // DELETE LOW_PRIORITY QUICK IGNORE FROM `table` WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
 $stmt->values(); // [10, 20, 5, 10]
 
 // Insert
@@ -589,8 +687,12 @@ $values = new Clause\Values([
 	new Argument\Value("Mike"),
 	new Argument\NullValue(),
 ]);
+$flags = new Clause\Flags([
+	new Flag\Delayed(),
+	new Flag\Ignore(),
+]);
 $stmt = new Statement\Insert($table, $values, $fields);
-$stmt->prepare(); // INSERT INTO `table` (`id`, `name`, `qwe`) VALUES (?, ?, NULL)
+$stmt->prepare(); // INSERT DELAYED IGNORE INTO `table` (`id`, `name`, `qwe`) VALUES (?, ?, NULL)
 $stmt->values(); // [1, "Mike"]
 
 // Update
@@ -606,8 +708,12 @@ $filter = new Clause\Filter(new Condition\LogicalOr([
 ]));
 $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
 $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
+$flags = new Clause\Flags([
+	new Flag\LowPriority(),
+	new Flag\Ignore(),
+]);
 $stmt = new Statement\Update($table, $set, $filter, $order, $limit);
-$stmt->prepare(); // "UPDATE `table` SET `id` = ?, `name` = ?, `qwerty` = NULL WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
+$stmt->prepare(); // "UPDATE LOW_PRIORITY IGNORE `table` SET `id` = ?, `name` = ?, `qwerty` = NULL WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
 $stmt->values(); // [1, "Mike", 10, 20, 5, 10]
 ```
 
