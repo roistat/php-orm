@@ -10,8 +10,20 @@ use RsORMTest;
 use RsORM\Query\Engine\MySQL\Func;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
+use RsORM\Query;
 
 class FunctionTest extends RsORMTest\Base {
+    
+    public function test() {
+        $func = new Func\Concat([
+            new Argument\Value("prefix"),
+            new Argument\Value("postfix"),
+        ]);
+        $fields = new Clause\Objects([$func]);
+        $stmt = Query\Engine::mysql()->select($fields);
+        $this->assertSame("SELECT CONCAT(?, ?)", $stmt->prepare());
+        $this->assertSame(["prefix", "postfix"], $stmt->values());
+    }
     
     public function testCount() {
         $func = new Func\Count(new Argument\Any());

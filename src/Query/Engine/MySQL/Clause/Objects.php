@@ -6,15 +6,15 @@
 
 namespace RsORM\Query\Engine\MySQL\Clause;
 
-use RsORM\Query\Engine\MySQL\Argument;
+use RsORM\Query\Engine\MySQL;
 
-class Fields extends AbstractClause {
+class Objects extends AbstractClause {
     
     /**
-     * @param Argument\Field[] $fields
+     * @param MySQL\ObjectInterface[] $objects
      */
-    public function __construct(array $fields) {
-        parent::__construct($fields);
+    public function __construct(array $objects) {
+        parent::__construct($objects);
     }
     
     /**

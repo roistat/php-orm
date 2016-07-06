@@ -16,7 +16,7 @@ use RsORMTest;
 class SelectTest extends RsORMTest\Base {
 
     public function test() {
-        $fields = new Clause\Fields([
+        $objects = new Clause\Objects([
             new Argument\Field(new Argument\Column("id")),
             new Argument\Field(new Argument\Column("name")),
         ]);
@@ -34,7 +34,7 @@ class SelectTest extends RsORMTest\Base {
             new Flag\HighPriority(),
             new Flag\SQLNoCache(),
         ]);
-        $stmt = new Statement\Select($fields, $table, $filter, $group, $having, $order, $limit, $flags);
+        $stmt = new Statement\Select($objects, $table, $filter, $group, $having, $order, $limit, $flags);
         $this->assertSame("SELECT DISTINCT HIGH_PRIORITY SQL_NO_CACHE `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([10, 20, 1, 5, 10], $stmt->values());
     }
