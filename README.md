@@ -453,8 +453,8 @@ $fields = new Clause\Objects([
 $fields->prepare(); // `id`, `name`
 $fields->values(); // []
 
-// InsertFields
-$fields = new Clause\InsertFields([
+// Fields
+$fields = new Clause\Fields([
 	new Argument\Field(new Argument\Column("id")),
 	new Argument\Field(new Argument\Column("name")),
 ]);
@@ -686,7 +686,7 @@ $stmt->prepare(); // DELETE LOW_PRIORITY QUICK IGNORE FROM `table` WHERE (`id` =
 $stmt->values(); // [10, 20, 5, 10]
 
 // Insert
-$fields = new Clause\InsertFields([
+$fields = new Clause\Fields([
 	new Argument\Column("id"),
 	new Argument\Column("name"),
 	new Argument\Column("qwe"),

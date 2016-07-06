@@ -39,10 +39,10 @@ class MySQL {
     /**
      * @param Clause\Into $table
      * @param Clause\Values $values
-     * @param Clause\InsertFields $fields
+     * @param Clause\Fields $fields
      * @return Statement\Insert
      */
-    public function insert(Clause\Into $table, Clause\Values $values, Clause\InsertFields $fields = null) {
+    public function insert(Clause\Into $table, Clause\Values $values, Clause\Fields $fields = null) {
         return new Statement\Insert($table, $values, $fields);
     }
     
