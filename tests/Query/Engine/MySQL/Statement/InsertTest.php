@@ -16,7 +16,7 @@ use RsORMTest;
 class InsertTest extends RsORMTest\Base {
 
     public function test() {
-        $fields = new Clause\InsertFields([
+        $fields = new Clause\Fields([
             new Argument\Column("id"),
             new Argument\Column("name"),
             new Argument\Column("qwe"),

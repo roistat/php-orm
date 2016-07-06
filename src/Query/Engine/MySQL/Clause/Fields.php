@@ -8,7 +8,7 @@ namespace RsORM\Query\Engine\MySQL\Clause;
 
 use RsORM\Query\Engine\MySQL\Argument;
 
-class InsertFields extends AbstractClause {
+class Fields extends AbstractClause {
     
     /**
      * @param Argument\Field[] $fields

@@ -10,10 +10,10 @@ use RsORMTest;
 use RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL\Argument;
 
-class InsertFieldsTest extends RsORMTest\Base {
+class FieldsTest extends RsORMTest\Base {
 
     public function test() {
-        $fields = new Clause\InsertFields([
+        $fields = new Clause\Fields([
             new Argument\Column("id"),
             new Argument\Column("name"),
         ]);
