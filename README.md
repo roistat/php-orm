@@ -268,7 +268,7 @@ Syntax: `new Operator($operand)`
 Syntax: `new Operator($operand1, $operand2)`
 - Multiple operators - operators with one or more operands
 Syntax: `new Operator([$operand1, $operand2, ...])`
-- Custom operators - operators with non-standart structure
+- Custom operators - operators with non-standard structure
 
 Usually operators are the part of filter entity in SQL statements. That`s why, the most part of them are located in the `MySQL\Condition` namespace. Non-logic operators are located here, in `MySQL\Operator`.
 
@@ -703,6 +703,21 @@ $flags = new Clause\Flags([
 $stmt = new Statement\Update($table, $set, $filter, $order, $limit);
 $stmt->prepare(); // "UPDATE LOW_PRIORITY IGNORE `table` SET `id` = ?, `name` = ?, `qwerty` = NULL WHERE (`id` = ?) OR (`id` = ?) ORDER BY `id` DESC LIMIT ?, ?
 $stmt->values(); // [1, "Mike", 10, 20, 5, 10]
+```
+
+### MySQL\Statement\Builder
+
+Statement builder is used to build statements with ease
+
+#### Examples
+
+```php
+$driver = new Driver\Mysql();
+$builder = Query\Engine\MySQL\Statement\Builder::getInstance();
+$selectFirstTen = $builder->select()->from('user')->limit(10)->build();
+$firstTenUsers = $driver->fetchClass($selectFirstTen, 'User');
+$selectSecondTen = $builder->limit(10, 10)->build();
+$tenToTwentyUsers = $driver->fetchClass($selectSecondTen, 'User');
 ```
 
 ## Driver

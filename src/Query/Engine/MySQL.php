@@ -57,5 +57,4 @@ class MySQL {
     public function update(Clause\Target $table, Clause\Set $set, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null) {
         return new Statement\Update($table, $set, $filter, $order, $limit);
     }
-    
 }
