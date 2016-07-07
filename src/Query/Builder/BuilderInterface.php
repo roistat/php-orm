@@ -13,5 +13,5 @@ interface BuilderInterface {
     /**
      * @return MySQL\AbstractExpression
      */
-    abstract public function build();
+    public function build();
 }

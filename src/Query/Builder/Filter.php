@@ -9,18 +9,19 @@ namespace RsORM\Query\Builder;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Condition;
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Operator;
 
 class Filter implements BuilderInterface {
     
     /**
-     * @var array
+     * @var Operator\AbstractOperator[]
      */
-    private $_stack = [[]];
+    private $_conditions = [];
     
     /**
-     * @var int
+     * @var Filter[]
      */
-    private $_pos = 0;
+    private $_filters = [];
     
     /**
      * @param string $column
@@ -32,9 +33,9 @@ class Filter implements BuilderInterface {
         $arg1 = new Argument\Column($column);
         $arg2 = new Argument\Value($expected);
         if ($is) {
-            $this->_stack[$this->_pos][] = new Condition\Equal($arg1, $arg2);
+            $this->_conditions[] = new Condition\Equal($arg1, $arg2);
         } else {
-            $this->_stack[$this->_pos][] = new Condition\NotEqual($arg1, $arg2);
+            $this->_conditions[] = new Condition\NotEqual($arg1, $arg2);
         }
         return $this;
     }
@@ -42,9 +43,8 @@ class Filter implements BuilderInterface {
     /**
      * @return Filter
      */
-    public function _or() {
-        $this->_stack[] = [];
-        $this->_pos++;
+    public function logicOr(Filter $filter) {
+        $this->_filters[] = $filter;
         return $this;
     }
     
@@ -52,18 +52,19 @@ class Filter implements BuilderInterface {
      * @return MySQL\ObjectInterface
      */
     public function build() {
-        $stack = [];
-        foreach ($this->_stack as $conditions) {
-            if (count($conditions) === 1) {
-                $stack[] = $conditions[0];
-            } elseif (count($conditions) > 1) {
-                $stack[] = new Condition\LogicalAnd($conditions);
-            }
+        $filters = [];
+        if (count($this->_conditions) === 1) {
+            $filters[] = $this->_conditions[0];
+        } elseif(count($this->_conditions) > 1) {
+            $filters[] = new Condition\LogicalAnd($this->_conditions);
         }
-        if (count($stack) === 1) {
-            return $stack[0];
-        } elseif (count($stack) > 1) {
-            return new Condition\LogicalOr($stack);
+        foreach ($this->_filters as $filter) {
+            $filters[] = $filter->build();
+        }
+        if (count($filters) === 1) {
+            return $filters[0];
+        } elseif (count($filters) > 1) {
+            return new Condition\LogicalOr($filters);
         } else {
             return null;
         }
