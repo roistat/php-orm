@@ -8,57 +8,66 @@ namespace RsORM\Query\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL\Argument;
-use RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Func;
+use RsORM\Query\Builder\Clause;
+use RsORM\Query\Engine\MySQL\Flag;
 
 class Select implements BuilderInterface {
     
     /**
-     * @var MySQL\ObjectInterface[]
+     * @var Clause\Objects
      */
     private $_objects;
     
     /**
-     * @var Clause\From
+     * @var Clause\Target
      */
-    private $_table;
+    private $_target;
     
     /**
-     * @var Filter
+     * @var Clause\Condition
      */
-    private $_filter;
+    private $_where;
     
     /**
-     * @var Filter
+     * @var Clause\Condition
      */
     private $_having;
     
     /**
-     * @var Limit
+     * @var Clause\Limit
      */
     private $_limit;
     
     /**
-     * @var Order
+     * @var Clause\Order
      */
     private $_order;
     
     /**
-     * @var Group
+     * @var Clause\Group
      */
     private $_group;
+    
+    /**
+     * @var Clause\Flags
+     */
+    private $_flags;
     
     /**
      * @param string[] $objects
      */
     public function __construct(array $objects = []) {
-        $this->_group = new Group();
-        $this->_limit = new Limit();
-        $this->_order = new Order();
-        foreach ($objects as $object) {
-            $this->_objects[] = new Argument\Column($object);
-        }
+        $this->_objects = new Clause\Objects();
+        $this->_target = new Clause\Target(Clause\Target::FROM);
+        $this->_where = new Clause\Condition(Clause\Condition::WHERE);
+        $this->_having = new Clause\Condition(Clause\Condition::HAVING);
+        $this->_group = new Clause\Group();
+        $this->_limit = new Clause\Limit();
+        $this->_order = new Clause\Order();
+        $this->_flags = new Clause\Flags();
+        $this->_objects->set($objects);
     }
     
     /**
@@ -71,7 +80,7 @@ class Select implements BuilderInterface {
         $column = new Argument\Column($columnName);
         $alias = new Argument\Alias($aliasName);
         $func = new Func\Count($column, $distinct);
-        $this->_objects[] = new Argument\Field($func, $alias);
+        $this->_objects->set([new Argument\Field($func, $alias)]);
         return $this;
     }
     
@@ -80,7 +89,7 @@ class Select implements BuilderInterface {
      * @return Select
      */
     public function from($table) {
-        $this->_table = new Clause\From(new Argument\Table($table));
+        $this->_target->set($table);
         return $this;
     }
     
@@ -89,22 +98,55 @@ class Select implements BuilderInterface {
      * @return Select
      */
     public function where(Filter $filter) {
-        $this->_filter = $filter;
+        $this->_where->set($filter);
         return $this;
     }
     
+    /**
+     * @param int $offset
+     * @param int $count
+     * @return Select
+     */
     public function limit($offset, $count) {
         $this->_limit->set($offset, $count);
         return $this;
     }
     
+    /**
+     * @param string $name
+     * @param boolean $asc
+     * @return Select
+     */
     public function order($name, $asc = true) {
         $this->_order->set($name, $asc);
         return $this;
     }
     
+    /**
+     * @param string $name
+     * @param boolean $asc
+     * @return Select
+     */
     public function group($name, $asc = true) {
         $this->_group->set($name, $asc);
+        return $this;
+    }
+    
+    /**
+     * @param Filter $filter
+     * @return Select
+     */
+    public function having(Filter $filter) {
+        $this->_having->set($filter);
+        return $this;
+    }
+    
+    /**
+     * @param Flag\AbstractFlag $flag
+     * @return Select
+     */
+    public function flag(Flag\AbstractFlag $flag) {
+        $this->_flags->set($flag);
         return $this;
     }
     
@@ -112,33 +154,15 @@ class Select implements BuilderInterface {
      * @return MySQL\AbstractExpression
      */
     public function build() {
-        if ($this->_objects === []) {
-            $objects = new Clause\Objects([new Argument\Any()]);
-        } else {
-            $objects = new Clause\Objects($this->_objects);
-        }
-        $condition = $this->_filter ? $this->_filter->build() : null;
-        if ($condition === null) {
-            $filter = null;
-        } else {
-            $filter = new Clause\Filter($condition);
-        }
-        $condition = $this->_having ? $this->_having->build() : null;
-        if ($condition === null) {
-            $having = null;
-        } else {
-            $having = new Clause\Having($condition);
-        }
-        $flags = null;
         return Query\Engine::mysql()->select(
-                $objects,
-                $this->_table,
-                $filter,
+                $this->_objects->build(),
+                $this->_target->build(),
+                $this->_where->build(),
                 $this->_group->build(),
-                $having,
+                $this->_having->build(),
                 $this->_order->build(),
                 $this->_limit->build(),
-                $flags
+                $this->_flags->build()
                 );
     }
     

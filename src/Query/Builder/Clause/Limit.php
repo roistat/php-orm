@@ -4,12 +4,13 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Builder\Clause;
 
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
+use RsORM\Query\Builder;
 
-class Limit implements BuilderInterface {
+class Limit implements Builder\BuilderInterface {
     
     /**
      * @var int

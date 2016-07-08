@@ -4,13 +4,14 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Builder\Clause;
 
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Builder;
 
-class Order implements BuilderInterface {
+class Order implements Builder\BuilderInterface {
     
     /**
      * @var MySQL\ObjectInterface[]
