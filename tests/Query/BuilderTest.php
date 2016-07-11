@@ -23,16 +23,14 @@ class BuilderTest extends RsORMTest\Base {
                 ->eq("id", 2, false)
                 ->logicOr($filter1);
         $having = Builder::filter()->eq("pos", 3);
-        $query = Builder::select(["id", "user", "pass"])
-                ->funcCount("id", "num", true)
-                ->from("users")
+        $query = Builder::select(["id", "user", "pass", Builder::funcCount("id", "num", true)])
+                ->table("users")
                 ->where($filter)
                 ->limit(10, 20)
-                ->order("name", false)
-                ->group("name")
-                ->group("pass")
+                ->order([Builder::Desc("name")])
+                ->group(["name", "pass"])
                 ->having($having)
-                ->flag(new Flag\HighPriority());
+                ->flags([new Flag\HighPriority()]);
         $stmt = $query->build();
         $this->assertSame("SELECT HIGH_PRIORITY `id`, `user`, `pass`, COUNT(DISTINCT `id`) AS `num` FROM `users` WHERE ((`id` = ?) AND (`id` != ?)) OR ((`id` = ?) AND (`id` = ?)) GROUP BY `name`, `pass` HAVING `pos` = ? ORDER BY `name` DESC LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([1, 2, 3, 4, 3, 10, 20], $stmt->values());

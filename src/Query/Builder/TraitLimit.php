@@ -4,13 +4,12 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder\Clause;
+namespace RsORM\Query\Builder;
 
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
-use RsORM\Query\Builder;
 
-class Limit implements Builder\BuilderInterface {
+trait TraitLimit {
     
     /**
      * @var int
@@ -25,19 +24,20 @@ class Limit implements Builder\BuilderInterface {
     /**
      * @param int $offset
      * @param int $count
+     * @return AbstractBuilder
      */
-    public function set($offset, $count) {
+    public function limit($offset, $count = null) {
         $this->_offset = $offset;
         $this->_count = $count;
+        return $this;
     }
     
     /**
      * @return Clause\Limit
      */
-    public function build() {
-        return new Clause\Limit(
-                new Argument\Value($this->_offset),
-                new Argument\Value($this->_count)
-                );
+    protected function _buildLimit() {
+        $offset = new Argument\Value($this->_offset);
+        $count = ($this->_count === null) ? null : new Argument\Value($this->_count);
+        return new Clause\Limit($offset, $count);
     }
 }
