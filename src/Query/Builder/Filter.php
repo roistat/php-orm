@@ -25,19 +25,124 @@ class Filter extends AbstractBuilder {
     
     /**
      * @param string $column
+     * @param mixed $expected
+     * @param boolean $is
+     * @return Filter
+     */
+    public function compare($column, $expected, $is = true) {
+        switch (gettype($expected)) {
+            case "integer":
+            case "double":
+                return $this->eq($column, $expected, $is);
+            case "string":
+                return $this->like($column, $expected, $is);
+            case "boolean":
+                return $this->is($column, $expected, $is);
+            case "NULL":
+                return $this->isNull($column, $is);
+            case "array":
+                return $this->in($column, $expected, $is);
+        }
+    }
+    
+    /**
+     * @param string $column
      * @param int|double|string $expected
      * @param boolean $is
      * @return Filter
      */
     public function eq($column, $expected, $is = true) {
-        $arg1 = new Argument\Column($column);
-        $arg2 = new Argument\Value($expected);
-        if ($is) {
-            $this->_conditions[] = new Condition\Equal($arg1, $arg2);
-        } else {
-            $this->_conditions[] = new Condition\NotEqual($arg1, $arg2);
-        }
-        return $this;
+        return $this->_addCondition(Condition\Equal::class, [$column, $expected], $is, Condition\NotEqual::class);
+    }
+    
+    /**
+     * @param string $column
+     * @param int|double $min
+     * @param int|double $max
+     * @param boolean $is
+     * @return Filter
+     */
+    public function between($column, $min, $max, $is = true) {
+        return $this->_addCondition(Condition\Between::class, [$column, $min, $max], $is);
+    }
+    
+    /**
+     * @param string $column
+     * @param array $set
+     * @param boolean $is
+     * @return Filter
+     */
+    public function in($column, array $set, $is = true) {
+        return $this->_addCondition(Condition\In::class, [$column, $set], $is);
+    }
+    
+    /**
+     * @param string $column
+     * @param string $expected
+     * @param boolean $is
+     * @return Filter
+     */
+    public function like($column, $expected, $is = true) {
+        return $this->_addCondition(Condition\Like::class, [$column, $expected], $is);
+    }
+    
+    /**
+     * @param string $column
+     * @param int|double $expected
+     * @param boolean $is
+     * @return Filter
+     */
+    public function gt($column, $expected, $is = true) {
+        return $this->_addCondition(Condition\Gt::class, [$column, $expected], $is);
+    }
+    
+    /**
+     * @param string $column
+     * @param int|double $expected
+     * @param boolean $is
+     * @return Filter
+     */
+    public function gte($column, $expected, $is = true) {
+        return $this->_addCondition(Condition\Gte::class, [$column, $expected], $is);
+    }
+    
+    /**
+     * @param string $column
+     * @param int|double $expected
+     * @param boolean $is
+     * @return Filter
+     */
+    public function lt($column, $expected, $is = true) {
+        return $this->_addCondition(Condition\Lt::class, [$column, $expected], $is);
+    }
+    
+    /**
+     * @param string $column
+     * @param int|double $expected
+     * @param boolean $is
+     * @return Filter
+     */
+    public function lte($column, $expected, $is = true) {
+        return $this->_addCondition(Condition\Lte::class, [$column, $expected], $is);
+    }
+    
+    /**
+     * @param string $column
+     * @param mixed $expected
+     * @param boolean $is
+     * @return Filter
+     */
+    public function is($column, $expected, $is = true) {
+        return $this->_addCondition(Condition\Is::class, [$column, $expected], $is, Condition\IsNot::class);
+    }
+    
+    /**
+     * @param string $column
+     * @param boolean $is
+     * @return Filter
+     */
+    public function isNull($column, $is = true) {
+        return $this->_addCondition(Condition\IsNull::class, [$column], $is, Condition\IsNotNull::class);
     }
     
     /**
@@ -68,5 +173,41 @@ class Filter extends AbstractBuilder {
         } else {
             return null;
         }
+    }
+    
+    /**
+     * @param string $class
+     * @param array $args
+     * @param boolean $is
+     * @param string $negativeClass
+     * @return Filter
+     */
+    private function _addCondition($class, array $args = [], $is = true, $negativeClass = null) {
+        $column = new Argument\Column(array_shift($args));
+        $formedArgs = $this->_parseArgs($args);
+        if ($is) {
+            $this->_conditions[] = new $class($column, ...$formedArgs);
+        } elseif ($negativeClass === null) {
+            $this->_conditions[] = new Condition\LogicalNot(new $class($column, ...$formedArgs));
+        } else {
+            $this->_conditions[] = new $negativeClass($column, ...$formedArgs);
+        }
+        return $this;
+    }
+    
+    /**
+     * @param array $args
+     * @return array
+     */
+    private function _parseArgs(array $args) {
+        $parsedArgs = [];
+        foreach ($args as $arg) {
+            if (is_array($arg)) {
+                $parsedArgs[] = $this->_parseArgs($arg);
+            } else {
+                $parsedArgs[] = new Argument\Value($arg);
+            }
+        }
+        return $parsedArgs;
     }
 }
