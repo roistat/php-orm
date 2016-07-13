@@ -22,6 +22,29 @@ class Builder {
     }
     
     /**
+     * @param array $data
+     * @return Builder\Insert
+     */
+    public static function insert(array $data) {
+        return new Builder\Insert($data);
+    }
+    
+    /**
+     * @param array $data
+     * @return Builder\Update
+     */
+    public static function update(array $data) {
+        return new Builder\Update($data);
+    }
+    
+    /**
+     * @return Builder\Delete
+     */
+    public static function delete() {
+        return new Builder\Delete();
+    }
+    
+    /**
      * @return Builder\Filter
      */
     public static function filter() {

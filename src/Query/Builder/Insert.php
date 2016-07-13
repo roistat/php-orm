@@ -9,7 +9,7 @@ namespace RsORM\Query\Builder;
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 
-class Delete extends AbstractBuilder {
+class Insert extends AbstractBuilder {
     
     use TraitTarget, TraitFlags, TraitInsertData;
     
