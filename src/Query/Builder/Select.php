@@ -7,11 +7,7 @@
 namespace RsORM\Query\Builder;
 
 use RsORM\Query;
-use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL;
-use RsORM\Query\Engine\MySQL\Func;
-use RsORM\Query\Engine\MySQL\Flag;
-//use RsORM\Query\Engine\MySQL\Clause;
 
 /**
  * @method Select table(string $name)
@@ -44,8 +40,11 @@ class Select extends AbstractBuilder {
                 );
     }
     
+    /**
+     * @return string
+     */
     protected function _targetClass() {
-        return MySQL\Clause\From::class;
+        return MySQL\Clause\From::getClassName();
     }
     
 }

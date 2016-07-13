@@ -52,7 +52,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function eq($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Equal::class, [$column, $expected], $is, Condition\NotEqual::class);
+        return $this->_addCondition(Condition\Equal::getClassName(), [$column, $expected], $is, Condition\NotEqual::getClassName());
     }
     
     /**
@@ -63,7 +63,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function between($column, $min, $max, $is = true) {
-        return $this->_addCondition(Condition\Between::class, [$column, $min, $max], $is);
+        return $this->_addCondition(Condition\Between::getClassName(), [$column, $min, $max], $is);
     }
     
     /**
@@ -73,7 +73,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function in($column, array $set, $is = true) {
-        return $this->_addCondition(Condition\In::class, [$column, $set], $is);
+        return $this->_addCondition(Condition\In::getClassName(), [$column, $set], $is);
     }
     
     /**
@@ -83,7 +83,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function like($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Like::class, [$column, $expected], $is);
+        return $this->_addCondition(Condition\Like::getClassName(), [$column, $expected], $is);
     }
     
     /**
@@ -93,7 +93,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function gt($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Gt::class, [$column, $expected], $is);
+        return $this->_addCondition(Condition\Gt::getClassName(), [$column, $expected], $is);
     }
     
     /**
@@ -103,7 +103,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function gte($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Gte::class, [$column, $expected], $is);
+        return $this->_addCondition(Condition\Gte::getClassName(), [$column, $expected], $is);
     }
     
     /**
@@ -113,7 +113,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function lt($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Lt::class, [$column, $expected], $is);
+        return $this->_addCondition(Condition\Lt::getClassName(), [$column, $expected], $is);
     }
     
     /**
@@ -123,7 +123,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function lte($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Lte::class, [$column, $expected], $is);
+        return $this->_addCondition(Condition\Lte::getClassName(), [$column, $expected], $is);
     }
     
     /**
@@ -133,7 +133,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function is($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Is::class, [$column, $expected], $is, Condition\IsNot::class);
+        return $this->_addCondition(Condition\Is::getClassName(), [$column, $expected], $is, Condition\IsNot::getClassName());
     }
     
     /**
@@ -142,7 +142,7 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function isNull($column, $is = true) {
-        return $this->_addCondition(Condition\IsNull::class, [$column], $is, Condition\IsNotNull::class);
+        return $this->_addCondition(Condition\IsNull::getClassName(), [$column], $is, Condition\IsNotNull::getClassName());
     }
     
     /**
