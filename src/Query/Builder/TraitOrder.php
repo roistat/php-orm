@@ -36,6 +36,6 @@ trait TraitOrder {
      * @return Clause\Order
      */
     protected function _buildOrder() {
-        return $this->_buildClause($this->_orderObjects, Clause\Order::class);
+        return $this->_orderObjects === [] ? null : new Clause\Order($this->_orderObjects);
     }
 }

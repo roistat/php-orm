@@ -8,8 +8,13 @@ namespace RsORM\Query\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Flag;
 
-class Insert extends AbstractBuilder {
+/**
+ * @method Insert table(string $name)
+ * @method Insert flags(Flag\AbstractFlag[] $flags)
+ */
+class Insert implements BuilderInterface {
     
     use TraitTarget, TraitFlags, TraitInsertData;
     

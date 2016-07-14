@@ -36,6 +36,6 @@ trait TraitGroup {
      * @return Clause\Group
      */
     protected function _buildGroup() {
-        return $this->_buildClause($this->_groupObjects, Clause\Group::class);
+        return $this->_groupObjects === [] ? null : new Clause\Group($this->_groupObjects);
     }
 }

@@ -11,7 +11,7 @@ use RsORM\Query\Engine\MySQL\Condition;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Operator;
 
-class Filter extends AbstractBuilder {
+class Filter implements BuilderInterface {
     
     /**
      * @var Operator\AbstractOperator[]

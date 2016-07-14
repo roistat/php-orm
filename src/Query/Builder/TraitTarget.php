@@ -34,6 +34,7 @@ trait TraitTarget {
      * @return Clause\Target|Clause\From|Clause\Into
      */
     protected function _buildTarget() {
-        return $this->_buildClause($this->_table, $this->_targetClass());
+        $class = $this->_targetClass();
+        return $this->_table === null ? null : new $class($this->_table);
     }
 }

@@ -29,6 +29,6 @@ trait TraitFlags {
      * @return Clause\Flags
      */
     protected function _buildFlags() {
-        return $this->_buildClause($this->_flags, Clause\Flags::class);
+        return $this->_flags === [] ? null : new Clause\Flags($this->_flags);
     }
 }

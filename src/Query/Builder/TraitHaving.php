@@ -28,6 +28,7 @@ trait TraitHaving {
      * @return Clause\Having
      */
     protected function _buildHaving() {
-        return $this->_buildClause($this->_havingFilter, Clause\Having::class);
+        $filter = $this->_havingFilter === null ? null : $this->_havingFilter->build();
+        return $filter === null ? null : new Clause\Having($filter);
     }
 }

@@ -8,8 +8,16 @@ namespace RsORM\Query\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Flag;
 
-class Update extends AbstractBuilder {
+/**
+ * @method Update table(string $name)
+ * @method Update where(Filter $filter)
+ * @method Update order(array $fields)
+ * @method Update limit(int $offset, int $count)
+ * @method Update flags(Flag\AbstractFlag[] $flags)
+ */
+class Update implements BuilderInterface {
     
     use TraitTarget, TraitFlags, TraitUpdateData, TraitWhere, TraitOrder, TraitLimit;
     

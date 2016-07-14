@@ -31,10 +31,7 @@ trait TraitUpdateData {
      * @return Clause\Set
      */
     protected function _buildSet() {
-        if ($this->_assigns === []) {
-            return null;
-        }
-        return new Clause\Set($this->_assigns);
+        return $this->_assigns === [] ? null : new Clause\Set($this->_assigns);
     }
     
     /**

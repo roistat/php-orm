@@ -35,20 +35,14 @@ trait TraitInsertData {
      * @return Clause\Fields
      */
     protected function _buildFields() {
-        if ($this->_fields === []) {
-            return null;
-        }
-        return new Clause\Fields($this->_fields);
+        return $this->_fields === [] ? null : new Clause\Fields($this->_fields);
     }
     
     /**
      * @return Clause\Values
      */
     protected function _buildValues() {
-        if ($this->_values === []) {
-            return null;
-        }
-        return new Clause\Values($this->_values);
+        return $this->_values === [] ? null : new Clause\Values($this->_values);
     }
     
     /**

@@ -28,6 +28,7 @@ trait TraitWhere {
      * @return Clause\Filter
      */
     protected function _buildWhere() {
-        return $this->_buildClause($this->_whereFilter, Clause\Filter::class);
+        $filter = $this->_whereFilter === null ? null : $this->_whereFilter->build();
+        return $filter === null ? null : new Clause\Filter($filter);
     }
 }

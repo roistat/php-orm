@@ -8,11 +8,18 @@ namespace RsORM\Query\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Flag;
 
 /**
  * @method Select table(string $name)
+ * @method Select where(Filter $filter)
+ * @method Select group(array $fields)
+ * @method Select having(Filter $filter)
+ * @method Select order(array $fields)
+ * @method Select limit(int $offset, int $count)
+ * @method Select flags(Flag\AbstractFlag[] $flags)
  */
-class Select extends AbstractBuilder {
+class Select implements BuilderInterface {
     
     use TraitObjects, TraitTarget, TraitGroup, TraitLimit, TraitOrder, TraitFlags,
             TraitWhere, TraitHaving;

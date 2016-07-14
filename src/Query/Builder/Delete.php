@@ -8,8 +8,16 @@ namespace RsORM\Query\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Flag;
 
-class Delete extends AbstractBuilder {
+/**
+ * @method Delete table(string $name)
+ * @method Delete where(Filter $filter)
+ * @method Delete order(array $fields)
+ * @method Delete limit(int $offset, int $count)
+ * @method Delete flags(Flag\AbstractFlag[] $flags)
+ */
+class Delete implements BuilderInterface {
     
     use TraitTarget, TraitLimit, TraitOrder, TraitFlags,
             TraitWhere;
