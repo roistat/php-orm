@@ -52,7 +52,10 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function eq($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Equal::getClassName(), [$column, $expected], $is, Condition\NotEqual::getClassName());
+        $operand1 = $this->_parseColumn($column);
+        $operand2 = $this->_parseValue($expected);
+        $this->_conditions[] = $is ? new Condition\Equal($operand1, $operand2) : new Condition\NotEqual($operand1, $operand2);
+        return $this;
     }
     
     /**
@@ -63,7 +66,12 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function between($column, $min, $max, $is = true) {
-        return $this->_addCondition(Condition\Between::getClassName(), [$column, $min, $max], $is);
+        $columnObject = $this->_parseColumn($column);
+        $minValue = $this->_parseValue($min);
+        $maxValue = $this->_parseValue($max);
+        $condition = new Condition\Between($columnObject, $minValue, $maxValue);
+        $this->_conditions[] = $is ? $condition : new Condition\LogicalNot($condition);
+        return $this;
     }
     
     /**
@@ -73,7 +81,11 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function in($column, array $set, $is = true) {
-        return $this->_addCondition(Condition\In::getClassName(), [$column, $set], $is);
+        $columnObject = $this->_parseColumn($column);
+        $parsedSet = $this->_parseValues($set);
+        $condition = new Condition\In($columnObject, $parsedSet);
+        $this->_conditions[] = $is ? $condition : new Condition\LogicalNot($condition);
+        return $this;
     }
     
     /**
@@ -83,7 +95,11 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function like($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Like::getClassName(), [$column, $expected], $is);
+        $parsedColumn = $this->_parseColumn($column);
+        $parsedExpected = $this->_parseValue($expected);
+        $condition = new Condition\Like($parsedColumn, $parsedExpected);
+        $this->_conditions[] = $is ? $condition : new Condition\LogicalNot($condition);
+        return $this;
     }
     
     /**
@@ -93,7 +109,11 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function gt($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Gt::getClassName(), [$column, $expected], $is);
+        $parsedColumn = $this->_parseColumn($column);
+        $parsedExpected = $this->_parseValue($expected);
+        $condition = new Condition\Gt($parsedColumn, $parsedExpected);
+        $this->_conditions[] = $is ? $condition : new Condition\LogicalNot($condition);
+        return $this;
     }
     
     /**
@@ -103,7 +123,11 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function gte($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Gte::getClassName(), [$column, $expected], $is);
+        $parsedColumn = $this->_parseColumn($column);
+        $parsedExpected = $this->_parseValue($expected);
+        $condition = new Condition\Gte($parsedColumn, $parsedExpected);
+        $this->_conditions[] = $is ? $condition : new Condition\LogicalNot($condition);
+        return $this;
     }
     
     /**
@@ -113,7 +137,11 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function lt($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Lt::getClassName(), [$column, $expected], $is);
+        $parsedColumn = $this->_parseColumn($column);
+        $parsedExpected = $this->_parseValue($expected);
+        $condition = new Condition\Lt($parsedColumn, $parsedExpected);
+        $this->_conditions[] = $is ? $condition : new Condition\LogicalNot($condition);
+        return $this;
     }
     
     /**
@@ -123,7 +151,11 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function lte($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Lte::getClassName(), [$column, $expected], $is);
+        $parsedColumn = $this->_parseColumn($column);
+        $parsedExpected = $this->_parseValue($expected);
+        $condition = new Condition\Lte($parsedColumn, $parsedExpected);
+        $this->_conditions[] = $is ? $condition : new Condition\LogicalNot($condition);
+        return $this;
     }
     
     /**
@@ -133,7 +165,10 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function is($column, $expected, $is = true) {
-        return $this->_addCondition(Condition\Is::getClassName(), [$column, $expected], $is, Condition\IsNot::getClassName());
+        $parsedColumn = $this->_parseColumn($column);
+        $parsedExpected = $this->_parseValue($expected);
+        $this->_conditions[] = $is ? new Condition\Is($parsedColumn, $parsedExpected) : new Condition\IsNot($parsedColumn, $parsedExpected);
+        return $this;
     }
     
     /**
@@ -142,7 +177,9 @@ class Filter extends AbstractBuilder {
      * @return Filter
      */
     public function isNull($column, $is = true) {
-        return $this->_addCondition(Condition\IsNull::getClassName(), [$column], $is, Condition\IsNotNull::getClassName());
+        $parsedColumn = $this->_parseColumn($column);
+        $this->_conditions[] = $is ? new Condition\IsNull($parsedColumn) : new Condition\IsNotNull($parsedColumn);
+        return $this;
     }
     
     /**
@@ -176,38 +213,39 @@ class Filter extends AbstractBuilder {
     }
     
     /**
-     * @param string $class
-     * @param array $args
-     * @param boolean $is
-     * @param string $negativeClass
-     * @return Filter
+     * @param string|Argument\Column $column
+     * @return Argument\Column
      */
-    private function _addCondition($class, array $args = [], $is = true, $negativeClass = null) {
-        $column = new Argument\Column(array_shift($args));
-        $formedArgs = $this->_parseArgs($args);
-        if ($is) {
-            $this->_conditions[] = new $class($column, ...$formedArgs);
-        } elseif ($negativeClass === null) {
-            $this->_conditions[] = new Condition\LogicalNot(new $class($column, ...$formedArgs));
-        } else {
-            $this->_conditions[] = new $negativeClass($column, ...$formedArgs);
+    private function _parseColumn($column) {
+        if ($column instanceof Argument\Column) {
+            return $column;
+        } elseif (is_string($column)) {
+            return new Argument\Column($column);
         }
-        return $this;
     }
     
     /**
-     * @param array $args
-     * @return array
+     * @param mixed|MySQL\ObjectInterface $value
+     * @return MySQL\ObjectInterface|Argument\Value
      */
-    private function _parseArgs(array $args) {
-        $parsedArgs = [];
-        foreach ($args as $arg) {
-            if (is_array($arg)) {
-                $parsedArgs[] = $this->_parseArgs($arg);
-            } else {
-                $parsedArgs[] = new Argument\Value($arg);
-            }
+    private function _parseValue($value) {
+        if ($value instanceof MySQL\ObjectInterface) {
+            return $value;
+        } else {
+            return new Argument\Value($value);
         }
-        return $parsedArgs;
     }
+    
+    /**
+     * @param array $values
+     * @return MySQL\ObjectInterface[]
+     */
+    private function _parseValues(array $values) {
+        $result = [];
+        foreach ($values as $value) {
+            $result[] = $this->_parseValue($value);
+        }
+        return $result;
+    }
+    
 }

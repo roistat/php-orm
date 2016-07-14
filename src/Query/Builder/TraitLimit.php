@@ -36,6 +36,9 @@ trait TraitLimit {
      * @return Clause\Limit
      */
     protected function _buildLimit() {
+        if ($this->_offset === null) {
+            return null;
+        }
         $offset = new Argument\Value($this->_offset);
         $count = ($this->_count === null) ? null : new Argument\Value($this->_count);
         return new Clause\Limit($offset, $count);
