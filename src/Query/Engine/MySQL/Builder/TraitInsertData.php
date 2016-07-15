@@ -18,7 +18,7 @@ trait TraitInsertData {
     private $_fields = [];
     
     /**
-     * @var MySQL\ObjectInterface[]
+     * @var MySQL\ArgumentInterface[]
      */
     private $_values = [];
     
@@ -47,7 +47,7 @@ trait TraitInsertData {
     
     /**
      * @param string|Argument\Field $field
-     * @param mixed|MySQL\ObjectInterface $value
+     * @param mixed|MySQL\ArgumentInterface $value
      */
     private function _setPair($field, $value) {
         if ($this->_setField($field)) {
@@ -72,10 +72,10 @@ trait TraitInsertData {
     }
     
     /**
-     * @param mixed|MySQL\ObjectInterface $value
+     * @param mixed|MySQL\ArgumentInterface $value
      */
     private function _setValue($value) {
-        if ($value instanceof MySQL\ObjectInterface) {
+        if ($value instanceof MySQL\ArgumentInterface) {
             $this->_values[] = $value;
         } elseif ($value === null) {
             $this->_values[] = new Argument\NullValue();

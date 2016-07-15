@@ -13,17 +13,17 @@ use RsORM\Query\Engine\MySQL\Clause;
 trait TraitOrder {
     
     /**
-     * @var MySQL\ObjectInterface[]
+     * @var MySQL\ArgumentInterface[]
      */
     private $_orderObjects = [];
     
     /**
      * @param array $fields
-     * @return AbstractBuilder
+     * @return $this
      */
     public function order(array $fields) {
         foreach ($fields as $field) {
-            if ($field instanceof MySQL\ObjectInterface) {
+            if ($field instanceof MySQL\ArgumentInterface) {
                 $this->_orderObjects[] = $field;
             } elseif (is_string($field)) {
                 $this->_orderObjects[] = new Argument\Column($field);

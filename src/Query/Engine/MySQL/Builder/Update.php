@@ -10,29 +10,27 @@ use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
 
-/**
- * @method Insert table(string $name)
- * @method Insert flags(Flag\AbstractFlag[] $flags)
- */
-class Insert implements BuilderInterface {
+class Update implements BuilderInterface {
     
-    use TraitTarget, TraitFlags, TraitInsertData;
+    use TraitTable, TraitFlags, TraitUpdateData, TraitWhere, TraitOrder, TraitLimit;
     
     /**
      * @param array $data
      */
     public function __construct(array $data) {
-        $this->_setInsertData($data);
+        $this->_setUpdateData($data);
     }
     
     /**
      * @return MySQL\AbstractExpression
      */
     public function build() {
-        return Query\Engine::mysql()->insert(
+        return Query\Engine::mysql()->update(
                 $this->_buildTarget(),
-                $this->_buildValues(),
-                $this->_buildFields(),
+                $this->_buildSet(),
+                $this->_buildWhere(),
+                $this->_buildOrder(),
+                $this->_buildLimit(),
                 $this->_buildFlags());
     }
     
@@ -40,7 +38,7 @@ class Insert implements BuilderInterface {
      * @return string
      */
     protected function _targetClass() {
-        return MySQL\Clause\Into::getClassName();
+        return MySQL\Clause\Target::getClassName();
     }
     
 }

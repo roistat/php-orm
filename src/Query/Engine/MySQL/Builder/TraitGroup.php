@@ -13,17 +13,17 @@ use RsORM\Query\Engine\MySQL\Argument;
 trait TraitGroup {
     
     /**
-     * @var MySQL\ObjectInterface[]
+     * @var MySQL\ArgumentInterface[]
      */
     private $_groupObjects = [];
     
     /**
      * @param array $fields
-     * @return AbstractBuilder
+     * @return $this
      */
     public function group(array $fields) {
         foreach ($fields as $field) {
-            if ($field instanceof MySQL\ObjectInterface) {
+            if ($field instanceof MySQL\ArgumentInterface) {
                 $this->_groupObjects[] = $field;
             } elseif (is_string($field)) {
                 $this->_groupObjects[] = new Argument\Column($field);

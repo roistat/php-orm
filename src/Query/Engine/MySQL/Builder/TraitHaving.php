@@ -11,15 +11,15 @@ use RsORM\Query\Engine\MySQL\Clause;
 trait TraitHaving {
     
     /**
-     * @var Filter
+     * @var FilterInterface
      */
     private $_havingFilter;
     
     /**
-     * @param Filter $filter
-     * @return AbstractBuilder
+     * @param FilterInterface $filter
+     * @return $this
      */
-    public function having(Filter $filter) {
+    public function having(FilterInterface $filter) {
         $this->_havingFilter = $filter;
         return $this;
     }

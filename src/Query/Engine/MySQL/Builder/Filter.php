@@ -191,7 +191,7 @@ class Filter implements BuilderInterface {
     }
     
     /**
-     * @return MySQL\ObjectInterface
+     * @return MySQL\ArgumentInterface
      */
     public function build() {
         $filters = [];
@@ -225,11 +225,11 @@ class Filter implements BuilderInterface {
     }
     
     /**
-     * @param mixed|MySQL\ObjectInterface $value
-     * @return MySQL\ObjectInterface|Argument\Value
+     * @param mixed|MySQL\ArgumentInterface $value
+     * @return MySQL\ArgumentInterface|Argument\Value
      */
     private function _parseValue($value) {
-        if ($value instanceof MySQL\ObjectInterface) {
+        if ($value instanceof MySQL\ArgumentInterface) {
             return $value;
         } else {
             return new Argument\Value($value);
@@ -238,7 +238,7 @@ class Filter implements BuilderInterface {
     
     /**
      * @param array $values
-     * @return MySQL\ObjectInterface[]
+     * @return MySQL\ArgumentInterface[]
      */
     private function _parseValues(array $values) {
         $result = [];

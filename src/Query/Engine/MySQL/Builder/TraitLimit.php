@@ -24,7 +24,7 @@ trait TraitLimit {
     /**
      * @param int $offset
      * @param int $count
-     * @return AbstractBuilder
+     * @return $this
      */
     public function limit($offset, $count = null) {
         $this->_offset = $offset;
