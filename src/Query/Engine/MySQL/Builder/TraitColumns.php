@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @author Michael Slyshkin <m.slyshkin@gmail.com>
+ */
+
+namespace RsORM\Query\Builder;
+
+use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Argument;
+use RsORM\Query\Engine\MySQL\Clause;
+
+trait TraitColumns {
+    
+    /**
+     * @var MySQL\ArgumentInterface[]
+     */
+    private $_columns = [];
+
+    /**
+     * @param MySQL\ArgumentInterface[] $columns
+     */
+    protected function _setColumns(array $columns) {
+        $this->_columns = [];
+        foreach ($columns as $column) {
+            $this->_addColumn($column);
+        }
+    }
+
+    /**
+     * @param MySQL\ArgumentInterface|string $column
+     * @param string $alias
+     */
+    protected function _addColumn($column, $alias = null) {
+        $sqlObject = $column instanceof MySQL\ArgumentInterface ? $column : new Argument\Column($column);
+        if ($alias === null) {
+            $this->_columns[] = new Argument\Field($sqlObject);
+        } else {
+            $this->_columns[] = new Argument\Field($sqlObject, new Argument\Alias($alias));
+        }
+    }
+
+
+        /**
+     * @return Clause\ArgumentsList
+     */
+    protected function _buildColumns() {
+        $columns = $this->_columns === [] ? [new Argument\Any()] : $this->_columns;
+        return new Clause\ArgumentsList($columns);
+    }
+}

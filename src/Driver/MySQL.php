@@ -161,7 +161,7 @@ class MySQL {
             $this->_dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->_dbh->exec("set names {$this->_charset}");
         } catch (\PDOException $e) {
-            new Connection\Fail("Database error: {$e->getMessage()}");
+            throw new Connection\Fail("Database error: {$e->getMessage()}");
         }
     }
     
