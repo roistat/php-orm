@@ -27,7 +27,7 @@ class Delete implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->delete(
-                $this->_buildTarget(),
+                $this->_buildTable(),
                 $this->_buildWhere(),
                 $this->_buildOrder(),
                 $this->_buildLimit(),
@@ -37,7 +37,7 @@ class Delete implements BuilderInterface {
     /**
      * @return string
      */
-    protected function _targetClass() {
+    protected function _tableClass() {
         return MySQL\Clause\From::getClassName();
     }
     

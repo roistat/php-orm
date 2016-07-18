@@ -30,7 +30,7 @@ class Insert implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->insert(
-                $this->_buildTarget(),
+                $this->_buildTable(),
                 $this->_buildValues(),
                 $this->_buildFields(),
                 $this->_buildFlags());
@@ -39,7 +39,7 @@ class Insert implements BuilderInterface {
     /**
      * @return string
      */
-    protected function _targetClass() {
+    protected function _tableClass() {
         return MySQL\Clause\Into::getClassName();
     }
     
