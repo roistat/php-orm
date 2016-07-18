@@ -44,6 +44,14 @@ class Builder {
     }
     
     /**
+     * @param array $data
+     * @return Builder\Replace
+     */
+    public static function replace(array $data) {
+        return new Builder\Replace($data);
+    }
+    
+    /**
      * @return Builder\Filter
      */
     public static function filter() {
