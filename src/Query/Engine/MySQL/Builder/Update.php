@@ -33,7 +33,7 @@ class Update implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->update(
-                $this->_buildTarget(),
+                $this->_buildTable(),
                 $this->_buildSet(),
                 $this->_buildWhere(),
                 $this->_buildOrder(),
@@ -44,7 +44,7 @@ class Update implements BuilderInterface {
     /**
      * @return string
      */
-    protected function _targetClass() {
+    protected function _tableClass() {
         return MySQL\Clause\Target::getClassName();
     }
     
