@@ -4,12 +4,20 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
+use RsORM\Query\Engine\MySQL\Clause;
 
+/**
+ * @method Delete table(string $name)
+ * @method Delete where(Filter $filter)
+ * @method Delete order(array $fields)
+ * @method Delete limit(int $offset, int $count)
+ * @method Delete flags(Flag\AbstractFlag[] $flags)
+ */
 class Delete implements BuilderInterface {
     
     use TraitTable, TraitLimit, TraitOrder, TraitFlags,
@@ -20,7 +28,7 @@ class Delete implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->delete(
-                $this->_buildTarget(),
+                $this->_buildTable(),
                 $this->_buildWhere(),
                 $this->_buildOrder(),
                 $this->_buildLimit(),
@@ -31,7 +39,7 @@ class Delete implements BuilderInterface {
      * @return string
      */
     protected function _targetClass() {
-        return MySQL\Clause\From::getClassName();
+        return Clause\From::getClassName();
     }
     
 }

@@ -4,12 +4,20 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
+use RsORM\Query\Engine\MySQL\Clause;
 
+/**
+ * @method Update table(string $name)
+ * @method Update where(Filter $filter)
+ * @method Update order(array $fields)
+ * @method Update limit(int $offset, int $count)
+ * @method Update flags(Flag\AbstractFlag[] $flags)
+ */
 class Update implements BuilderInterface {
     
     use TraitTable, TraitFlags, TraitUpdateData, TraitWhere, TraitOrder, TraitLimit;
@@ -38,7 +46,7 @@ class Update implements BuilderInterface {
      * @return string
      */
     protected function _targetClass() {
-        return MySQL\Clause\Target::getClassName();
+        return Clause\Target::getClassName();
     }
     
 }

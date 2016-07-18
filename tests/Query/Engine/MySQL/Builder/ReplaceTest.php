@@ -11,7 +11,7 @@ use RsORM\Query\Engine\MySQL\Func;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Flag;
 
-class InsertTest extends RsORMTest\Base {
+class ReplaceTest extends RsORMTest\Base {
     public function test() {
         $query = Builder::insert(['name' => 'vasya', 'pass' => md5('1')])
             ->table('users')

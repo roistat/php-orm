@@ -11,19 +11,19 @@ use RsORM\Query\Engine\MySQL\Func;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Flag;
 
-class SelectTest extends RsORMTest\Base {
+class InsertTest extends RsORMTest\Base {
     
     public function test() {
-        $filter1 = Builder::filter()->equal('id', 3)->equal('id', 4);
-        $filter = Builder::filter()->equal('id', 1)->notEqual('id', 2)->logicOr($filter1);
-        $having = Builder::filter()->equal('pos', 3);
+        $filter1 = Builder::filter()->eq('id', 3)->eq('id', 4);
+        $filter = Builder::filter()->eq('id', 1)->eq('id', 2, false)->logicOr($filter1);
+        $having = Builder::filter()->eq('pos', 3);
 
         $query = Builder::select(['id', 'user', 'pass', Builder::funcCount('id', 'num', true)])
             ->table('users')
             ->where($filter)
             ->limit(10, 20)
             // todo order builder like filter builder
-            ->order(['pass', Builder::order('id'), Builder::order('name', true)])
+            ->order(['pass', 'id', Builder::desc('name')])
             ->group(['name', 'pass'])
             ->having($having)
             ->flags([new Flag\HighPriority()]);

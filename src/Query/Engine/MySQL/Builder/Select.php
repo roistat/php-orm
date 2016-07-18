@@ -4,11 +4,12 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
+use RsORM\Query\Engine\MySQL\Clause;
 
 /**
  * @method Select table(string $name)
@@ -21,7 +22,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  */
 class Select implements BuilderInterface {
     
-    use TraitObjects, TraitTarget, TraitGroup, TraitLimit, TraitOrder, TraitFlags,
+    use TraitObjects, TraitTable, TraitGroup, TraitLimit, TraitOrder, TraitFlags,
             TraitWhere, TraitHaving;
     
     /**
@@ -37,7 +38,7 @@ class Select implements BuilderInterface {
     public function build() {
         return Query\Engine::mysql()->select(
                 $this->_buildObjects(),
-                $this->_buildTarget(),
+                $this->_buildTable(),
                 $this->_buildWhere(),
                 $this->_buildGroup(),
                 $this->_buildHaving(),
@@ -51,7 +52,7 @@ class Select implements BuilderInterface {
      * @return string
      */
     protected function _targetClass() {
-        return MySQL\Clause\From::getClassName();
+        return Clause\From::getClassName();
     }
     
 }

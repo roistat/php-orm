@@ -4,10 +4,9 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query;
+namespace RsORM\Query\Engine\MySQL;
 
-use RsORM\Query\Builder;
-use RsORM\Query\Engine\MySQL;
+use RsORM\Query\Engine\MySQL\Builder;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Func;
 
@@ -53,11 +52,21 @@ class Builder {
     
     /**
      * @param string $name
-     * @return Argument\Desc
+     * @param boolean $asc
+     * @return Argument\Column|Argument\Desc
      */
-    public static function desc($name) {
+    public static function order($name, $asc = true) {
         $column = new Argument\Column($name);
-        return new Argument\Desc($column);
+        return $asc ? $column : new Argument\Desc($column);
+    }
+    
+    /**
+     * @param string $name
+     * @param boolean $asc
+     * @return Argument\Column|Argument\Desc
+     */
+    public static function group($name, $asc = true) {
+        return self::order($name, $asc);
     }
     
     /**

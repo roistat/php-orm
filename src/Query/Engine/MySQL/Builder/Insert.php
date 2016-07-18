@@ -4,11 +4,12 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
+use RsORM\Query\Engine\MySQL\Clause;
 
 /**
  * @method Insert table(string $name)
@@ -30,7 +31,7 @@ class Insert implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->insert(
-                $this->_buildTarget(),
+                $this->_buildTable(),
                 $this->_buildValues(),
                 $this->_buildFields(),
                 $this->_buildFlags());
@@ -40,7 +41,7 @@ class Insert implements BuilderInterface {
      * @return string
      */
     protected function _targetClass() {
-        return MySQL\Clause\Into::getClassName();
+        return Clause\Into::getClassName();
     }
     
 }
