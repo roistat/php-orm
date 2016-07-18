@@ -9,6 +9,7 @@ namespace RsORM\Query\Engine\MySQL\Builder;
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
+use RsORM\Query\Engine\MySQL\Clause;
 
 /**
  * @method Replace table(string $name)
