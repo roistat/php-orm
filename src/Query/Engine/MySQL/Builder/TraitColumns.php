@@ -42,10 +42,10 @@ trait TraitColumns {
 
 
         /**
-     * @return Clause\ArgumentsList
+     * @return Clause\Objects
      */
     protected function _buildColumns() {
         $columns = $this->_columns === [] ? [new Argument\Any()] : $this->_columns;
-        return new Clause\ArgumentsList($columns);
+        return new Clause\Objects($columns);
     }
 }
