@@ -10,7 +10,11 @@ use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
 
-class Insert implements BuilderInterface {
+/**
+ * @method Replace table(string $name)
+ * @method Replace flags(Flag\AbstractFlag[] $flags)
+ */
+class Replace implements BuilderInterface {
     use TraitTable, TraitFlags, TraitInsertData;
     
     /**
