@@ -49,6 +49,17 @@ class MySQL {
     }
     
     /**
+     * @param Clause\Into $table
+     * @param Clause\Values $values
+     * @param Clause\Fields $fields
+     * @param Clause\Flags $flags
+     * @return Statement\Replace
+     */
+    public function replace(Clause\Into $table, Clause\Values $values, Clause\Fields $fields = null, Clause\Flags $flags = null) {
+        return new Statement\Replace($table, $values, $fields, $flags);
+    }
+    
+    /**
      * @param Clause\Target $table
      * @param Clause\Set $set
      * @param Clause\Filter $filter
