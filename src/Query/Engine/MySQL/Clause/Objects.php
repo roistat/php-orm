@@ -8,7 +8,7 @@ namespace RsORM\Query\Engine\MySQL\Clause;
 
 use RsORM\Query\Engine\MySQL;
 
-class ArgumentsList extends MySQL\AbstractExpression {
+class Objects extends AbstractClause {
     /**
      * @return string
      */
