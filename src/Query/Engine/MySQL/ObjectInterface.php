@@ -12,5 +12,4 @@ interface ObjectInterface {
      * @return string
      */
     public function prepare();
-    
 }
