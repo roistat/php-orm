@@ -29,7 +29,7 @@ class Replace implements BuilderInterface {
      * @return MySQL\AbstractExpression
      */
     public function build() {
-        return Query\Engine::mysql()->insert(
+        return Query\Engine::mysql()->replace(
                 $this->_buildTable(),
                 $this->_buildValues(),
                 $this->_buildFields(),
