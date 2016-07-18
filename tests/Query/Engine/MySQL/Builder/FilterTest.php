@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORMTest\Query\Builder;
+namespace RsORMTest\Query\Engine\MySQL\Builder;
 
 use RsORMTest;
 use RsORM\Query\Engine\MySQL\Builder;

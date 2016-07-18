@@ -4,12 +4,10 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORMTest\Query;
+namespace RsORMTest\Query\Engine\MySQL\Builder;
 
 use RsORMTest;
 use RsORM\Query\Engine\MySQL\Builder;
-use RsORM\Query\Engine\MySQL\Func;
-use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Flag;
 
 class SelectTest extends RsORMTest\Base {
@@ -24,7 +22,7 @@ class SelectTest extends RsORMTest\Base {
             ->where($filter)
             ->limit(10, 20)
             // todo order builder like filter builder
-            ->order(['pass', Builder::order('id'), Builder::order('name', true)])
+            ->order(['pass', 'id', Builder::desc('name', true)])
             ->group(['name', 'pass'])
             ->having($having)
             ->flags([new Flag\HighPriority()]);
