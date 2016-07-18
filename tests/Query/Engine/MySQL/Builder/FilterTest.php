@@ -7,7 +7,7 @@
 namespace RsORMTest\Query\Builder;
 
 use RsORMTest;
-use RsORM\Query\Builder;
+use RsORM\Query\Engine\MySQL\Builder;
 
 class FilterTest extends RsORMTest\Base {
     
