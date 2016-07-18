@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Condition;
