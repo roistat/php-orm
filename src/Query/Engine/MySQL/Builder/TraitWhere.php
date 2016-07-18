@@ -11,15 +11,15 @@ use RsORM\Query\Engine\MySQL\Clause;
 trait TraitWhere {
     
     /**
-     * @var FilterInterface
+     * @var Filter
      */
     private $_whereFilter;
     
     /**
-     * @param FilterInterface $filter
+     * @param Filter $filter
      * @return $this
      */
-    public function where(FilterInterface $filter) {
+    public function where(Filter $filter) {
         $this->_whereFilter = $filter;
         return $this;
     }
