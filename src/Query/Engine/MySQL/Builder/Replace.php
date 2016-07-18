@@ -10,7 +10,7 @@ use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
 
-class Insert {
+class Insert implements BuilderInterface {
     use TraitTable, TraitFlags, TraitInsertData;
     
     /**
