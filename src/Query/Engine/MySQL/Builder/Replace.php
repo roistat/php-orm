@@ -8,7 +8,7 @@ namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
-use RsORM\Query\Engine\MySQL\Flag;
+use RsORM\Query\Engine\MySQL\Clause;
 
 class Insert {
     use TraitTable, TraitFlags, TraitInsertData;
@@ -25,9 +25,16 @@ class Insert {
      */
     public function build() {
         return Query\Engine::mysql()->insert(
-                new MySQL\Clause\Into($this->_table),
+                $this->_buildTable(),
                 $this->_buildValues(),
                 $this->_buildFields(),
                 $this->_buildFlags());
+    }
+    
+    /**
+     * @return string
+     */
+    protected function _targetClass() {
+        return Clause\Into::getClassName();
     }
 }

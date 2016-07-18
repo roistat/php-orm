@@ -11,7 +11,7 @@ use RsORM\Query\Engine\MySQL\Func;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Flag;
 
-class SelectTest extends RsORMTest\Base {
+class UpdateTest extends RsORMTest\Base {
     
     public function test() {
         $filter1 = Builder::filter()->equal('id', 3)->equal('id', 4);

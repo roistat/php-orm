@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Argument;
@@ -18,7 +18,7 @@ trait TraitInsertData {
     private $_fields = [];
     
     /**
-     * @var MySQL\ArgumentInterface[]
+     * @var MySQL\ObjectInterface[]
      */
     private $_values = [];
     
@@ -47,7 +47,7 @@ trait TraitInsertData {
     
     /**
      * @param string|Argument\Field $field
-     * @param mixed|MySQL\ArgumentInterface $value
+     * @param mixed|MySQL\ObjectInterface $value
      */
     private function _setPair($field, $value) {
         if ($this->_setField($field)) {
@@ -72,10 +72,10 @@ trait TraitInsertData {
     }
     
     /**
-     * @param mixed|MySQL\ArgumentInterface $value
+     * @param mixed|MySQL\ObjectInterface $value
      */
     private function _setValue($value) {
-        if ($value instanceof MySQL\ArgumentInterface) {
+        if ($value instanceof MySQL\ObjectInterface) {
             $this->_values[] = $value;
         } elseif ($value === null) {
             $this->_values[] = new Argument\NullValue();

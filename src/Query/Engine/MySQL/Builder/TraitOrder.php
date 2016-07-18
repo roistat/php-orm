@@ -4,7 +4,7 @@
  * @author Michael Slyshkin <m.slyshkin@gmail.com>
  */
 
-namespace RsORM\Query\Builder;
+namespace RsORM\Query\Engine\MySQL\Builder;
 
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Argument;
@@ -13,7 +13,7 @@ use RsORM\Query\Engine\MySQL\Clause;
 trait TraitOrder {
     
     /**
-     * @var MySQL\ArgumentInterface[]
+     * @var MySQL\ObjectInterface[]
      */
     private $_orderObjects = [];
     
@@ -23,7 +23,7 @@ trait TraitOrder {
      */
     public function order(array $fields) {
         foreach ($fields as $field) {
-            if ($field instanceof MySQL\ArgumentInterface) {
+            if ($field instanceof MySQL\ObjectInterface) {
                 $this->_orderObjects[] = $field;
             } elseif (is_string($field)) {
                 $this->_orderObjects[] = new Argument\Column($field);
