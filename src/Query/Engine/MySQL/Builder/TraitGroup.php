@@ -13,7 +13,7 @@ use RsORM\Query\Engine\MySQL\Argument;
 trait TraitGroup {
     
     /**
-     * @var MySQL\ArgumentInterface[]
+     * @var MySQL\ObjectInterface[]
      */
     private $_groupObjects = [];
     
@@ -23,7 +23,7 @@ trait TraitGroup {
      */
     public function group(array $fields) {
         foreach ($fields as $field) {
-            if ($field instanceof MySQL\ArgumentInterface) {
+            if ($field instanceof MySQL\ObjectInterface) {
                 $this->_groupObjects[] = $field;
             } elseif (is_string($field)) {
                 $this->_groupObjects[] = new Argument\Column($field);

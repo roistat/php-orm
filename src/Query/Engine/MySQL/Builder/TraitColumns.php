@@ -13,12 +13,12 @@ use RsORM\Query\Engine\MySQL\Clause;
 trait TraitColumns {
     
     /**
-     * @var MySQL\ArgumentInterface[]
+     * @var MySQL\ObjectInterface[]
      */
     private $_columns = [];
 
     /**
-     * @param MySQL\ArgumentInterface[] $columns
+     * @param MySQL\ObjectInterface[] $columns
      */
     protected function _setColumns(array $columns) {
         $this->_columns = [];
@@ -28,11 +28,11 @@ trait TraitColumns {
     }
 
     /**
-     * @param MySQL\ArgumentInterface|string $column
+     * @param MySQL\ObjectInterface|string $column
      * @param string $alias
      */
     protected function _addColumn($column, $alias = null) {
-        $sqlObject = $column instanceof MySQL\ArgumentInterface ? $column : new Argument\Column($column);
+        $sqlObject = $column instanceof MySQL\ObjectInterface ? $column : new Argument\Column($column);
         if ($alias === null) {
             $this->_columns[] = new Argument\Field($sqlObject);
         } else {

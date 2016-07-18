@@ -36,7 +36,7 @@ trait TraitUpdateData {
     
     /**
      * @param string|Argument\Field $field
-     * @param mixed|MySQL\ArgumentInterface $value
+     * @param mixed|MySQL\ObjectInterface $value
      */
     private function _setAssign($field, $value) {
         $fieldObject = $this->_parseField($field);
@@ -62,11 +62,11 @@ trait TraitUpdateData {
     }
     
     /**
-     * @param mixed|MySQL\ArgumentInterface $value
-     * @return MySQL\ArgumentInterface
+     * @param mixed|MySQL\ObjectInterface $value
+     * @return MySQL\ObjectInterface
      */
     private function _parseValue($value) {
-        if ($value instanceof MySQL\ArgumentInterface) {
+        if ($value instanceof MySQL\ObjectInterface) {
             return $value;
         } elseif ($value === null) {
             return new Argument\NullValue();
