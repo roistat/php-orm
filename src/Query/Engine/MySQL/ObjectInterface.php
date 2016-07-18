@@ -6,11 +6,10 @@
 
 namespace RsORM\Query\Engine\MySQL;
 
-interface ArgumentInterface {
+interface ObjectInterface {
     
     /**
      * @return string
      */
     public function prepare();
-    
 }
