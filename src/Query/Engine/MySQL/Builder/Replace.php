@@ -9,6 +9,7 @@ namespace RsORM\Query\Engine\MySQL\Builder;
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
+use RsORM\Query\Engine\MySQL\Clause;
 
 /**
  * @method Replace table(string $name)
@@ -28,7 +29,7 @@ class Replace implements BuilderInterface {
      * @return MySQL\AbstractExpression
      */
     public function build() {
-        return Query\Engine::mysql()->insert(
+        return Query\Engine::mysql()->replace(
                 $this->_buildTable(),
                 $this->_buildValues(),
                 $this->_buildFields(),
