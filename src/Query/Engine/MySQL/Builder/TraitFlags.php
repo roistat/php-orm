@@ -18,7 +18,7 @@ trait TraitFlags {
     
     /**
      * @param Flag\AbstractFlag[] $flags
-     * @return $this
+     * @return BuilderInterface
      */
     public function flags(array $flags) {
         $this->_flags = $flags;

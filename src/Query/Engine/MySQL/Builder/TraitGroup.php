@@ -19,7 +19,7 @@ trait TraitGroup {
     
     /**
      * @param array $fields
-     * @return $this
+     * @return BuilderInterface
      */
     public function group(array $fields) {
         foreach ($fields as $field) {
