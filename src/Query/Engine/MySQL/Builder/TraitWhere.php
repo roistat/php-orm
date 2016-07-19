@@ -17,7 +17,7 @@ trait TraitWhere {
     
     /**
      * @param Filter $filter
-     * @return $this
+     * @return BuilderInterface
      */
     public function where(Filter $filter) {
         $this->_whereFilter = $filter;

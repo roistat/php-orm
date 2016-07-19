@@ -23,7 +23,7 @@ trait TraitTable {
 
     /**
      * @param string $name
-     * @return $this
+     * @return BuilderInterface
      */
     public function table($name) {
         $this->_table = new Argument\Table($name);

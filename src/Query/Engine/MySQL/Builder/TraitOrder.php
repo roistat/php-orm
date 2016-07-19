@@ -19,7 +19,7 @@ trait TraitOrder {
     
     /**
      * @param array $fields
-     * @return $this
+     * @return BuilderInterface
      */
     public function order(array $fields) {
         foreach ($fields as $field) {
