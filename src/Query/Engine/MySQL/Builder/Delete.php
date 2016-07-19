@@ -13,7 +13,7 @@ use RsORM\Query\Engine\MySQL\Flag;
 /**
  * @method Delete table(string $name)
  * @method Delete where(Filter $filter)
- * @method Delete order(array $fields)
+ * @method Delete order(string $name, boolean $asc)
  * @method Delete limit(int $offset, int $count)
  * @method Delete flags(Flag\AbstractFlag[] $flags)
  */

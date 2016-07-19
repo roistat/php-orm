@@ -26,7 +26,7 @@ class DeleteTest extends RsORMTest\Base {
         $query = Builder::delete()
                 ->table("table")
                 ->limit(10, 20)
-                ->order(["flag"])
+                ->order("flag")
                 ->where($filter)
                 ->flags([new Flag\HighPriority()]);
         $query->table("table");

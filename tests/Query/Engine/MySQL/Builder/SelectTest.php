@@ -27,8 +27,8 @@ class SelectTest extends RsORMTest\Base {
             ->table('users')
             ->where($filter)
             ->limit(10, 20)
-            ->order(['id', Builder::desc('name')])
-            ->group(['id', Builder::desc("name")])
+            ->order("id")->order("name", false)
+            ->group("id")->group("name", false)
             ->having($having)
             ->flags([new Flag\HighPriority()]);
         $stmt = $query->build();
@@ -42,22 +42,6 @@ class SelectTest extends RsORMTest\Base {
         $stmt = $query->build();
         $this->assertSame("SELECT ? LIMIT ?", $stmt->prepare());
         $this->assertSame([123, 1], $stmt->values());
-    }
-    
-    public function testEmptyOrder() {
-        $query = Builder::select([new Value(123)])
-                ->order([]);
-        $stmt = $query->build();
-        $this->assertSame("SELECT ?", $stmt->prepare());
-        $this->assertSame([123], $stmt->values());
-    }
-    
-    public function testEmptyGroup() {
-        $query = Builder::select([new Value(123)])
-                ->group([]);
-        $stmt = $query->build();
-        $this->assertSame("SELECT ?", $stmt->prepare());
-        $this->assertSame([123], $stmt->values());
     }
     
     public function testEmptyFlags() {
