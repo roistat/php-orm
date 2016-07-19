@@ -18,17 +18,13 @@ trait TraitGroup {
     private $_groupObjects = [];
     
     /**
-     * @param array $fields
+     * @param string $name
+     * @param boolean $asc
      * @return BuilderInterface
      */
-    public function group(array $fields) {
-        foreach ($fields as $field) {
-            if ($field instanceof MySQL\ObjectInterface) {
-                $this->_groupObjects[] = $field;
-            } elseif (is_string($field)) {
-                $this->_groupObjects[] = new Argument\Column($field);
-            }
-        }
+    public function group($name, $asc = true) {
+        $column = new Argument\Column($name);
+        $this->_groupObjects[] = $asc ? $column : new Argument\Desc($column);
         return $this;
     }
     
