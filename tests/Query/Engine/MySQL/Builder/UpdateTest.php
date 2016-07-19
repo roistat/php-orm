@@ -10,17 +10,24 @@ use RsORM\Query\Engine\MySQL\Builder;
 
 class UpdateTest extends RsORMTest\Base {
     
-    public function test() {
-        $query = new Builder\Update([
-            "id"    => 1,
-            "name"  => "Mike",
-            "pass"  => "123456",
-            "age"   => 123,
-        ]);
-        $query->table("table");
+    public function testShort() {
+        $query = Builder::update(["user" => "mike", "pass" => "123456"])
+                ->table("users");
         $stmt = $query->build();
-        $this->assertSame("UPDATE `table` SET `id` = ?, `name` = ?, `pass` = ?, `age` = ?", $stmt->prepare());
-        $this->assertSame([1, "Mike", "123456", 123], $stmt->values());
+        $this->assertSame("UPDATE `users` SET `user` = ?, `pass` = ?", $stmt->prepare());
+        $this->assertSame(["mike", "123456"], $stmt->values());
+    }
+    
+    public function testFull() {
+        $filter = Builder::filter()->eq("flag3", 1);
+        $query = Builder::update(["user" => "mike", "pass" => "123456"])
+                ->table("users")
+                ->limit(10, 20)
+                ->order(["flag1", "flag2"])
+                ->where($filter);
+        $stmt = $query->build();
+        $this->assertSame("UPDATE `users` SET `user` = ?, `pass` = ? WHERE `flag3` = ? ORDER BY `flag1`, `flag2` LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame(["mike", "123456", 1, 10, 20], $stmt->values());
     }
     
 }
