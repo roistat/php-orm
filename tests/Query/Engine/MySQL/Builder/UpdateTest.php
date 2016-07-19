@@ -24,9 +24,10 @@ class UpdateTest extends RsORMTest\Base {
                 ->table("users")
                 ->limit(10, 20)
                 ->order("flag1")->order("flag2")
-                ->where($filter);
+                ->where($filter)
+                ->flagHighPriority();
         $stmt = $query->build();
-        $this->assertSame("UPDATE `users` SET `user` = ?, `pass` = ? WHERE `flag3` = ? ORDER BY `flag1`, `flag2` LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame("UPDATE HIGH_PRIORITY `users` SET `user` = ?, `pass` = ? WHERE `flag3` = ? ORDER BY `flag1`, `flag2` LIMIT ?, ?", $stmt->prepare());
         $this->assertSame(["mike", "123456", 1, 10, 20], $stmt->values());
     }
     

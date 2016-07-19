@@ -15,7 +15,21 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Delete where(Filter $filter)
  * @method Delete order(string $name, boolean $asc)
  * @method Delete limit(int $offset, int $count)
- * @method Delete flags(Flag\AbstractFlag[] $flags)
+ * @method Delete flagAll()
+ * @method Delete flagDelayed()
+ * @method Delete flagDistinct()
+ * @method Delete flagDistinctRow()
+ * @method Delete flagHighPriority()
+ * @method Delete flagIgnore()
+ * @method Delete flagLowPriority()
+ * @method Delete flagQuick()
+ * @method Delete flagSQLBigResult()
+ * @method Delete flagSQLBufferResult()
+ * @method Delete flagSQLCache()
+ * @method Delete flagSQLCalcFoundRows()
+ * @method Delete flagSQLNoCache()
+ * @method Delete flagSQLSmallResult()
+ * @method Delete flagStraightJoin()
  */
 class Delete implements BuilderInterface {
     

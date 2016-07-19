@@ -22,7 +22,7 @@ class ReplaceTest extends RsORMTest\Base {
     public function testFull() {
         $query = Builder::replace(["id" => 1, "name" => "Mike"])
                 ->table("users")
-                ->flags([new Flag\HighPriority()]);
+                ->flagHighPriority();
         $stmt = $query->build();
         $this->assertSame("REPLACE HIGH_PRIORITY INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
