@@ -17,7 +17,7 @@ trait TraitHaving {
     
     /**
      * @param Filter $filter
-     * @return $this
+     * @return BuilderInterface
      */
     public function having(Filter $filter) {
         $this->_havingFilter = $filter;
