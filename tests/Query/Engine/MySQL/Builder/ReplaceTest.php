@@ -10,13 +10,21 @@ use RsORM\Query\Engine\MySQL\Builder;
 use RsORM\Query\Engine\MySQL\Flag;
 
 class ReplaceTest extends RsORMTest\Base {
-    public function test() {
-        $query = Builder::replace(['name' => 'vasya', 'pass' => md5('1')])
-            ->table('users')
-            ->flags([new Flag\HighPriority()]);
+    
+    public function testShort() {
+        $query = Builder::replace(["id" => 1, "name" => "Mike"])
+                ->table("users");
         $stmt = $query->build();
-
-        $this->assertSame('REPLACE HIGH_PRIORITY INTO `users` (`name`, `pass`) VALUES (?, ?)', $stmt->prepare());
-        $this->assertSame(['vasya', 'c4ca4238a0b923820dcc509a6f75849b'], $stmt->values());
+        $this->assertSame("REPLACE INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
+        $this->assertSame([1, "Mike"], $stmt->values());
+    }
+    
+    public function testFull() {
+        $query = Builder::replace(["id" => 1, "name" => "Mike"])
+                ->table("users")
+                ->flags([new Flag\HighPriority()]);
+        $stmt = $query->build();
+        $this->assertSame("REPLACE HIGH_PRIORITY INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
+        $this->assertSame([1, "Mike"], $stmt->values());
     }
 }
