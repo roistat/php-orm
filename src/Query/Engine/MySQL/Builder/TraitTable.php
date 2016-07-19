@@ -14,13 +14,8 @@ trait TraitTable {
     /**
      * @var Argument\Table
      */
-    private $_table;
+    protected $_table;
     
-    /**
-     * @return string
-     */
-    abstract protected function _tableClass();
-
     /**
      * @param string $name
      * @return BuilderInterface
@@ -28,13 +23,5 @@ trait TraitTable {
     public function table($name) {
         $this->_table = new Argument\Table($name);
         return $this;
-    }
-    
-    /**
-     * @return Clause\Target|Clause\From|Clause\Into
-     */
-    protected function _buildTable() {
-        $class = $this->_tableClass();
-        return $this->_table === null ? null : new $class($this->_table);
     }
 }

@@ -33,19 +33,11 @@ class Update implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->update(
-                $this->_buildTable(),
+                $this->_table === null ? null : new MySQL\Clause\Target($this->_table),
                 $this->_buildSet(),
                 $this->_buildWhere(),
                 $this->_buildOrder(),
                 $this->_buildLimit(),
                 $this->_buildFlags());
     }
-    
-    /**
-     * @return string
-     */
-    protected function _tableClass() {
-        return MySQL\Clause\Target::getClassName();
-    }
-    
 }

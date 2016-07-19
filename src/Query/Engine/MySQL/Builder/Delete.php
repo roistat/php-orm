@@ -27,18 +27,10 @@ class Delete implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->delete(
-                $this->_buildTable(),
+                $this->_table === null ? null : new MySQL\Clause\From($this->_table),
                 $this->_buildWhere(),
                 $this->_buildOrder(),
                 $this->_buildLimit(),
                 $this->_buildFlags());
     }
-    
-    /**
-     * @return string
-     */
-    protected function _tableClass() {
-        return MySQL\Clause\From::getClassName();
-    }
-    
 }
