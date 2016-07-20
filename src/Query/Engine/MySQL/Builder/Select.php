@@ -51,7 +51,7 @@ class Select implements BuilderInterface {
     public function build() {
         return Query\Engine::mysql()->select(
                 $this->_buildObjects(),
-                $this->_buildTable(),
+                $this->_table === null ? null : new MySQL\Clause\From($this->_table),
                 $this->_buildWhere(),
                 $this->_buildGroup(),
                 $this->_buildHaving(),
@@ -60,12 +60,4 @@ class Select implements BuilderInterface {
                 $this->_buildFlags()
                 );
     }
-    
-    /**
-     * @return string
-     */
-    protected function _tableClass() {
-        return MySQL\Clause\From::getClassName();
-    }
-    
 }

@@ -44,17 +44,9 @@ class Insert implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->insert(
-                $this->_buildTable(),
+                $this->_table === null ? null : new MySQL\Clause\Into($this->_table),
                 $this->_buildValues(),
                 $this->_buildFields(),
                 $this->_buildFlags());
     }
-    
-    /**
-     * @return string
-     */
-    protected function _tableClass() {
-        return MySQL\Clause\Into::getClassName();
-    }
-    
 }

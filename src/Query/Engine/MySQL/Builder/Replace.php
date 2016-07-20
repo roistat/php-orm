@@ -9,7 +9,6 @@ namespace RsORM\Query\Engine\MySQL\Builder;
 use RsORM\Query;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Flag;
-use RsORM\Query\Engine\MySQL\Clause;
 
 /**
  * @method Replace table(string $name)
@@ -44,16 +43,9 @@ class Replace implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->replace(
-                $this->_buildTable(),
+                $this->_table === null ? null : new MySQL\Clause\Into($this->_table),
                 $this->_buildValues(),
                 $this->_buildFields(),
                 $this->_buildFlags());
-    }
-    
-    /**
-     * @return string
-     */
-    protected function _tableClass() {
-        return Clause\Into::getClassName();
     }
 }
