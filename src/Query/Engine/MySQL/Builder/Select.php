@@ -17,7 +17,21 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Select having(Filter $filter)
  * @method Select order(string $name, boolean $asc)
  * @method Select limit(int $offset, int $count)
- * @method Select flags(Flag\AbstractFlag[] $flags)
+ * @method Select flagAll()
+ * @method Select flagDelayed()
+ * @method Select flagDistinct()
+ * @method Select flagDistinctRow()
+ * @method Select flagHighPriority()
+ * @method Select flagIgnore()
+ * @method Select flagLowPriority()
+ * @method Select flagQuick()
+ * @method Select flagSQLBigResult()
+ * @method Select flagSQLBufferResult()
+ * @method Select flagSQLCache()
+ * @method Select flagSQLCalcFoundRows()
+ * @method Select flagSQLNoCache()
+ * @method Select flagSQLSmallResult()
+ * @method Select flagStraightJoin()
  */
 class Select implements BuilderInterface {
     

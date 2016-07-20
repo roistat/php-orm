@@ -30,7 +30,7 @@ class SelectTest extends RsORMTest\Base {
             ->order("id")->order("name", false)
             ->group("id")->group("name", false)
             ->having($having)
-            ->flags([new Flag\HighPriority()]);
+            ->flagHighPriority();
         $stmt = $query->build();
         $this->assertSame('SELECT HIGH_PRIORITY `id`, `user`, COUNT(DISTINCT `id`) AS `num` FROM `users` WHERE `type` = ? GROUP BY `id`, `name` DESC HAVING `pos` = ? ORDER BY `id`, `name` DESC LIMIT ?, ?', $stmt->prepare());
         $this->assertSame([123, 3, 10, 20], $stmt->values());
@@ -42,13 +42,5 @@ class SelectTest extends RsORMTest\Base {
         $stmt = $query->build();
         $this->assertSame("SELECT ? LIMIT ?", $stmt->prepare());
         $this->assertSame([123, 1], $stmt->values());
-    }
-    
-    public function testEmptyFlags() {
-        $query = Builder::select([new Value(123)])
-                ->flags([]);
-        $stmt = $query->build();
-        $this->assertSame("SELECT ?", $stmt->prepare());
-        $this->assertSame([123], $stmt->values());
     }
 }

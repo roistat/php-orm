@@ -12,7 +12,21 @@ use RsORM\Query\Engine\MySQL\Flag;
 
 /**
  * @method Replace table(string $name)
- * @method Replace flags(Flag\AbstractFlag[] $flags)
+ * @method Replace flagAll()
+ * @method Replace flagDelayed()
+ * @method Replace flagDistinct()
+ * @method Replace flagDistinctRow()
+ * @method Replace flagHighPriority()
+ * @method Replace flagIgnore()
+ * @method Replace flagLowPriority()
+ * @method Replace flagQuick()
+ * @method Replace flagSQLBigResult()
+ * @method Replace flagSQLBufferResult()
+ * @method Replace flagSQLCache()
+ * @method Replace flagSQLCalcFoundRows()
+ * @method Replace flagSQLNoCache()
+ * @method Replace flagSQLSmallResult()
+ * @method Replace flagStraightJoin()
  */
 class Replace implements BuilderInterface {
     use TraitTable, TraitFlags, TraitInsertData;

@@ -15,7 +15,21 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Update where(Filter $filter)
  * @method Update order(string $name, boolean $asc)
  * @method Update limit(int $offset, int $count)
- * @method Update flags(Flag\AbstractFlag[] $flags)
+ * @method Update flagAll()
+ * @method Update flagDelayed()
+ * @method Update flagDistinct()
+ * @method Update flagDistinctRow()
+ * @method Update flagHighPriority()
+ * @method Update flagIgnore()
+ * @method Update flagLowPriority()
+ * @method Update flagQuick()
+ * @method Update flagSQLBigResult()
+ * @method Update flagSQLBufferResult()
+ * @method Update flagSQLCache()
+ * @method Update flagSQLCalcFoundRows()
+ * @method Update flagSQLNoCache()
+ * @method Update flagSQLSmallResult()
+ * @method Update flagStraightJoin()
  */
 class Update implements BuilderInterface {
     
