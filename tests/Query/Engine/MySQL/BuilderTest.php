@@ -11,11 +11,6 @@ use RsORM\Query\Engine\MySQL\Builder;
 
 class BuilderTest extends RsORMTest\Base {
     
-    public function testDesc() {
-        $stmt = Builder::desc("id");
-        $this->assertSame("`id` DESC", $stmt->prepare());
-    }
-    
     public function testFuncAvg() {
         $stmt = Builder::funcAvg("name", "alias");
         $this->assertSame("AVG(`name`) AS `alias`", $stmt->prepare());
