@@ -59,15 +59,6 @@ class Builder {
     }
     
     /**
-     * @param string $name
-     * @return Argument\Desc
-     */
-    public static function desc($name) {
-        $column = new Argument\Column($name);
-        return new Argument\Desc($column);
-    }
-    
-    /**
      * @param string $columnName
      * @param string $aliasName
      * @param boolean $distinct

@@ -21,7 +21,6 @@ It is the simple example of usage ORM, which includes initialization of MySQL dr
 // Initialize MySQL driver and State engine
 $driver = new Driver\MySQL();
 $state = State\Engine::getInstance();
-$query = Query\Engine::mysql();
 
 // Declare class for Client entity
 class Client extends State\Entity {
@@ -48,57 +47,33 @@ $client->name = "Mike";
 $client->age = 30;
 
 // Prepare INSERT statement
-$table = new Clause\Into(
-	new Argument\Table(Client::table())
-);
 $diff = $state->diff($client);
-// ["name" => "Mike", "age" => 30]
-$vals = array_values($diff);
-$values = new Clause\Values([
-	new Argument\Value($vals[0]),
-	new Argument\Value($vals[1]),
-]);
-$keys = array_keys($diff);
-$fields = new Clause\Objects([
-	new Argument\Field(new Argument\Column($keys[0])),
-	new Argument\Field(new Argument\Column($keys[1])),
-]);
-$statement = $query->insert($table, $values, $fields);
+$query = Builder::insert($diff)
+	->table(Client::table());
+$statement = $query->build();
 
 // Save client into database table
 $driver->query($statement);
 $state->flush($client);
 
 // Prepare select statement
-$fields = new Clause\Objects([
-	new Argument\Field(new Argument\Column(Client::name())),
-	new Argument\Field(new Argument\Column(Client::age())),
-]);
-$from = new Clause\From(
-	new Argument\Table(Client::table())
-);
-$filter = new Clause\Filter(
-	new Condition\Equal(
-		new Argument\Column(Client::id()),
-		new Argument\Value(123)
-	)
-);
-$statement = $query->select($fields, $from, $filter);
+$filter = Builder::filter()
+	->eq(Client::id(), 123);
+$query = Builder::select([Client::name(), Client::age()])
+	->table(Client::table())
+	->where($filter);
+$statement = $query->build();
 
 // Get client with id = 123
 $client = $driver->fetchClass($statement, "Client");
 
 // Prepare DELETE statement
-$table = new Clause\From(
-	new Argument\Table(Client::table())
-);
-$filter = new Clause\Filter(
-	new Condition\Equal(
-		new Argument\Column(Client::id()),
-		new Argument\Value($client->id)
-	)
-);
-$statement = $query->delete($table, $filter);
+$filter = Builder::filter()
+	->eq(Client::id(), $client->id);
+$query = Builder::delete()
+	->table(Client::table())
+	->where($filter);
+$statement = $query->build();
 
 // Remove current client from DB
 $driver->execute($statement);
@@ -158,6 +133,7 @@ $diff = $engine->diff($project); // []
 ## Query
 
 [**Engine\MySQL**](#enginemysql)  
+[**MySQL\Builder**](#mysqlbuilder)  
 [**MySQL\Argument**](#mysqlargument)  
 [**MySQL\Operator**](#mysqloperator)  
 [**MySQL\Condition**](#mysqlcondition)  
@@ -197,6 +173,57 @@ $engine = Query\Engine::mysql();
 $stmt = $engine->select($fields, $table, $filter);
 $stmt->prepare(); // SELECT `id`, `name`, `password` FROM `table` WHERE `deleted` = ?
 $stmt->values(); // [0]
+```
+
+### MySQL\Builder
+
+Namespace: `RsORM\Query\Engine\MySQL\Builder`
+
+It builds MySQL queries and uses all `MySQL\*` namespaces and classes. All builder classes have method `build`, which returns valid `MySQL\ObjectInterface` object, and this result can be used for execution in MySQL driver.
+
+Builder static methods:
+
+ - *filter* - returns `Builder\Filter` object, has no parameters.
+ - *select* - returns `Builder\Select` object, has optional input parameter - array of fields(string type, typically).
+ - *insert* - returns `Builder\Insert` object, has input parameter - associative array of field-value.
+ - *update* - returns `Builder\Update` object, has input parameter - associative array of field-value.
+ - *delete* - returns `Builder\Delete` object, has no input parameters.
+ - *replace* - returns `Builder\Replace` objects, it\`s similar to `insert`.
+ - *funcCount* - hereinafter, aliases for `MySQL\Func\*` objects.
+ - *funcAvg*
+ - *funcSum*
+ - *funcConcat*
+
+#### Example
+
+```php
+// Minimal select statement
+$query = Builder::select()->table();
+$statement = $query->build();
+$statement->prepare(); // SELECT * FROM `table`
+
+// Nontrivial case
+$concat = Builder::funcConcat(["ho", "me"], "place");
+$query = Builder::select([$concat]);
+$statement = $query->build();
+$statement->prepare(); // SELECT CONCAT(?, ?) AS `place`
+$statement->values(); // ["ho", "me"]
+
+// Full select statement
+$num = Builder::funcCount("id", "num", true);
+$where = Builder::filter()->eq("id", 123);
+$having = Builder::filter()->eq("deleted", 1);
+$query = Builder::select(["id", "user", "pass", $num])
+	->table("table")
+	->where($where)
+	->having($having)
+	->limit(10, 20)
+	->order("flag1")->order("flag2", false)
+	->group("flag3")->group("flag4", false)
+	->flagHighPriority();
+$statement = $query->build();
+$statement->prepare(); // SELECT HIGH_PRIORITY `id`, `user`, `pass`, COUNT(DISTINCT `id`) AS `num` FROM `table` WHERE `id` = ? GROUP BY `flag3`, `flag4` DESC HAVING `deleted` = ? ORDER BY `flag1`, `flag2` DESC LIMIT ?, ?
+$statement->values(); // [123, 1, 10, 20]
 ```
 
 ### MySQL\Argument
