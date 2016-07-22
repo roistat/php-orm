@@ -9,11 +9,11 @@ PDO abstract layer. Connection is initialized by first prepare / execute.
  - [*setOptions*](#setoptions) - set valid PDO options.
  - [*fetchAssoc*](#fetchassoc) - prepare, execute SQL-statement and return row from executed query as associated array.
  - [*fetchAllAssoc*](#fetchallassoc) - prepare, execute SQL-statement and return all rows from executed query as associated array.
- - [*fetchClass*](fetchclass) - prepare, execute SQL-statement and return row from executed query as object of defined class.
- - [*fetchAllClass*](fetchallclass) - prepare, execute SQL-statement and return all rows from executed query as array of objects of defined class.
- - [*query*](query) - prepare and execute generated SQL-statement.
- - [*queryCustom*](querycustom) - prepare and execute custom SQL-statement (string).
- - [*getLastInsertId*](getlastinsertid) - get last insert ID.
+ - [*fetchClass*](#fetchclass) - prepare, execute SQL-statement and return row from executed query as object of defined class.
+ - [*fetchAllClass*](#fetchallclass) - prepare, execute SQL-statement and return all rows from executed query as array of objects of defined class.
+ - [*query*](#query) - prepare and execute generated SQL-statement.
+ - [*queryCustom*](#querycustom) - prepare and execute custom SQL-statement (string).
+ - [*getLastInsertId*](#getlastinsertid) - get last insert ID.
 
 ### __construct
 
