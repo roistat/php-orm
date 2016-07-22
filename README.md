@@ -194,6 +194,109 @@ Builder static methods:
  - *funcSum*
  - *funcConcat*
 
+#### Builder statements
+
+`Builder\Select`, `Builder\Insert`, `Builder\Replace`, `Builder\Update`, `Builder\Delete`. All this classes implement `BuilderInterface` and have method `build`, which returns `MySQL\AbstractExpression` object.
+
+Select class synopsis:
+
+```php
+Select {
+	__construct(array $objects = []);
+	Select table(string $table);
+	Select where(Filter $filter);
+	Select having(Filter $filter);
+	Select group(string $name, boolean $asc = true);
+	Select order(string $name, boolean $asc = true);
+	Select limit(int $offset, int $count = null);
+	Select flag*();
+}
+```
+
+Insert class synopsis:
+
+```php
+Insert {
+	__construct(array $data);
+	Insert table(string $table);
+	Insert flag*();
+}
+```
+
+Replace class synopsis:
+
+```php
+Replace {
+	__construct(array $data);
+	Replace table(string $table);
+	Replace flag*();
+}
+```
+
+Update class synopsis:
+
+```php
+Update {
+	__construct(array $data);
+	Update table(string $table);
+	Update where(Filter $filter);
+	Update order(string $name, boolean $asc = true);
+	Update limit(int $offset, int $count = null);
+	Update flag*();
+}
+```
+
+Delete class synopsis:
+
+```php
+Delete {
+	__construct();
+	Delete table(string $table);
+	Delete where(Filter $filter);
+	Delete order(string $name, boolean $asc = true);
+	Delete limit(int $offset, int $count = null);
+	Delete flag*();
+}
+```
+
+Statement methods:
+
+ - `Select::__construct(array $objects = [])` - set objects for SELECT statement. Each object can be string type (column name) or predefined `MySQL\ObjectInterface` object (MySQL functions, aliases, etc). If no parameters or empty array, than statement will be generated like this: `SELECT * FROM ...`.
+ - `Insert::__construct(array $data)` - set fields and values for INSERT statement, parameter - associative array.
+ - `Replace::__construct(array $data)` - set fields and values for REPLACE statement, parameter - associative array.
+ - `Update::__construct(array $data)` - set fields and values for UPDATE statement, parameter - associative array.
+ - `Delete::__construct()` - has no input parameters.
+ - `table(string $table)` - set table name.
+ - `where(Filter $filter)` - set WHERE clause by predefined filter.
+ - `having(Filter $filter)` - set HAVING clause by predefined filter.
+ - `group(string $name, boolean $asc = true)` - set GROUP BY clause, second parameter is optional.
+ - `order(string $name, boolean $asc = true)` - set ORDER BY clause, second parameter is optional.
+ - `limit(int $offset, int $count = null)` - set LIMIT clause , second parameter is optional.
+ - `flag*()` - all flags has no input parameters.
+
+#### Filter
+
+Filter class synopsis:
+
+```php
+Filter {
+    Filter compare(string $column, mixed $expected, boolean $is = true);
+    Filter eq(string $column, int|double|string $expected, boolean $is = true);
+    Filter between(string $column, int|double $min, int|double $max, boolean $is = true);
+    Filter in(string $column, array $set, boolean $is = true);
+    Filter like(string $column, string $expected, boolean $is = true);
+    Filter gt(string $column, int|double $expected, boolean $is = true);
+    Filter gte(string $column, int|double $expected, boolean $is = true);
+    Filter lt(string $column, int|double $expected, boolean $is = true);
+    Filter lte(string $column, int|double $expected, boolean $is = true);
+    Filter is(string $column, mixed $expected, boolean $is = true);
+    Filter isNull(string $column, boolean $is = true);
+    Filter logicOr(Filter $filter);
+    MySQL\ObjectInterface build();
+}
+
+```
+
 #### Example
 
 ```php
@@ -224,6 +327,24 @@ $query = Builder::select(["id", "user", "pass", $num])
 $statement = $query->build();
 $statement->prepare(); // SELECT HIGH_PRIORITY `id`, `user`, `pass`, COUNT(DISTINCT `id`) AS `num` FROM `table` WHERE `id` = ? GROUP BY `flag3`, `flag4` DESC HAVING `deleted` = ? ORDER BY `flag1`, `flag2` DESC LIMIT ?, ?
 $statement->values(); // [123, 1, 10, 20]
+
+// Builder filter example
+$filter = Builder::filter()
+	->eq("id", 123) // `id` = 123
+	->eq("id", 123, false) // `id` != 123
+	->in("id", [1, 2, 3, 4]) // `id` in (1, 2, 3, 4)
+	->between("id", 100, 200); // `id` between 100 AND 200
+$statement = $filter->build();
+$statement->prepare(); // (`id` = ?) AND (`id` != ?) AND (`id` IN (?, ?, ?, ?)) AND (`id` BETWEEN ? AND ?)
+$statement = $filter->values(); // [123, 123, 1, 2, 3, 4, 100, 200]
+
+$filterOr = Builder::filter()
+	->gte("age", 18)
+	->lte("age", 27);
+$filter->logicOr($filterOr);
+$statement = $filter->build();
+$statement->prepare(); // ((`id` = ?) AND (`id` != ?) AND (`id` IN (?, ?, ?, ?)) AND (`id` BETWEEN ? AND ?)) OR ((`age` >= ?) AND (`age` <= ?))
+$statement->values(); // [123, 123, 1, 2, 3, 4, 100, 200, 18, 27]
 ```
 
 ### MySQL\Argument

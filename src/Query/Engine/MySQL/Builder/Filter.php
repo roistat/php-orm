@@ -183,6 +183,7 @@ class Filter implements BuilderInterface {
     }
     
     /**
+     * @param Filter $filter
      * @return Filter
      */
     public function logicOr(Filter $filter) {
@@ -191,7 +192,7 @@ class Filter implements BuilderInterface {
     }
     
     /**
-     * @return MySQL\ObjectInterface
+     * @return MySQL\AbstractExpression
      */
     public function build() {
         $filters = [];
