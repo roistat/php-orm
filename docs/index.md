@@ -5,7 +5,7 @@
 It is simple ORM library for PHP. This library is compatible with PHP 5.4 and higher. There are no magic methods. All code is type-hinted. It could be used in high load projects even with partitioning and sharding. There are 3 basic parts (packages). You could combine them or use some of them separately.
 
  - [State package](state.md) — responsible for object state management. Prepares data for usage in DB queries.
- - [Query package](query-engine.md) — query builder. It could use data from State package or any other sources.
+ - [Query package](query.md) — query builder. It could use data from State package or any other sources.
  - [Driver package](driver-mysql.md) — sends queries to database and parses results.
 
 ## Quick Start
