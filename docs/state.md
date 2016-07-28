@@ -1,212 +1,94 @@
-# State
+# State package
 
-Namespace: `RsORM\State`
-
-State package consists of `State\Entity` and `State\Engine` classes.  
-All entities should be extended from `RsORM\State\Entity` which encapsulates object state data and get/set methods. All actions are going in `RsORM\State\Engine`. Entity class may be extended with methods, which could return table name or field names.  
-`State\Engine` class has static method `getInstance`, which initialize new object of `State\Engine` class or get existing and return it.
+State package consists of `State\Entity` and `State\Engine` classes. All entities should be extended from `State\Entity` which encapsulates object state data and get/set methods. All actions are going in `State\Engine`. Entity class may be extended with methods, which could return table name or field names. `State\Engine` class has static method `getInstance`, which initialize new object of `State\Engine` class or get existing and return it.
 
 ## State\Entity
 
-Entity - abstract class, on base of it you can create your own entity classes, which extend `State\Entity`. This new classes you can use in `State\Engine` for control changes of each object.
-
-### Example
+At first, you should define class, which extends `State\Entity`. Basically it looks like:
 
 ```php
 class Account extends State\Entity {
 	public $id;
 	public $email;
 	public $password;
-	public $ip;
 }
 ```
 
-## State\Engine methods
-
- - [*getInstance*](#getinstance) - get engine instance (static method).
- - [*isNew*](#isnew) - check entity is new.
- - [*isChanged*](#ischanged) - check entity is changed.
- - [*flush*](#flush) - flush all changes in entity.
- - [*diff*](#diff) - get all changed properties of entity, return data in form of key-value array.
-
-### getInstance
-
-Get engine instance (static method).
+Than you can extends your class with helper methods for table name or field name definitions, or any set / get methods.
 
 ```php
-State\Engine getInstance()
-```
-
-#### Return values
-
-Return instance of `State\Engine`. If engine is not created yet, than create it previously and return its instance.
-
-#### Example
-
-```php
-$engine = State\Engine::getInstance();
-// Than you can do anything like this
-$engine->isNew(...);
-$engine->diff(...);
-```
-
-### isNew
-
-Check entity is new.
-
-```php
-boolean isNew(State\Entity $entity)
-```
-
-#### Parameters
-
-*entity* - `State\Entity` object.
-
-#### Return values
-
-It returns true in case of all object properties was currently initialize. False - in case of object was flushed.
-
-#### Example
-
-```php
-$engine = State\Engine::getInstance();
-class User extends State\Entity {
+class Account extends State\Entity {
 	public $id;
-	public $name;
+	public $email;
+	public $password;
+	
+	// return table name
+	public static function table() {
+		return "account_table";
+	}
+	
+	// return field name for id property
+	public static function id() {
+		return "acc_id";
+	}
+	
+	// set password property
+	public function setPassword($password) {
+		$this->password = md5($password);
+	}
 }
-
-// Initialize user and set properties
-$user = new User();
-$user->id = 1;
-$user->name = "Mike";
-$engine->isNew($user); // true
-
-// Flush user
-$engine->flush($user);
-$engine->isNew($user); // false
-
-// Change user properties
-$user->id = 2;
-$user->name = "Egor";
-$engine->isNew($user); // false
 ```
 
-### isChanged
+## State\Engine
 
-Check entity is changed.
+With `State\Engine` class you can control state of your `State\Entity` objects. Hereinafter we will operate our first example, where we define basic `Account` class (without helper methods).
+
+At first we need to get `State\Engine` object. You can create new instance of this class:
 
 ```php
-boolean isChanged(State\Entity $entity)
+$engine = new State\Engine();
 ```
 
-#### Parameters
-
-*entity* - `State\Entity` object.
-
-#### Example
+But commonly it is more convenient to get already existing instance if it is created earlier. If instance of `State\Engine` isn't created yet, it would be created.
 
 ```php
 $engine = State\Engine::getInstance();
-class User extends State\Entity {
-	public $id;
-	public $name;
-}
-
-// Initialize user and flush it
-$user = new User();
-$user->id = 1;
-$user->name = "Mike";
-$engine->flush($user);
-
-// Test changes
-$engine->isChanged($user); // false
-
-// Change user properties and test it again
-$user->id = 2;
-$user->name = "Egor";
-$engine->isChanged($user); // true
 ```
 
-### flush
-
-Flush all changes in entity.
+Than we can check our object by new / not new state. It's useful for choosing among insert and update statement.
 
 ```php
-flush(State\Entity $entity)
+$account = new Account();
+$account->email = "qwe@qwe.qwe";
+$account->password = "123456";
+$engine->isNew($account); // true
 ```
 
-#### Parameters
-
-*entity* - `State\Entity` object.
-
-#### Example
+Now we know, that our object is new and we can insert it into DB. After inserting we should change state of our object. This operation was named: `flush`. Example:
 
 ```php
-$engine = State\Engine::getInstance();
-class User extends State\Entity {
-	public $id;
-	public $name;
-}
-
-// Initialize user
-$user = new User();
-$user->id = 1;
-$user->name = "Mike";
-$engine->isNew($user); // true
-$engine->flush($user);
-$engine->isNew($user); // false
-
-// Change user
-$user->id = 2;
-$user->name = "Egor";
-$engine->isChanged($user); // true
-$engine->flush($user);
-$engine->isChanged($user); // false
+$engine->flush($account);
+$engine->isNew($account); // false
 ```
 
-### diff
-
-Get all changed properties of entity, return data in form of key-value array.
+We want to change password for our account and check state of our object for any changes.
 
 ```php
-array diff(State\Entity $entity)
+$engine->isChanged($account); // false - no any changes
+$account->password = "654321";
+$engine->isChanged($account); // true - we did changes
 ```
 
-#### Parameters
-
-*entity* - `State\Entity` object.
-
-#### Return values
-
-Returns data in form of key-value array. Returns only properties and their values, that was changed after last `flush` operation or after object initialization.
-
-#### Example
+We know, that account was changed, and we need to update it in the table of DB. But not all fields was changed. Method `diff` helps us to determine which fields was changed.
 
 ```php
-$engine = State\Engine::getInstance();
-class User extends State\Entity {
-	public $id;
-	public $name;
-	public $last_name;
-}
-
-// Initialize user
-$user = new User();
-$user->id = 1;
-$user->name = "John";
-$user->last_name = "Black";
-$engine->diff($user); // ["id" => 1, "name" => "John", "last_name" => "Black"]
-
-// Flush user
-$engine->flush($user);
-$engine->diff($user); // []
-
-// Change user
-$user->last_name = "Green";
-$engine->diff($user); // ["last_name" => "Green"]
-
-// And flush user again
-$engine->flush($user);
-$engine->diff($user); // []
+$engine->diff($account); // ["password" => "654321"]
 ```
 
+These fields we need to update in the table. After update we should to flush our account.
+
+```php
+$engine->flush($account);
+$engine->isChanged(); // false
+$engine->diff(); // []
+```
