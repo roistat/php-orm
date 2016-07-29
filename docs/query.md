@@ -7,10 +7,10 @@ Query package is situated in the `Query\Engine\MySQL` namespace. It contains cla
 All namespaces of query package are listed here. They contain classes, each of them is interpretation of any MySQL argument, operator, function, flag, clause or statement. Builder class combines all of them. With help of this class you can build the most frequently used MySQL statements. For nontrivial cases you can use combinations of other classes.
 
  - [Builder](query-builder.md)
- - Argument
- - Operator
- - Condition
- - Flag
- - Func
- - Clause
- - Statement
+ - [Argument](query-argument.md)
+ - [Operator](query-operator.md)
+ - [Condition](query-condition.md)
+ - [Flag](query-flag.md)
+ - [Func](query-func.md)
+ - [Clause](query-clause.md)
+ - [Statement](query-statement.md)
