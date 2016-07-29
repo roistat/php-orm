@@ -51,9 +51,9 @@ It is simple example of usage RsORM. More detailed information you can find in t
 
 ## Documentation
 
-[**State package**](state.md)  
-[**Query package**](query.md)  
-[**Driver package**](driver-mysql.md)  
+[**State package**](docs/state.md)  
+[**Query package**](docs/query.md)  
+[**Driver package**](docs/driver-mysql.md)  
 
 ## License
 
