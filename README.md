@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/roistat/php-orm.svg?branch=master)](https://travis-ci.org/roistat/php-orm)
 
-# RsORM
-
 ## Overview
 
 It is simple ORM library for PHP. This library is compatible with PHP 5.4 and higher. There are no magic methods. All code is type-hinted. It could be used in high load projects even with partitioning and sharding. There are 3 basic parts (packages). You could combine them or use some of them separately.
