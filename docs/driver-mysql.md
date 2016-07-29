@@ -8,7 +8,8 @@ __construct(
 	int $port = null, // 3306
 	string $user = null, // root
 	string $pass = null, // no default password
-	string $dbname = null) // no default DB
+	string $dbname = null // no default DB
+)
 ```
 
 Bellow you can see simple example of creating `Driver\MySQL` object.
@@ -104,9 +105,7 @@ it returns anything like this:
 Prepare, execute SQL-statement and return row from executed query as object of defined class.
 
 ```php
-State\Entity fetchClass(
-	Statement\AbstractStatement $statement,
-	string $class)
+State\Entity fetchClass(Statement\AbstractStatement $statement, string $class)
 ```
 
 ```php
@@ -126,9 +125,7 @@ $driver->fetchClass($statement, "User");
 Prepare, execute SQL-statement and return all rows from executed query as array of objects of defined class.
 
 ```php
-State\Entity[] fetchAllClass(
-	Statement\AbstractStatement $statement,
-	string $class)
+State\Entity[] fetchAllClass(Statement\AbstractStatement $statement, string $class)
 ```
 
 ```php
@@ -157,9 +154,9 @@ query(Statement\AbstractStatement $statement)
 ```
 
 ```php
-$statement = Query\Engine\MySQL\Builder::update([
-	"flag" => 1
-])->table("users")->build();
+$statement = Query\Engine\MySQL\Builder::update(["flag" => 1])
+    ->table("users")
+    ->build();
 $driver->query($statement);
 ```
 
@@ -184,9 +181,10 @@ string getLastInsertId()
 ```
 
 ```php
-$statement = Query\Engine\MySQL\Builder::insert([
-	"id" => 3, "name" => "Egor"
-])->table("users")->build();
+$data = ["id" => 3, "name" => "Egor"];
+$statement = Query\Engine\MySQL\Builder::insert($data)
+    ->table("users")
+    ->build();
 $driver->query($statement);
 $driver->getLastInsertId(); // 3
 ```
