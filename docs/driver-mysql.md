@@ -163,7 +163,7 @@ $statement = Query\Engine\MySQL\Builder::update([
 $driver->query($statement);
 ```
 
-### queryCustom
+## queryCustom
 
 Prepare and execute custom SQL-statement (string).
 
@@ -175,7 +175,7 @@ queryCustom(string $query)
 $driver->query("DELETE FROM `table` WHERE `id` = 1");
 ```
 
-### getLastInsertId
+## getLastInsertId
 
 Get last insert ID.
 
