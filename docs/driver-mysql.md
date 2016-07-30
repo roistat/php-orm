@@ -1,4 +1,6 @@
-# Driver\MySQL
+# MySQL driver package
+
+Namespace: `RsORM\Driver\MySQL`
 
 It is PDO abstract layer. Connection is initialized by first prepare / execute. All input parameters in `Driver\MySQL` object constructor are optional:
 
