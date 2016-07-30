@@ -1,4 +1,6 @@
-# Query\Engine\MySQL\Argument
+# Argument
+
+Namespace: `RsORM\Query\Engine\MySQL\Argument`
 
 Arguments are basic MySQL engine entities. They implements `ObjectInterface`, `SingleValueInterface` or `MultiValueInterface`. So they all has method `prepare` without input parameters and some of them has methods `value` or `values` without input parameters too.
 

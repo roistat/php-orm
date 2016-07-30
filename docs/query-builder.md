@@ -1,5 +1,7 @@
 # Builder
 
+Namespace: `RsORM\Query\Engine\MySQL\Builder`
+
 It is special class, which realizes abstract layer for other classes in query package and build different MySQL statements. This class has methods, which are aliases for `MySQL\Builder\*` classes and aliases for some other classes in `MySQL` namespace. All methods of `Builder` class can be divided:
 
  - [filter](#filter)

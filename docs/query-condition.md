@@ -1,4 +1,6 @@
-# Query\Engine\MySQL\Condition
+# Condition
+
+Namespace: `RsORM\Query\Engine\MySQL\Condition`
 
 All classes in this namespace corresponds MySQL logical operators and expressions. All this classes are instances of abstract classes, which are listed bellow:
 
