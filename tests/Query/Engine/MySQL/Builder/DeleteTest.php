@@ -13,9 +13,9 @@ use RsORM\Query\Engine\MySQL\Flag;
 class DeleteTest extends RsORMTest\Base {
     
     public function testShort() {
-        $query = Builder::delete()
-                ->table("table");
-        $stmt = $query->build();
+        $stmt = Builder::delete()
+                ->table("table")
+                ->build();
         $this->assertSame("DELETE FROM `table`", $stmt->prepare());
         $this->assertSame([], $stmt->values());
     }
@@ -23,14 +23,13 @@ class DeleteTest extends RsORMTest\Base {
     public function testFull() {
         $filter = Builder::filter()
                 ->eq("type", 123);
-        $query = Builder::delete()
+        $stmt = Builder::delete()
                 ->table("table")
                 ->limit(10, 20)
                 ->order("flag")
                 ->where($filter)
-                ->flagHighPriority();
-        $query->table("table");
-        $stmt = $query->build();
+                ->flagHighPriority()
+                ->build();
         $this->assertSame("DELETE HIGH_PRIORITY FROM `table` WHERE `type` = ? ORDER BY `flag` LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([123, 10, 20], $stmt->values());
     }
