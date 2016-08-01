@@ -12,18 +12,18 @@ use RsORM\Query\Engine\MySQL\Flag;
 class InsertTest extends RsORMTest\Base {
     
     public function testShort() {
-        $query = Builder::insert(["id" => 1, "name" => "Mike"])
-                ->table("users");
-        $stmt = $query->build();
+        $stmt = Builder::insert(["id" => 1, "name" => "Mike"])
+                ->table("users")
+                ->build();
         $this->assertSame("INSERT INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     
     public function testFull() {
-        $query = Builder::insert(["id" => 1, "name" => "Mike"])
+        $stmt = Builder::insert(["id" => 1, "name" => "Mike"])
                 ->table("users")
-                ->flagHighPriority();
-        $stmt = $query->build();
+                ->flagHighPriority()
+                ->build();
         $this->assertSame("INSERT HIGH_PRIORITY INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }

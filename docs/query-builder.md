@@ -72,7 +72,7 @@ This static method returns `Builder\Select` object and may be without any input 
  - [limit](#limit)
  - [flag methods](#flag-methods)
 
-Bellow you can see the most simple example of usage:
+#### Example 1 Simple example of usage
 
 ```php
 $statement = MySQL\Builder::select()
@@ -81,7 +81,7 @@ $statement = MySQL\Builder::select()
 $statement->prepare(); // SELECT * FROM `table`
 ```
 
-Bellow you can see 3 useful examples for select statement:
+#### Example 2 different cases of input parameters
 
 ```php
 // SELECT * ...
@@ -116,7 +116,7 @@ Returns `Builder\Delete` object, has no input parameters. `Builder\Delete` objec
  - [limit](#limit)
  - [Flag methods](#flag-methods)
 
-Bellow you can see simple example:
+#### Example
 
 ```php
 $statement = MySQL\Builder::delete()
@@ -131,6 +131,8 @@ Returns `Builder\Insert` object, has one input parameter - key-value array of in
 
  - [table](#table) (required)
  - [Flag methods](#flag-methods)
+
+#### Example
 
 ```php
 $statement = MySQL\Builder::insert([
@@ -147,6 +149,8 @@ Returns `Builder\Replace` object, has one input parameter - key-value array of r
 
  - [table](#table) (required)
  - [Flag methods](#flag-methods)
+
+#### Example
 
 ```php
 $statement = MySQL\Builder::replace([
@@ -166,6 +170,8 @@ Returns `Builder\Update` object, has one input parameter - key-value array of up
  - [order](#order)
  - [limit](#limit)
  - [Flag methods](#flag-methods)
+
+#### Example
 
 ```php
 $statement = MySQL\Builder::update([
@@ -195,6 +201,8 @@ Set grouping for `GROUP` MySQL clause. Has two input parameters:
 
 Each new call of this method add new grouping.
 
+##### Example
+
 ```php
 $statement->group("id"); // GROUP `id`
 $statement->group("gid", false); // GROUP `id`, `gid` DESC
@@ -203,6 +211,8 @@ $statement->group("gid", false); // GROUP `id`, `gid` DESC
 #### having
 
 Set condition for `HAVING` MySQL clause. Has one input parameter: filter - `Builder\Filter` object.
+
+##### Example
 
 ```php
 $filter = Builder::filter()
@@ -216,6 +226,8 @@ Set limit values for `LIMIT` MySQL clause. Has two input parameters:
 
  - offset - offset value;
  - count - number of rows affected by MySQL query, optional parameter.
+
+##### Example
 
 ```php
 $statement->limit(10, 20); // LIMIT 10, 20
@@ -231,6 +243,8 @@ Set ordering for `ORDER` MySQL clause. Has two input parameters:
 
 Each new call of this method add new ordering.
 
+##### Example
+
 ```php
 $statement->order("id"); // ORDER `id`
 $statement->order("gid", false); // ORDER `id`, `gid` DESC
@@ -239,6 +253,8 @@ $statement->order("gid", false); // ORDER `id`, `gid` DESC
 #### table
 
 Set table name for `FROM`, `INTO` MySQL clause and `UPDATE` MySQL statement. Has one input parameter: name - table name (string).
+
+##### Example
 
 ```php
 $statement = Builder::select()
@@ -261,6 +277,8 @@ $statement = Builder::delete()
 #### where
 
 Set condition for `WHERE` MySQL clause. Has one input parameter: filter - `Builder\Filter` object.
+
+##### Example
 
 ```php
 $filter = Builder::filter()
@@ -287,6 +305,8 @@ Flag methods has no input parameters. Each new call of any flag method add new f
  - flagSQLNoCache
  - flagSQLSmallResult
  - flagStraightJoin
+
+##### Example
 
 ```php
 $statement = Builder::select()

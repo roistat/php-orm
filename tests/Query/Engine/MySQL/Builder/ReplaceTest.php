@@ -12,18 +12,18 @@ use RsORM\Query\Engine\MySQL\Flag;
 class ReplaceTest extends RsORMTest\Base {
     
     public function testShort() {
-        $query = Builder::replace(["id" => 1, "name" => "Mike"])
-                ->table("users");
-        $stmt = $query->build();
+        $stmt = Builder::replace(["id" => 1, "name" => "Mike"])
+                ->table("users")
+                ->build();
         $this->assertSame("REPLACE INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     
     public function testFull() {
-        $query = Builder::replace(["id" => 1, "name" => "Mike"])
+        $stmt = Builder::replace(["id" => 1, "name" => "Mike"])
                 ->table("users")
-                ->flagHighPriority();
-        $stmt = $query->build();
+                ->flagHighPriority()
+                ->build();
         $this->assertSame("REPLACE HIGH_PRIORITY INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
