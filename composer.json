@@ -1,0 +1,21 @@
+{
+  "name": "roistat/php-orm",
+  "type": "library",
+  "description": "Simple ORM library for PHP",
+  "keywords": [],
+  "homepage": "https://github.com/roistat/php-orm",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Roistat",
+      "homepage": "https://roistat.com"
+    }
+  ],
+  "require": {
+    "php": "^7.2"
+  },
+  "autoload": {
+    "psr-4": { "RsORM\\": "src" }
+  },
+  "minimum-stability": "dev"
+}

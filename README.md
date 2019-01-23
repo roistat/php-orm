@@ -10,6 +10,11 @@ It is simple ORM library for PHP. This library is compatible with PHP 5.4 and hi
  - Query package — query builder. It could use data from State package or any other sources.
  - Driver package — sends queries to database and parses results.
 
+## Installation
+```
+composer require roistat/php-orm
+```
+
 ## Quick Start
 
 Typically you can combine these 3 packages or use them alone. And at first you should define class of entity you work with. This class structure convenient to build accordingly with DB table structure.
