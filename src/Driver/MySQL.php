@@ -54,18 +54,22 @@ class MySQL {
      */
     private $_options = [];
 
+    private $_driver = "mysql";
+
     /**
      * @param string $host
      * @param int $port
      * @param string $user
      * @param string $pass
      * @param string $dbname
+     * @param string $driver
      */
-    public function __construct($host = null, $port = null, $user = null, $pass = null, $dbname = null) {
+    public function __construct($host = null, $port = null, $user = null, $pass = null, $dbname = null, $driver = null) {
         $this->_host = $host === null ? $this->_host : $host;
         $this->_port = $port === null ? $this->_port : $port;
         $this->_user = $user === null ? $this->_user : $user;
         $this->_pass = $pass === null ? $this->_pass : $pass;
+        $this->_driver = $driver === null ? $this->_driver : $driver;
         $this->_dbname = $dbname;
     }
 
