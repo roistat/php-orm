@@ -13,7 +13,7 @@ class AliasTest extends RsORMTest\Base {
 
     public function test() {
         $alias = new Argument\Alias("uid");
-        $this->assertSame("`uid`", $alias->prepare());
+        $this->assertSame("uid", $alias->prepare());
     }
     
 }

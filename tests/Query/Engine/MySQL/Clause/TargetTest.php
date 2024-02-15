@@ -14,7 +14,7 @@ class TargetTest extends RsORMTest\Base {
 
     public function test() {
         $from = new Clause\Target(new Argument\Table("table"));
-        $this->assertSame("`table`", $from->prepare());
+        $this->assertSame("table", $from->prepare());
         $this->assertSame([], $from->values());
     }
     

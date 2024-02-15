@@ -17,7 +17,7 @@ class ObjectsTest extends RsORMTest\Base {
             new Argument\Field(new Argument\Column("id")),
             new Argument\Field(new Argument\Column("name2"), new Argument\Alias("last_name")),
         ]);
-        $this->assertSame("`id`, `name2` AS `last_name`", $objects->prepare());
+        $this->assertSame("id, name2 AS last_name", $objects->prepare());
         $this->assertSame([], $objects->values());
     }
     

@@ -6,7 +6,6 @@
 
 namespace RsORM\Query\Engine\MySQL;
 
-use RsORM\Query\Engine\MySQL\Builder;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Func;
 
@@ -16,7 +15,7 @@ class Builder {
      * @param string[] $objects
      * @return Builder\Select
      */
-    public static function select(array $objects = null) {
+    public static function select(array $objects = []) {
         return new Builder\Select($objects);
     }
     

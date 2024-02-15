@@ -15,7 +15,7 @@ class InsertTest extends RsORMTest\Base {
         $stmt = Builder::insert(["id" => 1, "name" => "Mike"])
                 ->table("users")
                 ->build();
-        $this->assertSame("INSERT INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
+        $this->assertSame("INSERT INTO users (id, name) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     
@@ -24,7 +24,7 @@ class InsertTest extends RsORMTest\Base {
                 ->table("users")
                 ->flagHighPriority()
                 ->build();
-        $this->assertSame("INSERT HIGH_PRIORITY INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
+        $this->assertSame("INSERT HIGH_PRIORITY INTO users (id, name) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     

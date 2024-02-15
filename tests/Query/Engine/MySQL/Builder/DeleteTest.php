@@ -16,7 +16,7 @@ class DeleteTest extends RsORMTest\Base {
         $stmt = Builder::delete()
                 ->table("table")
                 ->build();
-        $this->assertSame("DELETE FROM `table`", $stmt->prepare());
+        $this->assertSame("DELETE FROM table", $stmt->prepare());
         $this->assertSame([], $stmt->values());
     }
     
@@ -30,7 +30,7 @@ class DeleteTest extends RsORMTest\Base {
                 ->where($filter)
                 ->flagHighPriority()
                 ->build();
-        $this->assertSame("DELETE HIGH_PRIORITY FROM `table` WHERE `type` = ? ORDER BY `flag` LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame("DELETE HIGH_PRIORITY FROM table WHERE type = ? ORDER BY flag LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([123, 10, 20], $stmt->values());
     }
 }

@@ -24,7 +24,7 @@ class AbstractIdentifier implements ObjectInterface {
      * @return string
      */
     public function prepare() {
-        return "`{$this->_name}`";
+        return $this->_name;
     }
     
 }

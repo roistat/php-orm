@@ -13,7 +13,7 @@ class AscTest extends RsORMTest\Base {
 
     public function test() {
         $arg = new Argument\Asc(new Argument\Column("id"));
-        $this->assertSame("`id` ASC", $arg->prepare());
+        $this->assertSame("id ASC", $arg->prepare());
     }
     
 }

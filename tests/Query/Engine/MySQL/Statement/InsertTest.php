@@ -32,7 +32,7 @@ class InsertTest extends RsORMTest\Base {
             new Flag\Ignore(),
         ]);
         $stmt = new Statement\Insert($table, $values, $fields, $flags);
-        $this->assertSame("INSERT DELAYED IGNORE INTO `table` (`id`, `name`, `qwe`) VALUES (?, ?, NULL)", $stmt->prepare());
+        $this->assertSame("INSERT DELAYED IGNORE INTO table (id, name, qwe) VALUES (?, ?, NULL)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     

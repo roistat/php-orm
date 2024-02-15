@@ -35,8 +35,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  */
 class Select implements BuilderInterface {
     
-    use TraitObjects, TraitTable, TraitGroup, TraitLimit, TraitOrder, TraitFlags,
-            TraitWhere, TraitHaving;
+    use TraitObjects, TraitTable, TraitGroup, TraitLimit, TraitOrder, TraitFlags, TraitWhere, TraitHaving;
     
     /**
      * @param array $objects
@@ -50,14 +49,14 @@ class Select implements BuilderInterface {
      */
     public function build() {
         return Query\Engine::mysql()->select(
-                $this->_buildObjects(),
-                $this->_table === null ? null : new MySQL\Clause\From($this->_table),
-                $this->_buildWhere(),
-                $this->_buildGroup(),
-                $this->_buildHaving(),
-                $this->_buildOrder(),
-                $this->_buildLimit(),
-                $this->_buildFlags()
-                );
+            $this->_buildObjects(),
+            $this->_table === null ? null : new MySQL\Clause\From($this->_table),
+            $this->_buildWhere(),
+            $this->_buildGroup(),
+            $this->_buildHaving(),
+            $this->_buildOrder(),
+            $this->_buildLimit(),
+            $this->_buildFlags()
+        );
     }
 }

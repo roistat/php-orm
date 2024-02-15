@@ -17,7 +17,7 @@ class FieldsTest extends RsORMTest\Base {
             new Argument\Column("id"),
             new Argument\Column("name"),
         ]);
-        $this->assertSame("(`id`, `name`)", $fields->prepare());
+        $this->assertSame("(id, name)", $fields->prepare());
         $this->assertSame([], $fields->values());
     }
     

@@ -13,7 +13,7 @@ class TableTest extends RsORMTest\Base {
 
     public function test() {
         $table = new Argument\Table("table");
-        $this->assertSame("`table`", $table->prepare());
+        $this->assertSame("table", $table->prepare());
     }
     
 }

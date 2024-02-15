@@ -15,7 +15,7 @@ class ReplaceTest extends RsORMTest\Base {
         $stmt = Builder::replace(["id" => 1, "name" => "Mike"])
                 ->table("users")
                 ->build();
-        $this->assertSame("REPLACE INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
+        $this->assertSame("REPLACE INTO users (id, name) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     
@@ -24,7 +24,7 @@ class ReplaceTest extends RsORMTest\Base {
                 ->table("users")
                 ->flagHighPriority()
                 ->build();
-        $this->assertSame("REPLACE HIGH_PRIORITY INTO `users` (`id`, `name`) VALUES (?, ?)", $stmt->prepare());
+        $this->assertSame("REPLACE HIGH_PRIORITY INTO users (id, name) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
 }

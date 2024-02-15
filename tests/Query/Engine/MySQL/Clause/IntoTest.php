@@ -14,7 +14,7 @@ class IntoTest extends RsORMTest\Base {
 
     public function test() {
         $from = new Clause\Into(new Argument\Table("table"));
-        $this->assertSame("INTO `table`", $from->prepare());
+        $this->assertSame("INTO table", $from->prepare());
         $this->assertSame([], $from->values());
     }
     

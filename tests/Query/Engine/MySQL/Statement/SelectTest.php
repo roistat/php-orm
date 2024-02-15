@@ -35,7 +35,7 @@ class SelectTest extends RsORMTest\Base {
             new Flag\SQLNoCache(),
         ]);
         $stmt = new Statement\Select($objects, $table, $filter, $group, $having, $order, $limit, $flags);
-        $this->assertSame("SELECT DISTINCT HIGH_PRIORITY SQL_NO_CACHE `id`, `name` FROM `table` WHERE (`id` = ?) OR (`id` = ?) GROUP BY `id` HAVING `alive` = ? ORDER BY `id` DESC LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame("SELECT DISTINCT HIGH_PRIORITY SQL_NO_CACHE id, name FROM table WHERE (id = ?) OR (id = ?) GROUP BY id HAVING alive = ? ORDER BY id DESC LIMIT ?, ?", $stmt->prepare());
         $this->assertSame([10, 20, 1, 5, 10], $stmt->values());
     }
     

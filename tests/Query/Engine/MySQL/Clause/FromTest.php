@@ -14,7 +14,7 @@ class FromTest extends RsORMTest\Base {
 
     public function test() {
         $from = new Clause\From(new Argument\Table("table"));
-        $this->assertSame("FROM `table`", $from->prepare());
+        $this->assertSame("FROM table", $from->prepare());
         $this->assertSame([], $from->values());
     }
     

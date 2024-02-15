@@ -20,7 +20,7 @@ class SetTest extends RsORMTest\Base {
             new Operator\Assign(new Argument\Column("qwerty"), new Argument\NullValue()),
             new Operator\Assign(new Argument\Column("asdfgh"), new Argument\DefaultValue()),
         ]);
-        $this->assertSame("SET `id` = ?, `name` = ?, `qwerty` = NULL, `asdfgh` = DEFAULT", $values->prepare());
+        $this->assertSame("SET id = ?, name = ?, qwerty = NULL, asdfgh = DEFAULT", $values->prepare());
         $this->assertSame([1, "Mike"], $values->values());
     }
     

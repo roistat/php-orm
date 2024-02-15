@@ -14,13 +14,13 @@ class FieldTest extends RsORMTest\Base {
 
     public function testColumn() {
         $field = new Argument\Field(new Argument\Column("id"));
-        $this->assertSame("`id`", $field->prepare());
+        $this->assertSame("id", $field->prepare());
         $this->assertSame([], $field->values());
     }
     
     public function testColumnAlias() {
         $field = new Argument\Field(new Argument\Column("id"), new Argument\Alias("uid"));
-        $this->assertSame("`id` AS `uid`", $field->prepare());
+        $this->assertSame("id AS uid", $field->prepare());
         $this->assertSame([], $field->values());
     }
     

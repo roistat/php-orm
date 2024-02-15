@@ -18,7 +18,7 @@ class OrderTest extends RsORMTest\Base {
             new Argument\Alias("last_name"),
             new Argument\Desc(new Argument\Column("order")),
         ]);
-        $this->assertSame("ORDER BY `id`, `last_name`, `order` DESC", $order->prepare());
+        $this->assertSame("ORDER BY id, last_name, order DESC", $order->prepare());
         $this->assertSame([], $order->values());
     }
     

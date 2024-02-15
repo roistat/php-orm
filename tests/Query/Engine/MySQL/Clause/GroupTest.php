@@ -18,7 +18,7 @@ class GroupTest extends RsORMTest\Base {
             new Argument\Alias("last_name"),
             new Argument\Desc(new Argument\Column("order")),
         ]);
-        $this->assertSame("GROUP BY `id`, `last_name`, `order` DESC", $group->prepare());
+        $this->assertSame("GROUP BY id, last_name, order DESC", $group->prepare());
         $this->assertSame([], $group->values());
     }
     
