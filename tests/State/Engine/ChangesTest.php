@@ -21,7 +21,7 @@ class ChangesTest extends RsORMTest\Base {
      */
     private $_engine;
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->_entity = new Stub\Entity();
         $this->_engine = new Engine();

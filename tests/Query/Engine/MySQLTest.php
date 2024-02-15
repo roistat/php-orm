@@ -17,7 +17,7 @@ class MySQLTest extends RsORMTest\Base {
     
     private $mysql;
     
-    protected function setUp() {
+    protected function setUp(): void {
         $this->mysql = new Engine\MySQL();
     }
     

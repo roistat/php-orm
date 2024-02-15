@@ -15,7 +15,7 @@ class StatesTest extends RsORMTest\Base {
      */
     private $_project;
 
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
         $this->_project = new Stub\Entity();
     }

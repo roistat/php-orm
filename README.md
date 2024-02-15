@@ -12,8 +12,10 @@ It is simple ORM library for PHP. This library is compatible with PHP 5.4 and hi
 
 ## Installation
 ```
-composer require roistat/php-orm
+composer require roistat/php-orm:dev-master
 ```
+
+Or you can't just copy content of `./src` to your `src/RsORM` folder with standard namespaces autoload.
 
 ## Quick Start
 
