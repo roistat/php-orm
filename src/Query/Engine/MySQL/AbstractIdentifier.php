@@ -26,7 +26,7 @@ class AbstractIdentifier implements ObjectInterface {
      * @return string
      */
     public function prepare() {
-        $regexp = '/^[a-zA-Z0-9_.-]+$/';
+        $regexp = '/^[a-zA-Z0-9_.*-]+$/';
         if (!preg_match($regexp, $this->_name)) {
             throw new Exception\PrepareStatementFail("Invalid identifier {$this->_name}");
         }

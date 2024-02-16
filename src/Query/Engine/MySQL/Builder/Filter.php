@@ -190,6 +190,15 @@ class Filter implements BuilderInterface {
         $this->_filters[] = $filter;
         return $this;
     }
+
+    /**
+     * @param Filter $filter
+     * @return Filter
+     */
+    public function logicAnd(Filter $filter) {
+        $this->_conditions[] = $filter->build();
+        return $this;
+    }
     
     /**
      * @return MySQL\AbstractExpression
