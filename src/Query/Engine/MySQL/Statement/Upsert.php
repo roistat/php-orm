@@ -8,7 +8,7 @@ namespace RsORM\Query\Engine\MySQL\Statement;
 
 use RsORM\Query\Engine\MySQL\Clause;
 
-class Replace extends AbstractStatement {
+class Upsert extends AbstractStatement {
 
     public function __construct(Clause\Into $table, Clause\Values $values, Clause\Columns $columns = null, Clause\Returning $returning = null, Clause\Flags $flags = null) {
         parent::__construct([$flags, $table, $columns, $values, $returning]);
@@ -18,6 +18,6 @@ class Replace extends AbstractStatement {
      * @return string
      */
     protected function _statementOperator() {
-        return "REPLACE";
+        return "UPSERT";
     }    
 }

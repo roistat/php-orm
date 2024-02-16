@@ -6,52 +6,30 @@
 namespace RsORM\State;
 
 class Engine {
-    
-    /**
-     * @var Engine
-     */
-    private static $_instance;
-    
-    /**
-     * @return Engine
-     */
-    public static function getInstance() {
+
+    private static ?Engine $_instance = null;
+
+    public static function getInstance(): Engine {
         if (self::$_instance) {
             return self::$_instance;
         }
         return self::$_instance = new self();
     }
 
-    /**
-     * @param Entity $entity
-     * @return bool
-     */
-    public function isNew(Entity $entity) {
+    public function isNew(Entity $entity): bool {
         return count($entity->__getInitialState()) === 0;
     }
 
-    /**
-     * @param Entity $entity
-     * @return bool
-     */
-    public function isChanged(Entity $entity) {
+    public function isChanged(Entity $entity): bool {
         return count($this->diff($entity)) > 0;
     }
 
-    /**
-     * @param Entity $entity
-     */
-    public function flush(Entity $entity) {
-        $entity->__setInitialState($entity->__getCurrentState());
+    public function flush(Entity $entity, string $primaryKeyValue = null): void {
+        $entity->__setInitialState($entity->__getCurrentState(), $primaryKeyValue);
     }
 
-    /**
-     * @param Entity $entity
-     * @return array
-     */
-    public function diff(Entity $entity) {
+    public function diff(Entity $entity): array {
         $result = [];
-
         $initialState = $entity->__getInitialState();
         $currentState = $entity->__getCurrentState();
         foreach ($initialState as $param => $value) {
@@ -68,7 +46,6 @@ class Engine {
                 $result[$param] = $value;
             }
         }
-
         return $result;
     }
 }

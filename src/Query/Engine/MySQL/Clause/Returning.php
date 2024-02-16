@@ -8,20 +8,20 @@ namespace RsORM\Query\Engine\MySQL\Clause;
 
 use RsORM\Query\Engine\MySQL\Argument;
 
-class Fields extends AbstractClause {
-    
+class Returning extends AbstractClause {
+
     /**
-     * @param Argument\Field[] $columns
+     * @param Argument\Column $column
      */
-    public function __construct(array $columns) {
-        parent::__construct($columns);
+    public function __construct(Argument\Column $column) {
+        parent::__construct([$column]);
     }
-    
+
     /**
      * @return string
      */
     public function prepare() {
-        return "(" . implode(", ", $this->_prepareArguments()) . ")";
+        return "RETURNING " . $this->_prepareArguments()[0];
     }
     
 }

@@ -8,10 +8,10 @@ namespace RsORM\Query\Engine\MySQL\Clause;
 
 use RsORM\Query\Engine\MySQL\Argument;
 
-class Fields extends AbstractClause {
+class Columns extends AbstractClause {
     
     /**
-     * @param Argument\Field[] $columns
+     * @param Argument\Column[] $columns
      */
     public function __construct(array $columns) {
         parent::__construct($columns);
@@ -23,5 +23,4 @@ class Fields extends AbstractClause {
     public function prepare() {
         return "(" . implode(", ", $this->_prepareArguments()) . ")";
     }
-    
 }

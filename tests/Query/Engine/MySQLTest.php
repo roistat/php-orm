@@ -72,7 +72,7 @@ class MySQLTest extends RsORMTest\Base {
     }
     
     public function testInsert() {
-        $fields = new Clause\Fields([
+        $columns = new Clause\Columns([
             new Argument\Column("id"),
             new Argument\Column("name"),
             new Argument\Column("qwe"),
@@ -83,7 +83,7 @@ class MySQLTest extends RsORMTest\Base {
             new Argument\Value("Mike"),
             new Argument\NullValue(),
         ]);
-        $stmt = $this->mysql->insert($table, $values, $fields);
+        $stmt = $this->mysql->insert($table, $values, $columns);
         $this->assertSame("INSERT INTO table (id, name, qwe) VALUES (?, ?, NULL)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }

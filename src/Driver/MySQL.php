@@ -14,47 +14,18 @@ class MySQL {
 
     const UTF8 = "utf8";
 
-    /**
-     * @var \PDO
-     */
-    private $_dbh;
+    private ?\PDO $_pdo;
 
-    /**
-     * @var string
-     */
-    private $_host = "127.0.0.1";
+    private string $_dsn;
+    private string $_host;
+    private int $_port;
+    private ?string $_user;
+    private ?string $_pass;
+    private ?string $_dbname;
+    private string $_driver;
 
-    /**
-     * @var int
-     */
-    private $_port = 3306;
-
-    /**
-     * @var string
-     */
-    private $_dbname = null;
-
-    /**
-     * @var string
-     */
-    private $_user = "root";
-
-    /**
-     * @var string
-     */
-    private $_pass = "";
-
-    /**
-     * @var string
-     */
-    private $_charset = self::UTF8;
-
-    /**
-     * @var array
-     */
-    private $_options = [];
-
-    private $_driver = "mysql";
+    private string $_charset = self::UTF8;
+    private array $_options = [];
 
     /**
      * @param string $host
@@ -64,13 +35,23 @@ class MySQL {
      * @param string $dbname
      * @param string $driver
      */
-    public function __construct($host = null, $port = null, $user = null, $pass = null, $dbname = null, $driver = null) {
-        $this->_host = $host === null ? $this->_host : $host;
-        $this->_port = $port === null ? $this->_port : $port;
-        $this->_user = $user === null ? $this->_user : $user;
-        $this->_pass = $pass === null ? $this->_pass : $pass;
-        $this->_driver = $driver === null ? $this->_driver : $driver;
+    public function __construct(string $host = "127.0.0.1", int $port = 3306, ?string $user = "root", ?string $pass = null, ?string $dbname = null, string $driver = "mysql") {
+        $this->_host = $host;
+        $this->_port = $port;
+        $this->_user = $user;
+        $this->_pass = $pass;
+        $this->_driver = $driver;
         $this->_dbname = $dbname;
+        $this->_pdo = null;
+        $this->_calcDSN();
+    }
+
+    private function _calcDSN() {
+        $dsn = "{$this->_driver}:host={$this->_host};port={$this->_port};";
+        if ($this->_dbname !== null) {
+            $dsn .= "dbname={$this->_dbname};";
+        }
+        $this->_dsn = $dsn;
     }
 
     /**
@@ -145,39 +126,42 @@ class MySQL {
      * @return \PDOStatement
      */
     public function queryCustom($query) {
-        return $this->dbh()->query($query);
+        return $this->_pdo()->query($query);
     }
 
     /**
      * @return string
      */
     public function getLastInsertId() {
-        return $this->dbh()->lastInsertId();
+        return $this->_pdo()->lastInsertId();
     }
 
     private function _init() {
-        $dsn = "mysql:host={$this->_host};port={$this->_port};";
-        if ($this->_dbname !== null) {
-            $dsn .= "dbname={$this->_dbname};";
-        }
         try {
-            $this->_dbh = new \PDO($dsn, $this->_user, $this->_pass, $this->_options);
-            $this->_dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $this->_dbh->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-            $this->_dbh->exec("set names {$this->_charset}");
+            $this->_pdo = new \PDO($this->_dsn, $this->_user, $this->_pass, $this->_options);
+            $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->_pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+            $this->_pdo->exec("set names {$this->_charset}");
         } catch (\PDOException $e) {
             throw new Connection\Fail("Database error: {$e->getMessage()}");
         }
     }
 
     /**
+     * @return string
+     */
+    public function dsn() {
+        return $this->_dsn;
+    }
+
+    /**
      * @return \PDO
      */
-    private function dbh() {
-        if ($this->_dbh === null) {
+    private function _pdo() {
+        if ($this->_pdo === null) {
             $this->_init();
         }
-        return $this->_dbh;
+        return $this->_pdo;
     }
 
     /**
@@ -187,7 +171,7 @@ class MySQL {
      * @throws Exception\ExecuteStatementFail
      */
     private function _query(Statement\AbstractStatement $statement) {
-        if (!($result = $this->dbh()->prepare($statement->prepare()))) {
+        if (!($result = $this->_pdo()->prepare($statement->prepare()))) {
             throw new Exception\PrepareStatementFail();
         }
         if (!$result->execute($statement->values())) {

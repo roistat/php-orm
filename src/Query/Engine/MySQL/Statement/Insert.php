@@ -9,15 +9,9 @@ namespace RsORM\Query\Engine\MySQL\Statement;
 use RsORM\Query\Engine\MySQL\Clause;
 
 class Insert extends AbstractStatement {
-    
-    /**
-     * @param Clause\Into $table
-     * @param Clause\Values $values
-     * @param Clause\Fields $fields
-     * @param Clause\Flags $flags
-     */
-    public function __construct(Clause\Into $table, Clause\Values $values, Clause\Fields $fields = null, Clause\Flags $flags = null) {
-        parent::__construct([$flags, $table, $fields, $values]);
+
+    public function __construct(Clause\Into $table, Clause\Values $values, Clause\Columns $columns = null, Clause\Returning $returning = null, Clause\Flags $flags = null) {
+        parent::__construct([$flags, $table, $columns, $values, $returning]);
     }
     
     /**

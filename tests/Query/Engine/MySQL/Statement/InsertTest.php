@@ -16,7 +16,7 @@ use RsORMTest;
 class InsertTest extends RsORMTest\Base {
 
     public function test() {
-        $fields = new Clause\Fields([
+        $columns = new Clause\Columns([
             new Argument\Column("id"),
             new Argument\Column("name"),
             new Argument\Column("qwe"),
@@ -31,8 +31,9 @@ class InsertTest extends RsORMTest\Base {
             new Flag\Delayed(),
             new Flag\Ignore(),
         ]);
-        $stmt = new Statement\Insert($table, $values, $fields, $flags);
-        $this->assertSame("INSERT DELAYED IGNORE INTO table (id, name, qwe) VALUES (?, ?, NULL)", $stmt->prepare());
+        $returning = new Clause\Returning(new Argument\Column("id"));
+        $stmt = new Statement\Insert($table, $values, $columns, $returning, $flags);
+        $this->assertSame("INSERT DELAYED IGNORE INTO table (id, name, qwe) VALUES (?, ?, NULL) RETURNING id", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
     

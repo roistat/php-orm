@@ -29,7 +29,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Replace flagSQLSmallResult()
  * @method Replace flagStraightJoin()
  */
-class Replace implements BuilderInterface {
+class Upsert implements BuilderInterface {
     use TraitTable, TraitFlags, TraitInsertData, TraitReturning;
     
     /**
@@ -43,7 +43,7 @@ class Replace implements BuilderInterface {
      * @return MySQL\Statement\AbstractStatement
      */
     public function build() {
-        return Query\Engine::mysql()->replace(
+        return Query\Engine::mysql()->upsert(
                 $this->_table === null ? null : new MySQL\Clause\Into($this->_table),
                 $this->_buildValues(),
                 $this->_buildColumns(),

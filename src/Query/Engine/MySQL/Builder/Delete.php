@@ -37,7 +37,7 @@ class Delete implements BuilderInterface {
             TraitWhere;
     
     /**
-     * @return MySQL\AbstractExpression
+     * @return MySQL\Statement\AbstractStatement
      */
     public function build() {
         return Query\Engine::mysql()->delete(

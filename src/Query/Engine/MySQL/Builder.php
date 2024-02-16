@@ -26,6 +26,14 @@ class Builder {
     public static function insert(array $data) {
         return new Builder\Insert($data);
     }
+
+    /**
+     * @param array $data
+     * @return Builder\Upsert
+     */
+    public static function upsert(array $data) {
+        return new Builder\Upsert($data);
+    }
     
     /**
      * @param array $data

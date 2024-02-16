@@ -13,35 +13,26 @@ use RsORM\Query\Engine\MySQL\Clause;
 trait TraitInsertData {
     
     /**
-     * @var Argument\Field[]
+     * @var Argument\Column[]
      */
-    private $_fields = [];
+    private array $_columns = [];
     
     /**
      * @var MySQL\ObjectInterface[]
      */
-    private $_values = [];
-    
-    /**
-     * @param array $data
-     */
-    protected function _setInsertData(array $data) {
+    private array $_values = [];
+
+    protected function _setInsertData(array $data): void {
         foreach ($data as $field => $value) {
             $this->_setPair($field, $value);
         }
     }
-    
-    /**
-     * @return Clause\Fields
-     */
-    protected function _buildFields() {
-        return $this->_fields === [] ? null : new Clause\Fields($this->_fields);
+
+    protected function _buildColumns(): ?Clause\Columns {
+        return $this->_columns === [] ? null : new Clause\Columns($this->_columns);
     }
-    
-    /**
-     * @return Clause\Values
-     */
-    protected function _buildValues() {
+
+    protected function _buildValues(): ?Clause\Values {
         return $this->_values === [] ? null : new Clause\Values($this->_values);
     }
     
@@ -61,10 +52,10 @@ trait TraitInsertData {
      */
     private function _setField($field) {
         if ($field instanceof Argument\Field) {
-            $this->_fields[] = $field;
+            $this->_columns[] = $field;
         } elseif (is_string($field)) {
             $column = new Argument\Column($field);
-            $this->_fields[] = new Argument\Field($column);
+            $this->_columns[] = new Argument\Field($column);
         } else {
             return false;
         }

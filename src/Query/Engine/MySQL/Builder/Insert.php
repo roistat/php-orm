@@ -12,6 +12,7 @@ use RsORM\Query\Engine\MySQL\Flag;
 
 /**
  * @method Insert table(string $name)
+ * @method Insert returning(string $name)
  * @method Insert flagAll()
  * @method Insert flagDelayed()
  * @method Insert flagDistinct()
@@ -30,7 +31,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  */
 class Insert implements BuilderInterface {
     
-    use TraitTable, TraitFlags, TraitInsertData;
+    use TraitTable, TraitFlags, TraitInsertData, TraitReturning;
     
     /**
      * @param array $data
@@ -40,13 +41,14 @@ class Insert implements BuilderInterface {
     }
     
     /**
-     * @return MySQL\AbstractExpression
+     * @return MySQL\Statement\AbstractStatement
      */
     public function build() {
         return Query\Engine::mysql()->insert(
                 $this->_table === null ? null : new MySQL\Clause\Into($this->_table),
                 $this->_buildValues(),
-                $this->_buildFields(),
+                $this->_buildColumns(),
+                $this->_buildReturning(),
                 $this->_buildFlags());
     }
 }

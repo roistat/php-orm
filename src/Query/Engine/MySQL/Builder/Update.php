@@ -43,7 +43,7 @@ class Update implements BuilderInterface {
     }
     
     /**
-     * @return MySQL\AbstractExpression
+     * @return MySQL\Statement\AbstractStatement
      */
     public function build() {
         return Query\Engine::mysql()->update(

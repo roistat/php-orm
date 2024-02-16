@@ -7,39 +7,25 @@ namespace RsORM\State;
 
 abstract class Entity {
 
-    /**
-     * @var string
-     */
-    protected $__autoIncrementField = 'id';
+    private array $__initialState = [];
 
-    /**
-     * @var array
-     */
-    private $__initialState = [];
+    public static function primaryKeyFieldName(): string {
+        return 'id';
+    }
 
-    /**
-     * @return array
-     */
-    public function __getInitialState() {
+    public function __getInitialState(): array {
         return $this->__initialState;
     }
 
-    /**
-     * @param array $initialState
-     * @param int $autoIncrementId
-     */
-    public function __setInitialState(array $initialState, $autoIncrementId = null) {
+    public function __setInitialState(array $initialState, string $primaryKeyValue = null): void {
         // @TODO throw exception if initial state has wrong param
         $this->__initialState = $initialState;
-        if ($autoIncrementId !== null) {
-            $this->__initialState[$this->__autoIncrementField] = $autoIncrementId;
+        if ($primaryKeyValue !== null && self::primaryKeyFieldName()) {
+            $this->__initialState[self::primaryKeyFieldName()] = filter_var($primaryKeyValue, FILTER_VALIDATE_INT) ? (int)$primaryKeyValue : $primaryKeyValue;
         }
     }
 
-    /**
-     * @return array
-     */
-    public function __getCurrentState() {
+    public function __getCurrentState(): array {
         $result = [];
         foreach (get_object_vars($this) as $param => $value) {
             if (strpos($param, '__') === 0) {
