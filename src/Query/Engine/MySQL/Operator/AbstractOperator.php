@@ -15,11 +15,13 @@ abstract class AbstractOperator extends MySQL\AbstractExpression {
     
     protected function _prepareOperands() {
         $result = [];
-        foreach ($this->_arguments as $argument) {
-            if ($argument instanceof self) {
-                $result[] = "({$argument->prepare()})";
-            } else {
-                $result[] = $argument->prepare();
+        foreach ($this->_argumentsSets as $arguments) {
+            foreach ($arguments as $argument) {
+                if ($argument instanceof self) {
+                    $result[] = "({$argument->prepare()})";
+                } else {
+                    $result[] = $argument->prepare();
+                }
             }
         }
         return $result;

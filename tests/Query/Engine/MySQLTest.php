@@ -87,5 +87,48 @@ class MySQLTest extends RsORMTest\Base {
         $this->assertSame("INSERT INTO table (id, name, qwe) VALUES (?, ?, NULL)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
+
+    public function testUpsert() {
+        $columns = new Clause\Columns([
+            new Argument\Column("id"),
+            new Argument\Column("name"),
+            new Argument\Column("qwe"),
+        ]);
+        $table = new Clause\Into(new Argument\Table("table"));
+        $values = new Clause\Values([
+            new Argument\Value(1),
+            new Argument\Value("Mike"),
+            new Argument\NullValue(),
+        ]);
+        $stmt = $this->mysql->upsert($table, $values, $columns);
+        $this->assertSame("UPSERT INTO table (id, name, qwe) VALUES (?, ?, NULL)", $stmt->prepare());
+        $this->assertSame([1, "Mike"], $stmt->values());
+    }
+
+    public function testUpsertMultiple() {
+        $columns = new Clause\Columns([
+            new Argument\Column("id"),
+            new Argument\Column("name"),
+            new Argument\Column("qwe"),
+        ]);
+        $table = new Clause\Into(new Argument\Table("table"));
+        $values = new Clause\Values(
+            [
+                [
+                    new Argument\Value(1),
+                    new Argument\Value("Mike1"),
+                    new Argument\NullValue(),
+                ],
+                [
+                    new Argument\Value(2),
+                    new Argument\Value("Mike2"),
+                    new Argument\NullValue(),
+                ]
+            ]
+        );
+        $stmt = $this->mysql->upsert($table, $values, $columns);
+        $this->assertSame("UPSERT INTO table (id, name, qwe) VALUES (?, ?, NULL), (?, ?, NULL)", $stmt->prepare());
+        $this->assertSame([1, "Mike1", 2, "Mike2"], $stmt->values());
+    }
     
 }

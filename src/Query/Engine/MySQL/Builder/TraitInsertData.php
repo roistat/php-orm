@@ -6,6 +6,7 @@
 
 namespace RsORM\Query\Engine\MySQL\Builder;
 
+use RsORM\Driver\Exception;
 use RsORM\Query\Engine\MySQL;
 use RsORM\Query\Engine\MySQL\Argument;
 use RsORM\Query\Engine\MySQL\Clause;
@@ -28,6 +29,25 @@ trait TraitInsertData {
         }
     }
 
+    protected function _setInsertDataMultiple(array $dataObjects): void {
+        if (count($dataObjects) === 0) {
+            return;
+        }
+        foreach ($dataObjects[0] as $field => $value) {
+            $isCorrectField = $this->_setField($field);
+            if (!$isCorrectField) {
+                throw new Exception\PrepareStatementFail("Invalid field " . var_export($field, true));
+            }
+        }
+        foreach ($dataObjects as $data) {
+            $values = [];
+            foreach ($data as $value) {
+                $values[] = $this->_parseValue($value);
+            }
+            $this->_values[] = $values;
+        }
+    }
+
     protected function _buildColumns(): ?Clause\Columns {
         return $this->_columns === [] ? null : new Clause\Columns($this->_columns);
     }
@@ -42,7 +62,7 @@ trait TraitInsertData {
      */
     private function _setPair($field, $value) {
         if ($this->_setField($field)) {
-            $this->_setValue($value);
+            $this->_values[] = $this->_parseValue($value);
         }
     }
     
@@ -61,17 +81,14 @@ trait TraitInsertData {
         }
         return true;
     }
-    
-    /**
-     * @param mixed|MySQL\ObjectInterface $value
-     */
-    private function _setValue($value) {
+
+    private function _parseValue($value): MySQL\ObjectInterface {
         if ($value instanceof MySQL\ObjectInterface) {
-            $this->_values[] = $value;
+            return $value;
         } elseif ($value === null) {
-            $this->_values[] = new Argument\NullValue();
+            return new Argument\NullValue();
         } else {
-            $this->_values[] = new Argument\Value($value);
+            return new Argument\Value($value);
         }
     }
 }

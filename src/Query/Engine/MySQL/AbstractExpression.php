@@ -9,18 +9,21 @@ namespace RsORM\Query\Engine\MySQL;
 abstract class AbstractExpression implements MultiValueInterface {
     
     /**
-     * @var ObjectInterface[]
+     * @var ObjectInterface[][]
      */
-    protected $_arguments = [];
+    protected $_argumentsSets = [];
     
     /**
-     * @param ObjectInterface[] $arguments
+     * @param ObjectInterface[]|ObjectInterface[][] $arguments
      */
     public function __construct(array $arguments) {
-        foreach ($arguments as $argument) {
-            if ($argument !== null) {
-                $this->_arguments[] = $argument;
-            }
+        if (count($arguments) === 0) {
+            return;
+        }
+        if (is_array($arguments[0])) {
+            $this->_argumentsSets = $arguments;
+        } else {
+            $this->_argumentsSets = [$arguments];
         }
     }
     
@@ -29,12 +32,14 @@ abstract class AbstractExpression implements MultiValueInterface {
      */
     public function values() {
         $result = [];
-        foreach ($this->_arguments as $argument) {
-            if ($argument instanceof SingleValueInterface) {
-                $result[] = $argument->value();
-            }
-            if ($argument instanceof MultiValueInterface) {
-                $result = array_merge($result, $argument->values());
+        foreach ($this->_argumentsSets as $arguments) {
+            foreach ($arguments as $argument) {
+                if ($argument instanceof SingleValueInterface) {
+                    $result[] = $argument->value();
+                }
+                if ($argument instanceof MultiValueInterface) {
+                    $result = array_merge($result, $argument->values());
+                }
             }
         }
         return $result;
@@ -45,8 +50,12 @@ abstract class AbstractExpression implements MultiValueInterface {
      */
     protected function _prepareArguments() {
         $result = [];
-        foreach ($this->_arguments as $argument) {
-            $result[] = $argument->prepare();
+        foreach ($this->_argumentsSets as $arguments) {
+            foreach ($arguments as $argument) {
+                if ($argument instanceof ObjectInterface) {
+                    $result[] = $argument->prepare();
+                }
+            }
         }
         return $result;
     }

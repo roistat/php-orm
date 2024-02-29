@@ -29,10 +29,26 @@ class Builder {
 
     /**
      * @param array $data
+     * @return Builder\InsertMultiple
+     */
+    public static function insertMultiple(array $data) {
+        return new Builder\InsertMultiple($data);
+    }
+
+    /**
+     * @param array $data
      * @return Builder\Upsert
      */
     public static function upsert(array $data) {
         return new Builder\Upsert($data);
+    }
+
+    /**
+     * @param array $data
+     * @return Builder\UpsertMultiple
+     */
+    public static function upsertMultiple(array $data) {
+        return new Builder\UpsertMultiple($data);
     }
     
     /**
