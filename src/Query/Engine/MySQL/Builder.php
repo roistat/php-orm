@@ -109,7 +109,7 @@ class Builder {
      * @param string $aliasName
      * @return Argument\Field
      */
-    public static function funcConcat(array $arguments, $aliasName) {
+    public static function funcConcat(array $arguments, $aliasName): Argument\Field {
         $parsedArguments = self::_parseArguments($arguments);
         $func = new Func\Concat($parsedArguments);
         $alias = new Argument\Alias($aliasName);
@@ -118,12 +118,12 @@ class Builder {
     
     /**
      * @param array $arguments
-     * @return Argument\Value
+     * @return Argument\Value[]
      */
-    private static function _parseArguments(array $arguments) {
+    private static function _parseArguments(array $arguments): array {
         $result = [];
         foreach ($arguments as $argument) {
-            if ($argument instanceof Engine\MySQL\ObjectInterface) {
+            if ($argument instanceof ObjectInterface) {
                 $result[] = $argument;
             } else {
                 $result[] = new Argument\Value($argument);
