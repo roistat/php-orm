@@ -14,7 +14,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Delete table(string $name)
  * @method Delete where(Filter $filter)
  * @method Delete order(string $name, boolean $asc)
- * @method Delete limit(int $offset, int $count)
+ * @method Delete limit(int $count, int $offset)
  * @method Delete flagAll()
  * @method Delete flagDelayed()
  * @method Delete flagDistinct()

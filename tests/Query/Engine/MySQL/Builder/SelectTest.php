@@ -31,7 +31,7 @@ class SelectTest extends RsORMTest\Base {
             ->having($having)
             ->flagHighPriority()
             ->build();
-        $this->assertSame('SELECT HIGH_PRIORITY id, user, COUNT(DISTINCT id) AS num FROM users WHERE type = ? GROUP BY id, name DESC HAVING pos = ? ORDER BY id, name DESC LIMIT ?, ?', $stmt->prepare());
+        $this->assertSame('SELECT HIGH_PRIORITY id, user, COUNT(DISTINCT id) AS num FROM users WHERE type = ? GROUP BY id, name DESC HAVING pos = ? ORDER BY id, name DESC LIMIT ? OFFSET ?', $stmt->prepare());
         $this->assertSame([123, 3, 10, 20], $stmt->values());
     }
     

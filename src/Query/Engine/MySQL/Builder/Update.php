@@ -14,7 +14,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Update table(string $name)
  * @method Update where(Filter $filter)
  * @method Update order(string $name, boolean $asc)
- * @method Update limit(int $offset, int $count)
+ * @method Update limit(int $count, int $offset)
  * @method Update flagAll()
  * @method Update flagDelayed()
  * @method Update flagDistinct()

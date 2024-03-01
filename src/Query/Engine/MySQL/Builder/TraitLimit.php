@@ -20,27 +20,19 @@ trait TraitLimit {
      * @var int
      */
     private $_count;
-    
-    /**
-     * @param int $offset
-     * @param int $count
-     * @return BuilderInterface
-     */
-    public function limit($offset, $count = null) {
+
+    public function limit(?int $count = null, ?int $offset = null): self {
         $this->_offset = $offset;
         $this->_count = $count;
         return $this;
     }
-    
-    /**
-     * @return Clause\Limit
-     */
-    protected function _buildLimit() {
-        if ($this->_offset === null) {
+
+    protected function _buildLimit(): ?Clause\Limit {
+        if ($this->_offset === null && $this->_count === null) {
             return null;
         }
-        $offset = new Argument\Value($this->_offset);
         $count = ($this->_count === null) ? null : new Argument\Value($this->_count);
-        return new Clause\Limit($offset, $count);
+        $offset = ($this->_offset === null) ? null : new Argument\Value($this->_offset);
+        return new Clause\Limit($count, $offset);
     }
 }

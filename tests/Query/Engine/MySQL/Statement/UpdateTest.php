@@ -34,7 +34,7 @@ class UpdateTest extends RsORMTest\Base {
             new Flag\Ignore(),
         ]);
         $stmt = new Statement\Update($table, $set, $filter, $order, $limit, $flags);
-        $this->assertSame("UPDATE LOW_PRIORITY IGNORE table SET id = ?, name = ?, qwerty = NULL WHERE (id = ?) OR (id = ?) ORDER BY id DESC LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame("UPDATE LOW_PRIORITY IGNORE table SET id = ?, name = ?, qwerty = NULL WHERE (id = ?) OR (id = ?) ORDER BY id DESC LIMIT ? OFFSET ?", $stmt->prepare());
         $this->assertSame([1, "Mike", 10, 20, 5, 10], $stmt->values());
     }
     

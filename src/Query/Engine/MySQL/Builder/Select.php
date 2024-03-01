@@ -16,7 +16,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Select group(string $name, boolean $asc)
  * @method Select having(Filter $filter)
  * @method Select order(string $name, boolean $asc)
- * @method Select limit(int $offset, int $count)
+ * @method Select limit(int $count, int $offset)
  * @method Select flagAll()
  * @method Select flagDelayed()
  * @method Select flagDistinct()

@@ -29,7 +29,7 @@ class MySQLTest extends RsORMTest\Base {
         $order = new Clause\Order([new Argument\Desc(new Argument\Column("id"))]);
         $limit = new Clause\Limit(new Argument\Value(5), new Argument\Value(10));
         $stmt = Query\Engine::mysql()->select($objects, $table, $filter, $group, $having, $order, $limit);
-        $this->assertSame("SELECT id, name FROM table WHERE (id = ?) OR (id = ?) GROUP BY id HAVING alive = ? ORDER BY id DESC LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame("SELECT id, name FROM table WHERE (id = ?) OR (id = ?) GROUP BY id HAVING alive = ? ORDER BY id DESC LIMIT ? OFFSET ?", $stmt->prepare());
         $this->assertSame([10, 20, 1, 5, 10], $stmt->values());
     }
     

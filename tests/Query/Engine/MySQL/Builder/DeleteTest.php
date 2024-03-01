@@ -30,7 +30,7 @@ class DeleteTest extends RsORMTest\Base {
                 ->where($filter)
                 ->flagHighPriority()
                 ->build();
-        $this->assertSame("DELETE HIGH_PRIORITY FROM table WHERE type = ? ORDER BY flag LIMIT ?, ?", $stmt->prepare());
+        $this->assertSame("DELETE HIGH_PRIORITY FROM table WHERE type = ? ORDER BY flag LIMIT ? OFFSET ?", $stmt->prepare());
         $this->assertSame([123, 10, 20], $stmt->values());
     }
 }

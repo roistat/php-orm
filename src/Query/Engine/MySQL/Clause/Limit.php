@@ -9,20 +9,16 @@ namespace RsORM\Query\Engine\MySQL\Clause;
 use RsORM\Query\Engine\MySQL\Argument;
 
 class Limit extends AbstractClause {
-    
-    /**
-     * @param Argument\Value $offset
-     * @param Argument\Value $count
-     */
-    public function __construct(Argument\Value $offset, Argument\Value $count = null) {
-        parent::__construct([$offset, $count]);
+
+    public function __construct(?Argument\Value $count, ?Argument\Value $offset = null) {
+        parent::__construct([$count, $offset]);
     }
     
     /**
      * @return string
      */
     public function prepare() {
-        return "LIMIT " . implode(", ", $this->_prepareArguments());
+        return "LIMIT " . implode(" OFFSET ", $this->_prepareArguments());
     }
     
 }
