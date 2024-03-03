@@ -6,28 +6,24 @@
 
 namespace RsORM\Query\Engine\MySQL\Builder;
 
-use RsORM\Query;
-use RsORM\Query\Engine\MySQL;
-use RsORM\Query\Engine\MySQL\Flag;
-
 /**
- * @method Replace table(string $name)
- * @method Insert returning(string $name)
- * @method Replace flagAll()
- * @method Replace flagDelayed()
- * @method Replace flagDistinct()
- * @method Replace flagDistinctRow()
- * @method Replace flagHighPriority()
- * @method Replace flagIgnore()
- * @method Replace flagLowPriority()
- * @method Replace flagQuick()
- * @method Replace flagSQLBigResult()
- * @method Replace flagSQLBufferResult()
- * @method Replace flagSQLCache()
- * @method Replace flagSQLCalcFoundRows()
- * @method Replace flagSQLNoCache()
- * @method Replace flagSQLSmallResult()
- * @method Replace flagStraightJoin()
+ * @method UpsertMultiple table(string $name)
+ * @method UpsertMultiple returning(string $name)
+ * @method UpsertMultiple flagAll()
+ * @method UpsertMultiple flagDelayed()
+ * @method UpsertMultiple flagDistinct()
+ * @method UpsertMultiple flagDistinctRow()
+ * @method UpsertMultiple flagHighPriority()
+ * @method UpsertMultiple flagIgnore()
+ * @method UpsertMultiple flagLowPriority()
+ * @method UpsertMultiple flagQuick()
+ * @method UpsertMultiple flagSQLBigResult()
+ * @method UpsertMultiple flagSQLBufferResult()
+ * @method UpsertMultiple flagSQLCache()
+ * @method UpsertMultiple flagSQLCalcFoundRows()
+ * @method UpsertMultiple flagSQLNoCache()
+ * @method UpsertMultiple flagSQLSmallResult()
+ * @method UpsertMultiple flagStraightJoin()
  */
 class UpsertMultiple extends Upsert {
     

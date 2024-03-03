@@ -70,7 +70,7 @@ class MySQL {
 
     /**
      * @param Statement\AbstractStatement $statement
-     * @return array
+     * @return array|false
      */
     public function fetchAssoc(Statement\AbstractStatement $statement) {
         $sth = $this->_query($statement);
@@ -80,7 +80,7 @@ class MySQL {
 
     /**
      * @param Statement\AbstractStatement $statement
-     * @return array
+     * @return array|false
      */
     public function fetchAllAssoc(Statement\AbstractStatement $statement) {
         $sth = $this->_query($statement);
@@ -91,7 +91,7 @@ class MySQL {
     /**
      * @param Statement\AbstractStatement $statement
      * @param string $class
-     * @return State\Entity
+     * @return State\Entity|false
      */
     public function fetchClass(Statement\AbstractStatement $statement, $class) {
         $sth = $this->_query($statement);
@@ -104,7 +104,7 @@ class MySQL {
     /**
      * @param Statement\AbstractStatement $statement
      * @param string $class
-     * @return State\Entity[]
+     * @return State\Entity[]|false
      */
     public function fetchAllClass(Statement\AbstractStatement $statement, $class) {
         $sth = $this->_query($statement);
@@ -112,6 +112,11 @@ class MySQL {
         $objects = $sth->fetchAll();
         $this->_flushObjects($objects);
         return $objects;
+    }
+
+    public function fetchUpdate(Statement\AbstractStatement $statement): int {
+        $sth = $this->_query($statement);
+        return $sth->rowCount();
     }
 
     /**

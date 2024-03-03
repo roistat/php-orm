@@ -17,8 +17,8 @@ class Delete extends AbstractStatement {
      * @param Clause\Limit $limit
      * @param Clause\Flags $flags
      */
-    public function __construct(Clause\From $table, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Flags $flags = null) {
-        parent::__construct([$flags, $table, $filter, $order, $limit]);
+    public function __construct(Clause\From $table, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Returning $returning = null, Clause\Flags $flags = null) {
+        parent::__construct([$flags, $table, $filter, $order, $limit, $returning]);
     }
     
     /**

@@ -15,6 +15,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  * @method Delete where(Filter $filter)
  * @method Delete order(string $name, boolean $asc)
  * @method Delete limit(int $count, int $offset)
+ * @method Delete returning(string $name)
  * @method Delete flagAll()
  * @method Delete flagDelayed()
  * @method Delete flagDistinct()
@@ -33,8 +34,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  */
 class Delete implements BuilderInterface {
     
-    use TraitTable, TraitLimit, TraitOrder, TraitFlags,
-            TraitWhere;
+    use TraitTable, TraitLimit, TraitOrder, TraitFlags, TraitWhere, TraitReturning;
     
     /**
      * @return MySQL\Statement\AbstractStatement
@@ -45,6 +45,8 @@ class Delete implements BuilderInterface {
                 $this->_buildWhere(),
                 $this->_buildOrder(),
                 $this->_buildLimit(),
-                $this->_buildFlags());
+                $this->_buildReturning(),
+                $this->_buildFlags()
+        );
     }
 }

@@ -28,8 +28,9 @@ class DeleteTest extends RsORMTest\Base {
             new Flag\Quick(),
             new Flag\Ignore(),
         ]);
-        $stmt = new Statement\Delete($table, $filter, $order, $limit, $flags);
-        $this->assertSame("DELETE LOW_PRIORITY QUICK IGNORE FROM table WHERE (id = ?) OR (id = ?) ORDER BY id DESC LIMIT ? OFFSET ?", $stmt->prepare());
+        $returning = new Clause\Returning(new Argument\Column("id"));
+        $stmt = new Statement\Delete($table, $filter, $order, $limit, $returning, $flags);
+        $this->assertSame("DELETE LOW_PRIORITY QUICK IGNORE FROM table WHERE (id = ?) OR (id = ?) ORDER BY id DESC LIMIT ? OFFSET ? RETURNING id", $stmt->prepare());
         $this->assertSame([10, 20, 5, 10], $stmt->values());
     }
     

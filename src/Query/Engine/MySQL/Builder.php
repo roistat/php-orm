@@ -65,6 +65,14 @@ class Builder {
     public static function delete() {
         return new Builder\Delete();
     }
+
+    /**
+     * @param array $data
+     * @return Builder\ReplaceMultiple
+     */
+    public static function replaceMultiple(array $data) {
+        return new Builder\ReplaceMultiple($data);
+    }
     
     /**
      * @param array $data

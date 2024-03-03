@@ -33,7 +33,7 @@ use RsORM\Query\Engine\MySQL\Flag;
  */
 class Update implements BuilderInterface {
     
-    use TraitTable, TraitFlags, TraitUpdateData, TraitWhere, TraitOrder, TraitLimit;
+    use TraitTable, TraitFlags, TraitUpdateData, TraitWhere, TraitOrder, TraitLimit, TraitReturning;
     
     /**
      * @param array $data
@@ -52,6 +52,8 @@ class Update implements BuilderInterface {
                 $this->_buildWhere(),
                 $this->_buildOrder(),
                 $this->_buildLimit(),
-                $this->_buildFlags());
+                $this->_buildReturning(),
+                $this->_buildFlags()
+        );
     }
 }

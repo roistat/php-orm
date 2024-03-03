@@ -14,8 +14,8 @@ class MySQL {
         return new Statement\Select($objects, $table, $filter, $group, $having, $order, $limit, $flags);
     }
 
-    public function delete(Clause\From $table, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Flags $flags = null): Statement\Delete {
-        return new Statement\Delete($table, $filter, $order, $limit, $flags);
+    public function delete(Clause\From $table, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Returning $returning = null, Clause\Flags $flags = null): Statement\Delete {
+        return new Statement\Delete($table, $filter, $order, $limit, $returning, $flags);
     }
 
     public function insert(Clause\Into $table, Clause\Values $values, Clause\Columns $columns = null, Clause\Returning $returning = null, Clause\Flags $flags = null): Statement\Insert {
@@ -30,8 +30,8 @@ class MySQL {
         return new Statement\Upsert($table, $values, $columns, $returning, $flags);
     }
 
-    public function update(Clause\Target $table, Clause\Set $set, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Flags $flags = null): Statement\Update {
-        return new Statement\Update($table, $set, $filter, $order, $limit, $flags);
+    public function update(Clause\Target $table, Clause\Set $set, Clause\Filter $filter = null, Clause\Order $order = null, Clause\Limit $limit = null, Clause\Returning $returning = null, Clause\Flags $flags = null): Statement\Update {
+        return new Statement\Update($table, $set, $filter, $order, $limit, $returning, $flags);
     }
     
 }

@@ -12,7 +12,7 @@ use RsORM\Query\Engine\MySQL\Flag;
 
 /**
  * @method Replace table(string $name)
- * @method Insert returning(string $name)
+ * @method Replace returning(string $name)
  * @method Replace flagAll()
  * @method Replace flagDelayed()
  * @method Replace flagDistinct()

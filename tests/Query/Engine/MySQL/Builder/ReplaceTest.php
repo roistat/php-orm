@@ -27,4 +27,13 @@ class ReplaceTest extends RsORMTest\Base {
         $this->assertSame("REPLACE HIGH_PRIORITY INTO users (id, name) VALUES (?, ?)", $stmt->prepare());
         $this->assertSame([1, "Mike"], $stmt->values());
     }
+
+    public function testMultiple() {
+        $stmt = Builder::replaceMultiple([["id" => 1, "name" => "Mike1"], ["id" => 2, "name" => "Mike2"]])
+                ->table("users")
+                ->flagHighPriority()
+                ->build();
+        $this->assertSame("REPLACE HIGH_PRIORITY INTO users (id, name) VALUES (?, ?), (?, ?)", $stmt->prepare());
+        $this->assertSame([1, "Mike1", 2, "Mike2"], $stmt->values());
+    }
 }
